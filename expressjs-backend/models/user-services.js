@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const userModel = require("./user");
+const dotenv = require("dotenv")
 //mongoose.set("debug", true);
+dotenv.config();
 
 mongoose
   .connect("mongodb://127.0.0.1:27017/users", {
@@ -65,7 +67,7 @@ async function addUser(user) {
 async function loginUser(email, password){
   try {
     // find user by email
-    const user = await User.findOne({ email });
+    const user = await findUserByEmail(email);
     if (!user) {
       return 'Invalid email or password'
     }
@@ -112,3 +114,4 @@ exports.getUsers = getUsers;
 exports.findUserById = findUserById;
 exports.addUser = addUser;
 exports.removeUser = removeUser;
+exports.loginUser = loginUser;

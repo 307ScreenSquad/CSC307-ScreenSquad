@@ -1,6 +1,7 @@
 import React from 'react'
 import ReactDOMClient from 'react-dom/client'
 import MyApp from './App'
+import Login from './Login'
 import './styles/index.css'
 
 const container = document.getElementById('root');
@@ -11,5 +12,6 @@ const root = ReactDOMClient.createRoot(container);
 
 // Initial render:
 
-root.render(<MyApp />);
+//root.render(<MyApp />);
+root.render(<Login />);
 

@@ -2,6 +2,7 @@ const express = require('express');
 const app = express();
 const port = 8000;
 const cors = require('cors');
+const bcrypt = require('bcrypt')
 
 const userServices = require('./models/user-services')
 
@@ -57,8 +58,40 @@ app.get('/users/:id', async (req, res) => {
     }
 });
 
+/* Log-in User*/
+app.post('/login', async (req, res) => {
+    const userToAdd = req.body;
+    const savedUserMessage = await userServices.loginUser(userToAdd);
+    
+    if(savedUserMessage == 'Login successful'){
+        res.status(200).json({ message: savedUserMessage });
+    }
+    else if(savedUserMessage == 'Invalid email or password'){
+        res.status(401).json({ message: savedUserMessage });
+    }
+    else{
+        res.status(500).json({ message: savedUserMessage });
+    }
+    
+});
 
+/* Register User*/
+app.post('/register', async (req, res) => {
+    const userToAdd = req.body;
+    const savedUserMessage = await userServices.addUser(userToAdd);
+    if(savedUserMessage == 'User registered successfully'){
+        res.status(201).json({ message: savedUserMessage });
+    }
+    else if(savedUserMessage == 'User already exists'){
+        res.status(400).json({ message: savedUserMessage });
+    }
+    else{
+        res.status(500).json({ message: savedUserMessage });
+    }
+    
+});
 
+/*
 app.post('/users', async (req, res) => {
     const userToAdd = req.body;
     const savedUser = await userServices.addUser(userToAdd);
@@ -68,16 +101,9 @@ app.post('/users', async (req, res) => {
     else{
         res.status(500).end()
     }
-
-    /*
-    let id = generateID();
-    while(findUserById(id) !== undefined && findUserById(id).length > 0){
-        id = generateID();
-    }
-    userToAdd.id = id;
-    */
     
 });
+*/
 
 
 

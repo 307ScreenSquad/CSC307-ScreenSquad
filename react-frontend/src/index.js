@@ -17,7 +17,7 @@ const root = ReactDOMClient.createRoot(container);
 
 //root.render(<MyApp />);
 //root.render(<Login />);
-root.render(<MovieSearch />);
+//root.render(<MovieSearch />);
 //root.render(<MoviePage />);
-//oot.render(<Logo />);
+root.render(<Logo />);
 

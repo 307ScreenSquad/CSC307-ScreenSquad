@@ -1,15 +1,22 @@
-import React, {useState, useEffect, useRef } from 'react'
-import Table from './Table'
-import Form from './Form'
-import axios from 'axios'
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Login from "./Login"
-import Register from "./Register"
-import Forgot from "./Forgot"
-import theme from "./theme"
-import Base from "./base"
-import bcrypt from 'bcryptjs'
-import { ThemeProvider } from "@emotion/react"; 
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { ThemeProvider } from "@emotion/react";
+import bcrypt from 'bcryptjs';
+
+// Import components
+import Table from './Table';
+import Form from './Form';
+import Login from "./Login";
+import Register from "./Register";
+import Forgot from "./Forgot";
+import Base from "./base";
+import MoviePage from './SingleMoviePage/MoviePage';
+import MovieSearch from './SingleMoviePage/MovieSearch';
+import Logo from './SingleMoviePage/Logo';
+
+import theme from "./theme";
+import './App.css';
 
 // hashing: https://medium.com/boca-code/how-to-encrypt-password-in-your-react-app-before-you-send-it-to-the-api-6e10a06f0a8e
 // SALT should be created ONE TIME upon sign up
@@ -133,15 +140,19 @@ function App() {
     </div>
   );
   */
-  return(
+  return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-      <>nav bar here</>
+        <header className="app-header">
+          <Logo />
+          <MovieSearch />
+        </header>
         <Routes>
-          <Route path="/" element={<Base characterData={characters} removeCharacter={removeOneCharacter} handleSubmit={updateList}/>}/>
-          <Route path="/login" element={<Login submitUser={handleSubmitUser}/>} />
-          <Route path="/register" element={<Register createUser={handleCreateUser}/>} />
+          <Route path="/" element={<Base characterData={characters} removeCharacter={removeOneCharacter} handleSubmit={updateList} />} />
+          <Route path="/login" element={<Login submitUser={handleSubmitUser} />} />
+          <Route path="/register" element={<Register createUser={handleCreateUser} />} />
           <Route path="/forgot" element={<Forgot />} />
+          <Route path="/movie/:movieId" element={<MoviePage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

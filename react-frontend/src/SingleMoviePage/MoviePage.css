@@ -1,0 +1,14 @@
+.movie-page {
+    display: flex;
+    margin: 20px;
+  }
+  
+  .movie-page__poster {
+    width: 300px;
+    height: auto;
+  }
+  
+  .movie-page__details {
+    margin-left: 20px;
+  }
+  

@@ -1,11 +1,11 @@
 import './styles/login.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState, useRef } from "react"
+// import React, { useState, useRef } from "react"
+import React from "react"
 
 function Forgot (props) {
-  let [authMode, setAuthMode] = useState("login")
-  const emailInputRef = useRef();
-
+  // let [authMode, setAuthMode] = useState("login")
+  // const emailInputRef = useRef();
 
   return (
     <div className="Login-form-container">

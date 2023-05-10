@@ -1,15 +1,16 @@
 import './styles/login.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState, useRef } from "react"
+// import React, { useState, useRef } from "react"
+import React, { useRef } from "react"
 
 function Register (props) {
-  let [authMode, setAuthMode] = useState("login")
+  // let [authMode, setAuthMode] = useState("login")
   const emailInputRef = useRef();
   const passwordInputRef = useRef();
   const nameInputRef = useRef();
-  const changeAuthMode = () => {
-    setAuthMode(authMode === "login" ? "signup" : "login")
-  }
+  // const changeAuthMode = () => {
+  //   setAuthMode(authMode === "login" ? "signup" : "login")
+  // }
 
   function registerNewUser(){
     props.createUser(nameInputRef.current.value, emailInputRef.current.value, passwordInputRef.current.value)

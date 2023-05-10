@@ -1,14 +1,13 @@
 import React from 'react'
-import Table from './Table'
-import Form from './Form'
+import './styles/base.css';
 
-function Base(props){
-    return(
-        <div className="container">
-            <Table characterData={props.characterData} removeCharacter={props.removeCharacter}/>
-            <Form handleSubmit={props.handleSubmit}/>
-        </div>
+export default function Base(props){
+    return (
+       <div className="centered-text">
+          <div>
+            <h1 className="main-heading">Welcome to Screen Squad!</h1>
+            <h3 className="sub-heading">Screen Squad is a community of movie enthusiasts to watch movies together!</h3>
+          </div>
+       </div>
     );
 }
-
-export default Base;

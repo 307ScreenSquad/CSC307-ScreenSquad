@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const userModel = require("./user");
 const dotenv = require("dotenv")
+const bcrypt = require('bcrypt');
 //mongoose.set("debug", true);
 dotenv.config();
 
@@ -45,16 +46,15 @@ async function findUserById(id) {
 async function addUser(user) {
   try {
     // check if user with the same email already exists
-    const existingUser = await User.findOne({ user });
-    if (existingUser) {
+    const existingUser = await findUserByEmail(user.email);
+    if (existingUser.length > 0) {
       //return res.status(400).json({ message: 'User already exists' });
       return 'User already exists';
     }
 
     // create a new user document and save it to the database
-    const newUser = new User({ user });
+    const newUser = new userModel(user);
     await newUser.save();
-
     //return res.status(201).json({ message: 'User registered successfully' });
     return 'User registered successfully';
   } catch (err) {
@@ -71,10 +71,17 @@ async function loginUser(email, password){
     if (!user) {
       return 'Invalid email or password'
     }
-
     // compare password with hashed password in database
-    const passwordMatch = await bcrypt.compare(password, user.password);
-    if (!passwordMatch) {
+    let i = 0;
+    for(i = 0; i < user.length; i++){
+      let individual_user = user[i];
+      let passwordMatch = await bcrypt.compare(password, individual_user.password);
+      if(passwordMatch){
+        break;
+      }
+    }
+    console.log(i);
+    if (i == user.length) {
       return 'Invalid email or password'
     }
     return 'Login successful'

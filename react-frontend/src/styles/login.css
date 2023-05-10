@@ -37,3 +37,20 @@
     font-weight: 600;
     color: rgb(34, 34, 34);
   }
+
+  .error-message {
+    display: inline-block;
+    margin-top: 5px;
+    padding: 5px 10px;
+    background-color: #f44336;
+    color: #fff;
+    border-radius: 5px;
+  }
+  
+  .success-message {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #4caf50;
+    color: #fff;
+    border-radius: 5px;
+  }

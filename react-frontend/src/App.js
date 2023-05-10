@@ -9,6 +9,8 @@ import Forgot from "./Forgot"
 import theme from "./theme"
 import Base from "./base"
 import bcrypt from 'bcryptjs'
+
+
 import { ThemeProvider } from "@emotion/react";
 
 // hashing: https://medium.com/boca-code/how-to-encrypt-password-in-your-react-app-before-you-send-it-to-the-api-6e10a06f0a8e
@@ -23,7 +25,7 @@ function App() {
   async function handleCreateUser(name, email, password) {
     const hashedPassword = bcrypt.hashSync(password, salt) // hash created previously created upon sign up
     try {
-      const response = await axios.post('http://localhost:8000/users', {name: name, email: email, password: hashedPassword});
+      const response = await axios.post('http://localhost:8000/register', {name: name, email: email, password: hashedPassword});
       return response;     
     }
     catch (error){
@@ -46,10 +48,10 @@ function App() {
     */
   }
 
-  async function handleSubmitUser(name, email, password) {
-    const hashedPassword = bcrypt.hashSync(password, salt) // hash created previously created upon sign up
+  async function handleSubmitUser(email, password) {
+    //const hashedPassword = bcrypt.hashSync(password, salt) // hash created previously created upon sign up
     try {
-      const response = await axios.post('http://localhost:8000/users', {name: name, email: email, password: hashedPassword});
+      const response = await axios.post('http://localhost:8000/login', {email: email, password: password});
       return response;     
     }
     catch (error){
@@ -136,7 +138,6 @@ function App() {
   return(
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-      <>nav bar here</>
         <Routes>
           <Route path="/" element={<Base characterData={characters} removeCharacter={removeOneCharacter} handleSubmit={updateList}/>}/>
           <Route path="/login" element={<Login submitUser={handleSubmitUser}/>} />

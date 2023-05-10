@@ -1,17 +1,31 @@
 const express = require('express');
+const bodyParser = require("body-parser");
+const session = require("express-session");
 const app = express();
 const port = 8000;
 const cors = require('cors');
-const bcrypt = require('bcrypt')
-
 const userServices = require('./models/user-services')
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+  secret: "mysecretkey",
+  resave: false,
+  saveUninitialized: true,
+  cookie : {secure: false}
+}));
+
+var currentUser;
 
 app.use(express.json());
 
 app.use(cors());
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    if (currentUser) {
+        res.send(`Welcome, ${currentUser.name}!`);
+    } else {
+        res.send("You are not logged in.");
+    }
+    //res.send('Hello World!');
 });
 
 
@@ -61,9 +75,11 @@ app.get('/users/:id', async (req, res) => {
 /* Log-in User*/
 app.post('/login', async (req, res) => {
     const userToAdd = req.body;
-    const savedUserMessage = await userServices.loginUser(userToAdd);
+    const savedUserMessage = await userServices.loginUser(userToAdd.email, userToAdd.password);
     
     if(savedUserMessage == 'Login successful'){
+        let foundUser = await userServices.getUsers(userToAdd.email);
+        currentUser = foundUser[0];
         res.status(200).json({ message: savedUserMessage });
     }
     else if(savedUserMessage == 'Invalid email or password'){

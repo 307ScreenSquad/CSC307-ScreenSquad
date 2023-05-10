@@ -1,29 +1,26 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { ThemeProvider } from "@emotion/react";
-import bcrypt from 'bcryptjs';
-
-// Import components
-import Table from './Table';
-import Form from './Form';
-import Login from "./Login";
-import Register from "./Register";
-import Forgot from "./Forgot";
-import Base from "./base";
 import MoviePage from './SingleMoviePage/MoviePage';
 import MovieSearch from './SingleMoviePage/MovieSearch';
 import Logo from './SingleMoviePage/Logo';
-
-import theme from "./theme";
 import './App.css';
+import React from 'react'
+import axios from 'axios'
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Login from "./Login"
+import Register from "./Register"
+import Forgot from "./Forgot"
+import theme from "./theme"
+import Base from "./base"
+import NavBar from "./NavBar"
+import bcrypt from 'bcryptjs'
+import { ThemeProvider } from "@emotion/react"; 
+
 
 // hashing: https://medium.com/boca-code/how-to-encrypt-password-in-your-react-app-before-you-send-it-to-the-api-6e10a06f0a8e
 // SALT should be created ONE TIME upon sign up
 const salt = bcrypt.genSaltSync(10)
 
 function App() {
-  const [characters, setCharacters] = useState([]);
+  // const [characters, setCharacters] = useState([]);
   //const emailInputRef = useRef()
   //const passwordInputRef = useRef()
 
@@ -79,78 +76,14 @@ function App() {
     */
   }
 
-  function removeOneCharacter (index) {
-    const updated = characters.filter(async (character, i) => {
-        if(i === index){
-          console.log(character);
-          await axios.delete('http://localhost:8000/users/' + character._id);
-        }
-        return i !== index
-    });
-    setCharacters(updated);
-  }
-  
-
-  function updateList(person) {
-    makePostCall(person).then(result => {
-      if(result && result.status === 201){
-        setCharacters([...characters, person]);
-      }
-    })
-    
-  }
-
-  async function fetchAll(){
-    try {
-       const response = await axios.get('http://localhost:8000/users');
-       return response.data.users_list;     
-    }
-    catch (error){
-       //We're not handling errors. Just logging into the console.
-       console.log(error); 
-       return false;         
-    }
-  }
-  useEffect(() => {
-      fetchAll().then( result => {
-          if(result){
-              //console.log(result);
-              setCharacters(result);
-          }
-      })
-  })
-
-  async function makePostCall(person){
-    try {
-       const response = await axios.post('http://localhost:8000/users', person);
-       return response;     
-    }
-    catch (error){
-       //We're not handling errors. Just logging into the console.
-       console.log(error); 
-       return false;         
-    }
-  }
-
-  /*
-  return (
-    <div className="container">
-      <Table characterData={characters} removeCharacter={removeOneCharacter}/>
-      <Form handleSubmit={updateList}/>
-    </div>
-  );
-  */
-  return (
+  return(
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-        <header className="app-header">
-          <Logo />
-          <MovieSearch />
-        </header>
+      <NavBar />
         <Routes>
-          <Route path="/" element={<Base characterData={characters} removeCharacter={removeOneCharacter} handleSubmit={updateList} />} />
-          <Route path="/login" element={<Login submitUser={handleSubmitUser} />} />
-          <Route path="/register" element={<Register createUser={handleCreateUser} />} />
+          <Route path="/" element={<Base />}/>
+          <Route path="/login" element={<Login submitUser={handleSubmitUser}/>} />
+          <Route path="/register" element={<Register createUser={handleCreateUser}/>} />
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/movie/:movieId" element={<MoviePage />} />
         </Routes>

@@ -5,6 +5,7 @@ import Login from './Login'
 import MoviePage from './SingleMoviePage/MoviePage'
 import MovieSearch from './SingleMoviePage/MovieSearch'
 import Logo from './SingleMoviePage/Logo'
+import NavBar from './NavBar'
 import './styles/index.css'
 
 const container = document.getElementById('root');
@@ -19,5 +20,6 @@ const root = ReactDOMClient.createRoot(container);
 //root.render(<Login />);
 //root.render(<MovieSearch />);
 //root.render(<MoviePage />);
-root.render(<Logo />);
+//root.render(<Logo />);
+root.render(<NavBar />);
 

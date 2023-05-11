@@ -20,6 +20,6 @@ const root = ReactDOMClient.createRoot(container);
 //root.render(<Login />);
 //root.render(<MovieSearch />);
 //root.render(<MoviePage />);
-//root.render(<Logo />);
-root.render(<NavBar />);
+root.render(<Logo />);
+//root.render(<NavBar />);
 

@@ -16,10 +16,10 @@ const root = ReactDOMClient.createRoot(container);
 
 // Initial render:
 
-//root.render(<MyApp />);
+root.render(<MyApp />);
 //root.render(<Login />);
 //root.render(<MovieSearch />);
 //root.render(<MoviePage />);
-root.render(<Logo />);
+///root.render(<Logo />);
 //root.render(<NavBar />);
 

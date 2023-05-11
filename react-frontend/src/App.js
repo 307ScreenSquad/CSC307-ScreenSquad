@@ -8,6 +8,7 @@ import Register from "./Register"
 import Forgot from "./Forgot"
 import theme from "./theme"
 import Base from "./base"
+import MovieGrid from "./MovieGrid"
 import bcrypt from 'bcryptjs'
 import { ThemeProvider } from "@emotion/react";
 
@@ -142,6 +143,7 @@ function App() {
           <Route path="/login" element={<Login submitUser={handleSubmitUser}/>} />
           <Route path="/register" element={<Register createUser={handleCreateUser}/>} />
           <Route path="/forgot" element={<Forgot />} />
+          <Route path="/moviegrid" element={<MovieGrid />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

@@ -2,6 +2,7 @@ import './styles/login.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useRef } from "react"
 import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
 
 function Register (props) {
   let [authMode, setAuthMode] = useState("login")
@@ -13,6 +14,7 @@ function Register (props) {
   const [showPasswordError, setShowPasswordError] = useState(false);
   const [showConfirmPasswordError, setShowConfirmPasswordError] = useState(false);
   const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false);
+  const [showAccountError, setShowAccountError] = useState(false);
 
   const navigate = useNavigate();
 
@@ -22,6 +24,14 @@ function Register (props) {
     return emailRegex.test(email);
     //return true;
   };
+
+  const emailExists = (response) => {
+    if(response.status == 200){
+      return true;
+    }
+    return false;
+  };
+
   const validatePassword = (password) => {
     return password.length >= 8;
   };
@@ -38,6 +48,14 @@ function Register (props) {
       formIsValid = false;
     } else {
       setShowEmailError(false);
+    }
+    const response = await axios.get('http://localhost:8000/users/' + email);
+    if(emailExists(response)){
+      setShowAccountError(true);
+      formIsValid = false;
+    }
+    else{
+      setShowAccountError(false);
     }
     if (!validatePassword(password)) {
       setShowPasswordError(true);
@@ -100,6 +118,7 @@ function Register (props) {
             />
           </div>
           {showEmailError && <div className="error-message">Invalid email address</div>}
+          {showAccountError && <div className="error-message">Account Already Exists</div>}
           <div className="form-group mt-3">
             <label>Password</label>
             <input

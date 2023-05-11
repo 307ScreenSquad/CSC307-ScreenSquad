@@ -61,7 +61,7 @@ app.get('/users', async (req, res) => {
 });
 
 
-
+/*
 app.get('/users/:id', async (req, res) => {
     const id = req.params['id']; //or req.params.id
     let result = await userServices.findUserById(id);
@@ -70,6 +70,24 @@ app.get('/users/:id', async (req, res) => {
     else {
         res.send({users_list: result});
     }
+});
+*/
+
+app.get('/users/:email', async (req, res) => {
+    const email = req.params['email']; //or req.params.id
+    
+    let result = await userServices.getUsers(email);
+    
+    if (result === undefined || result === null || result.length == 0)
+        res.status(204).json({ message: 'Resource not found.'});
+        
+    else {
+        res.status(200).json(result[0]);
+        
+        
+    }
+    return result;
+    
 });
 
 /* Log-in User*/

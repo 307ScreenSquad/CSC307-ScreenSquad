@@ -80,7 +80,6 @@ async function loginUser(email, password){
         break;
       }
     }
-    console.log(i);
     if (i == user.length) {
       return 'Invalid email or password'
     }

@@ -19,6 +19,7 @@ const salt = bcrypt.genSaltSync(10)
 
 function App() {
   const [characters, setCharacters] = useState([]);
+  const [loggedIn, setLoggedIn] = useState(false);
   //const emailInputRef = useRef()
   //const passwordInputRef = useRef()
 
@@ -26,6 +27,11 @@ function App() {
     const hashedPassword = bcrypt.hashSync(password, salt) // hash created previously created upon sign up
     try {
       const response = await axios.post('http://localhost:8000/register', {name: name, email: email, password: hashedPassword});
+      if(response.status == 201){
+        localStorage.setItem('name', name);
+        localStorage.setItem('email', email);
+        setLoggedIn(true);
+      }
       return response;     
     }
     catch (error){
@@ -33,25 +39,19 @@ function App() {
         console.log(error); 
         return false;         
     }
-    /*
-    fetch('https://api.sampleapis.com/beers/ale', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        password: hashedPassword,
-      }),
-    })
-    */
   }
 
   async function handleSubmitUser(email, password) {
     //const hashedPassword = bcrypt.hashSync(password, salt) // hash created previously created upon sign up
     try {
       const response = await axios.post('http://localhost:8000/login', {email: email, password: password});
+      if(response){
+        const findUserResponse = await axios.get('http://localhost:8000/users/' + email);
+        console.log("find user", findUserResponse);
+        localStorage.setItem('name', findUserResponse.data.name);
+        localStorage.setItem('email', findUserResponse.data.name);
+        setLoggedIn(true);
+      }
       return response;     
     }
     catch (error){
@@ -98,7 +98,7 @@ function App() {
   async function fetchAll(){
     try {
        const response = await axios.get('http://localhost:8000/users');
-       return response.data.users_list;     
+       return response.data.users_list;
     }
     catch (error){
        //We're not handling errors. Just logging into the console.
@@ -107,12 +107,11 @@ function App() {
     }
   }
   useEffect(() => {
-      fetchAll().then( result => {
-          if(result){
-              //console.log(result);
-              setCharacters(result);
-          }
-      })
+    const existingName = localStorage.getItem('name');
+    if(existingName){
+      console.log("Welcome " + existingName);
+      //setCharacters(existingName);
+    }
   })
 
   async function makePostCall(person){

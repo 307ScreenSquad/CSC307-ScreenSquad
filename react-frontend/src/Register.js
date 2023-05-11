@@ -90,14 +90,14 @@ function Register (props) {
 
   return (
     <div className="Login-form-container">
-      <form className="Login-form" onSubmit={handleSubmit}>
+      <form className="Login-form" onSubmit={handleSubmit} style={{boxShadow: 'rgb(0 0 0 / 50%) 1px 1px 10px'}}>
         <div className="Login-form-content">
-          <h3 className="Login-form-title">Register</h3>
+          <h3 className="Login-form-title">Sign Up</h3>
           <div className="text-center">
             Already registered?{" "}
-            <a className="link-primary"href="/login">Sign In</a>
+            <a className="link-primary"href="/login" style={{color: 'rgb(127, 0, 255)'}}>Sign In</a>
           </div>
-          <div className="form-group mt-3">
+          <div className="form-group mt-3" >
             <label>Full Name</label>
             <input
               type="text"
@@ -105,6 +105,7 @@ function Register (props) {
               placeholder="First and last name"
               value={fullName}
               onChange={(event) => setFullName(event.target.value)}
+              style={{boxShadow: 'rgb(0 0 0 / 40%) 1px 1px 10px'}}
             />
           </div>
           <div className="form-group mt-3">
@@ -115,6 +116,7 @@ function Register (props) {
               placeholder=""
               value={email}
               onChange={(event) => {setEmail(event.target.value); setShowEmailError(false);}}
+              style={{boxShadow: 'rgb(0 0 0 / 40%) 1px 1px 10px'}}
             />
           </div>
           {showEmailError && <div className="error-message">Invalid email address</div>}
@@ -127,6 +129,7 @@ function Register (props) {
               placeholder="at least 8 characters"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              style={{boxShadow: 'rgb(0 0 0 / 40%) 1px 1px 10px'}}
             />
           </div>
           {showPasswordError && (
@@ -140,13 +143,14 @@ function Register (props) {
               placeholder=""
               value={confirmPassword}
               onChange={(event) => {setConfirmPassword(event.target.value); setShowConfirmPasswordError(false);}}
+              style={{boxShadow: 'rgb(0 0 0 / 40%) 1px 1px 10px'}}
             />
             
           </div>
           {showConfirmPasswordError && (
             <div className="error-message">Passwords do not match</div>
           )}
-          <div className="d-grid gap-2 mt-3">
+          <div className="d-grid gap-2 mt-3" style={{backgroundColor: 'rgb(127, 0, 255)'}}>
             <button type="submit" className="btn btn-primary">
               Submit
             </button>

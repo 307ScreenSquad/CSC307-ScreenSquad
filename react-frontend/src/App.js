@@ -1,6 +1,4 @@
-import React, {useState, useEffect, useRef } from 'react'
-import Table from './Table'
-import Form from './Form'
+import React, { useState, useEffect } from "react"
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./Login"
@@ -8,6 +6,7 @@ import Register from "./Register"
 import Forgot from "./Forgot"
 import theme from "./theme"
 import Base from "./base"
+import NavBar from "./NavBar"
 import bcrypt from 'bcryptjs'
 
 
@@ -20,6 +19,7 @@ const salt = bcrypt.genSaltSync(10)
 function App() {
   const [characters, setCharacters] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
+  // const [characters, setCharacters] = useState([]);
   //const emailInputRef = useRef()
   //const passwordInputRef = useRef()
 
@@ -137,8 +137,9 @@ function App() {
   return(
     <ThemeProvider theme={theme}>
       <BrowserRouter>
+      <NavBar />
         <Routes>
-          <Route path="/" element={<Base characterData={characters} removeCharacter={removeOneCharacter} handleSubmit={updateList}/>}/>
+          <Route path="/" element={<Base />}/>
           <Route path="/login" element={<Login submitUser={handleSubmitUser}/>} />
           <Route path="/register" element={<Register createUser={handleCreateUser}/>} />
           <Route path="/forgot" element={<Forgot />} />

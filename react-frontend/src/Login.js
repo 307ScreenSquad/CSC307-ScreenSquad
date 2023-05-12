@@ -1,25 +1,35 @@
 import './styles/login.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState, useRef } from "react"
+import React, { useState } from "react"
 import {useNavigate} from 'react-router-dom'
+import axios from 'axios'
 
 function Login (props) {
-  let [authMode, setAuthMode] = useState("login")
-  const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showAccountError, setShowAccountError] = useState(false);
+  const [showLoginError, setShowLoginError] = useState(false);
+  
   const navigate = useNavigate();
-  const changeAuthMode = () => {
-    setAuthMode(authMode === "login" ? "signup" : "login")
-  }
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    let response = await props.submitUser(email, password);
-    if(response){
-      navigate('/');
+    const emailExists = await axios.get('http://localhost:8000/users/' + email);
+    if(emailExists.status !== 204){
+      setShowAccountError(false)
+      let response = await props.submitUser(email, password);
+      if(response){
+        navigate('/');
+        setShowLoginError(false)
+      }
+      else{
+        setShowLoginError(true);
+      }
     }
-    setFullName("")
+    else{
+      setShowAccountError(true)
+    }
+    
     setEmail("")
     setPassword("")
     // Handle form submission here
@@ -35,6 +45,8 @@ function Login (props) {
             No Account?{" "}
             <a className="link-primary" href="/register" style={{color: 'rgb(127, 0, 255)'}}>Sign Up</a>
           </div>
+          {showAccountError && <div className="error-message">No Account Found</div>}
+          {showLoginError && <div className="error-message">Invalid password</div>}
           <div className="form-group mt-3">
             <label>Email</label>
             <input

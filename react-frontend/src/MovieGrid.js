@@ -3,6 +3,7 @@ import './styles/Moviegrid.css';
 import axios from 'axios';
 import Slideshow from './Slideshow';
 
+
 const MovieGrid = () => {
   const [movies, setMovies] = useState([]);
 

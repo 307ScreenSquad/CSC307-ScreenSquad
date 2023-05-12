@@ -125,6 +125,13 @@ app.post('/register', async (req, res) => {
     
 });
 
+/* Register User*/
+app.post('/logout', async (req, res) => {
+    currentUser = null;
+    res.status(201).json({ message: 'User logged out successfully' });
+    
+});
+
 /*
 app.post('/users', async (req, res) => {
     const userToAdd = req.body;

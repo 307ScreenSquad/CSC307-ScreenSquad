@@ -51,6 +51,7 @@ function App() {
         localStorage.setItem('name', findUserResponse.data.name);
         localStorage.setItem('email', findUserResponse.data.name);
         setLoggedIn(true);
+        
       }
       return response;     
     }
@@ -59,19 +60,23 @@ function App() {
         console.log(error); 
         return false;         
     }
-    /*
-    fetch('https://api.sampleapis.com/beers/ale', {
-      method: 'POST',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        email: email,
-        password: hashedPassword,
-      }),
-    })
-    */
+  }
+  async function handleLogoutUser(){
+    try {
+      const response = await axios.post('http://localhost:8000/logout');
+      if(response){
+        localStorage.setItem('name', '');
+        localStorage.setItem('email', '');
+        setLoggedIn(false);
+        
+      }
+      return response;     
+    }
+    catch (error){
+        //We're not handling errors. Just logging into the console.
+        console.log(error); 
+        return false;         
+    }
   }
 
   function removeOneCharacter (index) {
@@ -110,7 +115,7 @@ function App() {
     const existingName = localStorage.getItem('name');
     if(existingName){
       console.log("Welcome " + existingName);
-      //setCharacters(existingName);
+      setLoggedIn(true);
     }
   })
 
@@ -137,7 +142,7 @@ function App() {
   return(
     <ThemeProvider theme={theme}>
       <BrowserRouter>
-      <NavBar />
+      <NavBar isLoggedIn={loggedIn} logoutUser={handleLogoutUser}/>
         <Routes>
           <Route path="/" element={<Base />}/>
           <Route path="/login" element={<Login submitUser={handleSubmitUser}/>} />

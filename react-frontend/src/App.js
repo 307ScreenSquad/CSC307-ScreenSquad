@@ -1,6 +1,5 @@
 import MoviePage from './SingleMoviePage/MoviePage';
 import MovieSearch from './SingleMoviePage/MovieSearch';
-import Logo from './SingleMoviePage/Logo';
 import './App.css';
 import React from 'react'
 import axios from 'axios'
@@ -75,7 +74,7 @@ function App() {
     })
     */
   }
-
+  
   return(
     <ThemeProvider theme={theme}>
       <BrowserRouter>

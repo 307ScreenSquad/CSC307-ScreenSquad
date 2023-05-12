@@ -4,7 +4,6 @@ import MyApp from './App'
 import Login from './Login'
 import MoviePage from './SingleMoviePage/MoviePage'
 import MovieSearch from './SingleMoviePage/MovieSearch'
-import Logo from './SingleMoviePage/Logo'
 import NavBar from './NavBar'
 import './styles/index.css'
 
@@ -20,6 +19,5 @@ root.render(<MyApp />);
 //root.render(<Login />);
 //root.render(<MovieSearch />);
 //root.render(<MoviePage />);
-///root.render(<Logo />);
 //root.render(<NavBar />);
 

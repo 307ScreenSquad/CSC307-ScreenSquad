@@ -1,17 +1,31 @@
 const express = require('express');
+const bodyParser = require("body-parser");
+const session = require("express-session");
 const app = express();
 const port = 8000;
 const cors = require('cors');
-const bcrypt = require('bcrypt')
-
 const userServices = require('./models/user-services')
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(session({
+  secret: "mysecretkey",
+  resave: false,
+  saveUninitialized: true,
+  cookie : {secure: false}
+}));
+
+var currentUser;
 
 app.use(express.json());
 
 app.use(cors());
 
 app.get('/', (req, res) => {
-    res.send('Hello World!');
+    if (currentUser) {
+        res.send(`Welcome, ${currentUser.name}!`);
+    } else {
+        res.send("You are not logged in.");
+    }
+    //res.send('Hello World!');
 });
 
 
@@ -47,7 +61,7 @@ app.get('/users', async (req, res) => {
 });
 
 
-
+/*
 app.get('/users/:id', async (req, res) => {
     const id = req.params['id']; //or req.params.id
     let result = await userServices.findUserById(id);
@@ -57,13 +71,33 @@ app.get('/users/:id', async (req, res) => {
         res.send({users_list: result});
     }
 });
+*/
+
+app.get('/users/:email', async (req, res) => {
+    const email = req.params['email']; //or req.params.id
+    
+    let result = await userServices.getUsers(email);
+    
+    if (result === undefined || result === null || result.length == 0)
+        res.status(204).json({ message: 'Resource not found.'});
+        
+    else {
+        res.status(200).json(result[0]);
+        
+        
+    }
+    return result;
+    
+});
 
 /* Log-in User*/
 app.post('/login', async (req, res) => {
     const userToAdd = req.body;
-    const savedUserMessage = await userServices.loginUser(userToAdd);
+    const savedUserMessage = await userServices.loginUser(userToAdd.email, userToAdd.password);
     
     if(savedUserMessage == 'Login successful'){
+        let foundUser = await userServices.getUsers(userToAdd.email);
+        currentUser = foundUser[0];
         res.status(200).json({ message: savedUserMessage });
     }
     else if(savedUserMessage == 'Invalid email or password'){
@@ -88,6 +122,13 @@ app.post('/register', async (req, res) => {
     else{
         res.status(500).json({ message: savedUserMessage });
     }
+    
+});
+
+/* Register User*/
+app.post('/logout', async (req, res) => {
+    currentUser = null;
+    res.status(201).json({ message: 'User logged out successfully' });
     
 });
 

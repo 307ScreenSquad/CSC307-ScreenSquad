@@ -1,7 +1,7 @@
 import MoviePage from './SingleMoviePage/MoviePage';
-import MovieSearch from './SingleMoviePage/MovieSearch';
+// import MovieSearch from './SingleMoviePage/MovieSearch';
 import './App.css';
-import React from 'react'
+import React, { useState } from 'react'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./Login"
@@ -19,7 +19,7 @@ import { ThemeProvider } from "@emotion/react";
 const salt = bcrypt.genSaltSync(10)
 
 function App() {
-  const [characters, setCharacters] = useState([]);
+  // const [characters, setCharacters] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   // const [characters, setCharacters] = useState([]);
   //const emailInputRef = useRef()
@@ -29,7 +29,7 @@ function App() {
     const hashedPassword = bcrypt.hashSync(password, salt) // hash created previously created upon sign up
     try {
       const response = await axios.post('http://localhost:8000/register', {name: name, email: email, password: hashedPassword});
-      if(response.status == 201){
+      if(response.status === 201){
         localStorage.setItem('name', name);
         localStorage.setItem('email', email);
         setLoggedIn(true);
@@ -81,58 +81,58 @@ function App() {
     }
   }
 
-  function removeOneCharacter (index) {
-    const updated = characters.filter(async (character, i) => {
-        if(i === index){
-          console.log(character);
-          await axios.delete('http://localhost:8000/users/' + character._id);
-        }
-        return i !== index
-    });
-    setCharacters(updated);
-  }
+  // function removeOneCharacter (index) {
+  //   const updated = characters.filter(async (character, i) => {
+  //       if(i === index){
+  //         console.log(character);
+  //         await axios.delete('http://localhost:8000/users/' + character._id);
+  //       }
+  //       return i !== index
+  //   });
+  //   setCharacters(updated);
+  // }
   
 
-  function updateList(person) {
-    makePostCall(person).then(result => {
-      if(result && result.status === 201){
-        setCharacters([...characters, person]);
-      }
-    })
+  // function updateList(person) {
+  //   makePostCall(person).then(result => {
+  //     if(result && result.status === 201){
+  //       setCharacters([...characters, person]);
+  //     }
+  //   })
     
-  }
+  // }
 
-  async function fetchAll(){
-    try {
-       const response = await axios.get('http://localhost:8000/users');
-       return response.data.users_list;
-    }
-    catch (error){
-       //We're not handling errors. Just logging into the console.
-       console.log(error); 
-       return false;         
-    }
-  }
+  // async function fetchAll(){
+  //   try {
+  //      const response = await axios.get('http://localhost:8000/users');
+  //      return response.data.users_list;
+  //   }
+  //   catch (error){
+  //      //We're not handling errors. Just logging into the console.
+  //      console.log(error); 
+  //      return false;         
+  //   }
+  // }
 
-  useEffect(() => {
-    const existingName = localStorage.getItem('name');
-    if(existingName){
-      console.log("Welcome " + existingName);
-      setLoggedIn(true);
-    }
-  })
+  // useEffect(() => {
+  //   const existingName = localStorage.getItem('name');
+  //   if(existingName){
+  //     console.log("Welcome " + existingName);
+  //     setLoggedIn(true);
+  //   }
+  // })
 
-  async function makePostCall(person){
-    try {
-       const response = await axios.post('http://localhost:8000/users', person);
-       return response;     
-    }
-    catch (error){
-       //We're not handling errors. Just logging into the console.
-       console.log(error); 
-       return false;         
-    }
-  }
+  // async function makePostCall(person){
+  //   try {
+  //      const response = await axios.post('http://localhost:8000/users', person);
+  //      return response;     
+  //   }
+  //   catch (error){
+  //      //We're not handling errors. Just logging into the console.
+  //      console.log(error); 
+  //      return false;         
+  //   }
+  // }
 
   /*
   return (

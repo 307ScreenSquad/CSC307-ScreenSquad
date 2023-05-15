@@ -1,11 +1,12 @@
 import './styles/login.css';
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState, useRef } from "react"
+// import React, { useState, useRef } from "react"
+import React, { useState } from "react"
 import {useNavigate} from 'react-router-dom'
 import axios from 'axios'
 
 function Register (props) {
-  let [authMode, setAuthMode] = useState("login")
+  // let [authMode, setAuthMode] = useState("login")
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +14,7 @@ function Register (props) {
   const [showEmailError, setShowEmailError] = useState(false);
   const [showPasswordError, setShowPasswordError] = useState(false);
   const [showConfirmPasswordError, setShowConfirmPasswordError] = useState(false);
-  const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false);
+  // const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false);
   const [showAccountError, setShowAccountError] = useState(false);
 
   const navigate = useNavigate();
@@ -26,7 +27,7 @@ function Register (props) {
   };
 
   const emailExists = (response) => {
-    if(response.status == 200){
+    if(response.status === 200){
       return true;
     }
     return false;
@@ -72,7 +73,7 @@ function Register (props) {
     if (formIsValid) {
       // Submit form data if validation passes
       let response = await props.createUser(fullName, email, password);
-      if(response.status == 201){
+      if(response.status === 201){
         navigate('/');
       }
       //setShowRegistrationSuccess(true);

@@ -12,9 +12,9 @@ const UserSchema = new mongoose.Schema(
       required: true,
       trim: true,
       validate(value) {
-        if (value.index('@') == -1)
+        if (value.toString().indexOf('@') == -1)
           throw new Error("Invalid email, must contain '@' to be valid email");
-        if (value.index('.com') == -1)
+        if (value.toString().indexOf('.com') == -1 && value.toString().indexOf('.edu') == -1 && value.toString().indexOf('.org') == -1)
           throw new Error("Invalid email, must contain '.com' to be valid email");
       },
     },
@@ -28,9 +28,9 @@ const UserSchema = new mongoose.Schema(
       },
     },
   },
-  { collection: "users_list" }
+  { collection: "movie_users_list" }
 );
 
-const User = mongoose.model("User", UserSchema);
+const Movie_User = mongoose.model("User", UserSchema);
 
-module.exports = User;
+module.exports = Movie_User;

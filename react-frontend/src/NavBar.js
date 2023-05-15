@@ -6,7 +6,7 @@ export default function NavBar() {
   return (
     <Navbar className="Navbar-color">
       <Container>
-        <Navbar.Brand className="Navbar-form-title" as={Link} to="/">
+        <Navbar.Brand className="Navbar-form-title" as={Link} to="/landing">
           Screen Squad
         </Navbar.Brand>
           <Nav className="Navbar-form-subtitles">

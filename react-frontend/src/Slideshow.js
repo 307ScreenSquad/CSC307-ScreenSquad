@@ -4,8 +4,8 @@ import './styles/Slideshow.css';
 
 const Slideshow = () => {
   const [images, setImages] = useState([
-    'https://image.tmdb.org/t/p/original/wwemzKWzjKYJFfCeiB57q3r4Bcm.svg',
-    // 'https://image.tmdb.org/t/p/original/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg',
+    // 'https://image.tmdb.org/t/p/original/wwemzKWzjKYJFfCeiB57q3r4Bcm.svg',
+    'https://image.tmdb.org/t/p/original/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg',
   ]);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -21,8 +21,12 @@ const Slideshow = () => {
   }, [currentImageIndex]);
 
   return (
-    <div>
-      <img src={images[currentImageIndex]} alt="Movie" />
+    <div className="slideshow-container">
+      <img
+        src={images[currentImageIndex]}
+        alt="Movie"
+        className="slideshow-image"
+      />
     </div>
   );
 };

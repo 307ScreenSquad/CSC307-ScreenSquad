@@ -1,7 +1,7 @@
+import React, { useEffect, useState } from 'react';
 import MoviePage from './SingleMoviePage/MoviePage';
 import MovieSearch from './SingleMoviePage/MovieSearch';
 import './App.css';
-import React from 'react'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./Login"
@@ -9,6 +9,7 @@ import Register from "./Register"
 import Forgot from "./Forgot"
 import theme from "./theme"
 import Base from "./base"
+import Landing from "./Landing"
 import NavBar from "./NavBar"
 import bcrypt from 'bcryptjs'
 import { ThemeProvider } from "@emotion/react"; 
@@ -152,6 +153,7 @@ function App() {
           <Route path="/login" element={<Login submitUser={handleSubmitUser}/>} />
           <Route path="/register" element={<Register createUser={handleCreateUser}/>} />
           <Route path="/forgot" element={<Forgot />} />
+          <Route path="/landing" element={<Landing />} />
           <Route path="/movie/:movieId" element={<MoviePage />} />
         </Routes>
       </BrowserRouter>

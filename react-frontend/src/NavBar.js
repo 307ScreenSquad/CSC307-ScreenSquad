@@ -9,7 +9,7 @@ export default function NavBar(props) {
   return (
     <Navbar className="Navbar-color">
       <Container>
-        <Navbar.Brand className="Navbar-form-title" as={Link} to="/">
+        <Navbar.Brand className="Navbar-form-title" as={Link} to="/landing">
           <BiCameraMovie className="Navbar-logo" />
           Screen Squad
         </Navbar.Brand>

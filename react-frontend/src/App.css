@@ -36,3 +36,22 @@
     transform: rotate(360deg);
   }
 }
+
+/* single movie page css */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  background-color: #282c34;
+  color: white;
+}
+
+.Navbar-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  margin: 8px;
+  font-size: 75px;
+}
+

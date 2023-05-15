@@ -19,9 +19,8 @@ const Landing = () => {
 
   return (
     <div className="movie-grid-header">
-      {/* <h1>Popular Movies</h1> */}
+      <h1>Popular Movies</h1>
       <Slideshow/>
-      <h3>Click on a movie to see more details</h3>
       <h1>Suggested for You</h1>
     <div className="movie-grid">
 

@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from "react"
+import MoviePage from './SingleMoviePage/MoviePage';
+import MovieSearch from './SingleMoviePage/MovieSearch';
+import './App.css';
+import React from 'react'
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Login from "./Login"
@@ -8,9 +11,8 @@ import theme from "./theme"
 import Base from "./base"
 import NavBar from "./NavBar"
 import bcrypt from 'bcryptjs'
+import { ThemeProvider } from "@emotion/react"; 
 
-
-import { ThemeProvider } from "@emotion/react";
 
 // hashing: https://medium.com/boca-code/how-to-encrypt-password-in-your-react-app-before-you-send-it-to-the-api-6e10a06f0a8e
 // SALT should be created ONE TIME upon sign up
@@ -111,6 +113,7 @@ function App() {
        return false;         
     }
   }
+
   useEffect(() => {
     const existingName = localStorage.getItem('name');
     if(existingName){
@@ -139,6 +142,7 @@ function App() {
     </div>
   );
   */
+
   return(
     <ThemeProvider theme={theme}>
       <BrowserRouter>
@@ -148,6 +152,7 @@ function App() {
           <Route path="/login" element={<Login submitUser={handleSubmitUser}/>} />
           <Route path="/register" element={<Register createUser={handleCreateUser}/>} />
           <Route path="/forgot" element={<Forgot />} />
+          <Route path="/movie/:movieId" element={<MoviePage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

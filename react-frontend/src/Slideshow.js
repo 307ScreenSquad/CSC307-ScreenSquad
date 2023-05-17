@@ -3,7 +3,7 @@ import './styles/Slideshow.css';
 
 
 const Slideshow = () => {
-  const [images, setImages] = useState([
+  const [images] = useState([
     // 'https://image.tmdb.org/t/p/original/wwemzKWzjKYJFfCeiB57q3r4Bcm.svg',
     'https://image.tmdb.org/t/p/original/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg',
   ]);
@@ -12,13 +12,13 @@ const Slideshow = () => {
 
   useEffect(() => {
     const intervalId = setTimeout(() => {
-      setCurrentImageIndex((currentImageIndex + 1) % images.length);
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
     }, 3000);
 
     return () => {
       clearTimeout(intervalId);
     };
-  }, [currentImageIndex]);
+  }, [currentImageIndex, images.length]);
 
   return (
     <div className="slideshow-container">

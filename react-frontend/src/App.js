@@ -19,7 +19,7 @@ import { ThemeProvider } from "@emotion/react";
 const salt = bcrypt.genSaltSync(10)
 
 function App() {
-  const [characters, setCharacters] = useState([]);
+  //const [characters, setCharacters] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   // const [characters, setCharacters] = useState([]);
   //const emailInputRef = useRef()

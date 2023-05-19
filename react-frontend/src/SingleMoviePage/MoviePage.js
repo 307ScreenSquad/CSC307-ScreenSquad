@@ -1,5 +1,4 @@
-//IMPORTANT: UNCOMMENT THE CODE IN THIS FILE ONCE WE HAVE THE BACKEND RUNNING
-
+//TESTING CI
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './MoviePage.css';

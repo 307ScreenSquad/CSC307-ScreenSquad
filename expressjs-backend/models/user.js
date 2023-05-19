@@ -28,9 +28,9 @@ const UserSchema = new mongoose.Schema(
       },
     },
   },
-  { collection: "users_list" }
+  { collection: "movie_users_list" }
 );
 
-const user = mongoose.model("User", UserSchema);
+const Movie_User = mongoose.model("User", UserSchema);
 
-module.exports = user;
+module.exports = Movie_User;

@@ -10,6 +10,7 @@ import theme from "./theme"
 import Base from "./base"
 import Landing from "./Landing"
 import NavBar from "./NavBar"
+import Admin from "./Admin"
 import bcrypt from 'bcryptjs'
 import { ThemeProvider } from "@emotion/react"; 
 
@@ -50,8 +51,11 @@ function App() {
       if(response){
         const findUserResponse = await axios.get('http://localhost:8000/users/' + email);
         console.log("find user", findUserResponse);
+        
         localStorage.setItem('name', findUserResponse.data.name);
-        localStorage.setItem('email', findUserResponse.data.name);
+        localStorage.setItem('email', findUserResponse.data.email);
+        localStorage.setItem('isAdmin', findUserResponse.data.isAdmin);
+        localStorage.setItem('id', findUserResponse.data._id);
         setLoggedIn(true);
         
       }
@@ -69,6 +73,10 @@ function App() {
       if(response){
         localStorage.setItem('name', '');
         localStorage.setItem('email', '');
+        localStorage.setItem('isAdmin', false);
+        localStorage.setItem('id', 0);
+        
+        
         setLoggedIn(false);
         
       }
@@ -154,6 +162,7 @@ function App() {
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/landing" element={<Landing />} />
           <Route path="/movie/:movieId" element={<MoviePage />} />
+          <Route path="/admin" element={<Admin />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

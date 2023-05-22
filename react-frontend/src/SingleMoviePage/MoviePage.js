@@ -78,18 +78,19 @@ const MoviePage = () => {
         <p>Available on: {streamingPlatforms.join(', ')}</p>
       </div>
       <div className="movie-page__reviews">
-        <h2>Reviews</h2>
-        <div className="movie-page__review-form">
-          <textarea value={reviewText} onChange={e => setReviewText(e.target.value)} placeholder="Write a review..." />
-          <button onClick={submitReview}>Submit</button>
-        </div>
-        <ul>
-          {reviews.map((review, i) => (
-            //<li key={i}>{review.text}</li> // Replace 'text' with the actual property name of the review text in our data model
-            <li key={i}>{review}</li>
-          ))}
-        </ul>
+      <h2>Reviews</h2>
+      <div className="movie-page__review-form">
+        <textarea value={reviewText} onChange={e => setReviewText(e.target.value)} placeholder="Write a review..." />
+        <button onClick={submitReview}>Submit</button>
       </div>
+      <ul>
+        {reviews.map((review, i) => (
+          <li key={i} className="movie-page__review">
+            <p>{review}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
     </div>
   );
 };

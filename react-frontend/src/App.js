@@ -1,17 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import MoviePage from './SingleMoviePage/MoviePage';
-import './App.css';
-import axios from 'axios'
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Login from "./Login"
-import Register from "./Register"
-import Forgot from "./Forgot"
-import theme from "./theme"
-import Base from "./base"
-import Landing from "./Landing"
-import NavBar from "./NavBar"
-import bcrypt from 'bcryptjs'
-import { ThemeProvider } from "@emotion/react"; 
+const React = require('react');
+const { useEffect, useState } = require('react');
+const MoviePage = require('./SingleMoviePage/MoviePage');
+require('./App.css');
+const axios = require('axios');
+const { BrowserRouter, Routes, Route } = require('react-router-dom');
+const Login = require('./Login');
+const Register = require('./Register');
+const Forgot = require('./Forgot');
+const theme = require('./theme');
+const Base = require('./base');
+const Landing = require('./Landing');
+const NavBar = require('./NavBar');
+const bcrypt = require('bcryptjs');
+const { ThemeProvider } = require('@emotion/react');
+
 
 
 // hashing: https://medium.com/boca-code/how-to-encrypt-password-in-your-react-app-before-you-send-it-to-the-api-6e10a06f0a8e

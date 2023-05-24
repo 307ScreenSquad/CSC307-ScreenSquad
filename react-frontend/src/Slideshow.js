@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import './styles/Slideshow.css';
-
+import React, { useState, useEffect } from "react";
+import "./styles/Slideshow.css";
 
 const Slideshow = () => {
   const [images, setImages] = useState([
     // 'https://image.tmdb.org/t/p/original/wwemzKWzjKYJFfCeiB57q3r4Bcm.svg',
-    'https://image.tmdb.org/t/p/original/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg',
+    "https://image.tmdb.org/t/p/original/9yBVqNruk6Ykrwc32qrK2TIE5xw.jpg",
   ]);
 
   const [currentImageIndex, setCurrentImageIndex] = useState(0);

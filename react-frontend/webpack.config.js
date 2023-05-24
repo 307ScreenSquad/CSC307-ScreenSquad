@@ -1,14 +1,14 @@
-const path = require('path');
+const path = require("path");
 
 module.exports = {
   resolve: {
-    fallback: { 
-      "crypto": require.resolve("crypto-browserify") 
-    }
+    fallback: {
+      crypto: require.resolve("crypto-browserify"),
+    },
   },
-  entry: './src/index.js',  // Update this with the correct path
+  entry: "./src/index.js", // Update this with the correct path
   output: {
-    filename: 'bundle.js',
-    path: path.resolve(__dirname, 'dist'),
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
   },
 };

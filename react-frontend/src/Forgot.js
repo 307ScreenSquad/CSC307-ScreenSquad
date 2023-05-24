@@ -1,9 +1,9 @@
-import './styles/login.css';
+import "./styles/login.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 // import React, { useState, useRef } from "react"
-import React from "react"
+import React from "react";
 
-function Forgot (props) {
+function Forgot(props) {
   // let [authMode, setAuthMode] = useState("login")
   // const emailInputRef = useRef();
 
@@ -14,7 +14,9 @@ function Forgot (props) {
           <h3 className="Login-form-title">Forgot Password</h3>
           <div className="text-center">
             No Account?{" "}
-            <a className="link-primary"href="/register">Sign Up</a>
+            <a className="link-primary" href="/register">
+              Sign Up
+            </a>
           </div>
           <div className="form-group mt-3">
             <label>Email address</label>
@@ -25,10 +27,14 @@ function Forgot (props) {
             />
           </div>
           <div className="d-grid gap-2 mt-3">
-            <button type="submit" className="btn btn-primary" onClick={e => {
-              e.preventDefault()
-              //submitUser();
-            }}>
+            <button
+              type="submit"
+              className="btn btn-primary"
+              onClick={(e) => {
+                e.preventDefault();
+                //submitUser();
+              }}
+            >
               Submit
             </button>
           </div>

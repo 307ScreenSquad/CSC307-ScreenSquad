@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MoviePage.css";
 import { useParams } from "react-router-dom";
+// import Watchlist from "../WatchList/MyWatchlist";
 
 const MoviePage = () => {
   const { movieId } = useParams();
@@ -12,6 +13,7 @@ const MoviePage = () => {
   // const [reviews, setReviews] = useState([]);
   // const [reviewText, setReviewText] = useState('');
   // Use dummy data for reviews
+  const [watchlist, setWatchlist] = useState([]);
   const [reviews, setReviews] = useState([
     "Great movie!",
     "I loved it.",
@@ -72,6 +74,12 @@ const MoviePage = () => {
     setReviewText("");
   };
 
+  const addtoWatchlist = async() => {
+    // setWatchlist((prevWatchlist) => [...prevWatchlist, movie]);
+    setWatchlist([...watchlist, movie]);
+
+  };
+
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
 
   const { title, vote_average, genres, runtime, overview, poster_path } = movie;
@@ -86,13 +94,25 @@ const MoviePage = () => {
       <img src={poster} alt={title} className="movie-page__poster" />
       <div className="movie-page__details">
         <h1>{title}</h1>
-        <p>Rating: {rating}</p>
-        <p>Genres: {genresList}</p>
-        <p>Runtime: {runtime} minutes</p>
-        <p>Synopsis: {synopsis}</p>
-        <p>Cast: {cast.join(", ")}</p>
-        <p>Available on: {streamingPlatforms.join(", ")}</p>
+        <p><strong>Rating:</strong> {rating}</p>
+        <p><strong>Genres:</strong> {genresList}</p>
+        <p><strong>Runtime:</strong> {runtime} minutes</p>
+        <p><strong>Synopsis:</strong> {synopsis}</p>
+        <p><strong>Cast: </strong>{cast.join(", ")}</p>
+        <p><strong>Available on:</strong> {streamingPlatforms.join(", ")}</p>
+        <p>
+          <strong>
+            <a href="/watchlist" style={{color: "rgb(127, 0, 255)"}}
+              onClick={() => {
+                addtoWatchlist(movie)
+                // isInWatchlist(movie)
+              }}>
+              Add to my Watchlist
+            </a>
+          </strong>
+        </p>
       </div>
+      {/* <Watchlist /> */}
       <div className="movie-page__reviews">
         <h2>Reviews</h2>
         <div className="movie-page__review-form">

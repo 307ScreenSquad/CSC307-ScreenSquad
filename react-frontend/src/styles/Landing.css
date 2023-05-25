@@ -1,19 +1,65 @@
+.movie-grid-header {
+  text-align: center;
+  margin-bottom: 2rem;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.movie-grid-header h1 {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  text-transform: uppercase;
+  font-family: 'Montserrat', serif;
+}
+
 .movie-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
-    padding: 1rem;
-    margin: 0 auto;
-  }
-  
-  .movie {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-  }
-  
-  .movie img {
-    max-width: 100%;
-    height: auto;
-  }
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-gap: 1rem;
+  margin-top: 2rem;
+}
+
+.movie {
+  position: relative;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.movie-image {
+  position: relative;
+  overflow: hidden;
+}
+
+.movie-image img {
+  width: 100%;
+  height: auto;
+  transition: transform 0.3s ease;
+}
+
+.movie-image:hover img {
+  transform: scale(1.1);
+}
+
+.movie-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0.5rem;
+  color: #fff;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.movie:hover .movie-overlay {
+  opacity: 1;
+}
+
+.movie h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+/* Additional styles as per your requirement */

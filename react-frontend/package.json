@@ -11,6 +11,8 @@
     "bcrypt": "^5.1.0",
     "bcryptjs": "^2.4.3",
     "bootstrap": "^5.2.3",
+    "buffer": "^6.0.3",
+    "crypto": "npm:crypto-browserify",
     "cdbreact": "^1.5.15",
     "crypto-browserify": "^3.12.0",
     "mongoose": "^7.0.4",
@@ -21,6 +23,7 @@
     "react-router-dom": "^6.11.0",
     "react-scripts": "^5.0.1",
     "save": "^2.9.0",
+    "stream": "npm:stream-browserify",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

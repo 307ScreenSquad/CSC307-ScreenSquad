@@ -92,38 +92,6 @@ function App() {
     }
   }
 
-  // function removeOneCharacter (index) {
-  //   const updated = characters.filter(async (character, i) => {
-  //       if(i === index){
-  //         console.log(character);
-  //         await axios.delete('http://localhost:8000/users/' + character._id);
-  //       }
-  //       return i !== index
-  //   });
-  //   setCharacters(updated);
-  // }
-  
-
-  // function updateList(person) {
-  //   makePostCall(person).then(result => {
-  //     if(result && result.status === 201){
-  //       setCharacters([...characters, person]);
-  //     }
-  //   })
-    
-  // }
-
-  // async function fetchAll(){
-  //   try {
-  //      const response = await axios.get('http://localhost:8000/users');
-  //      return response.data.users_list;
-  //   }
-  //   catch (error){
-  //      //We're not handling errors. Just logging into the console.
-  //      console.log(error); 
-  //      return false;         
-  //   }
-  // }
 
   // useEffect(() => {
   //   const existingName = localStorage.getItem('name');
@@ -153,6 +121,7 @@ function App() {
     </div>
   );
   */
+
 
   return(
     <ThemeProvider theme={theme}>

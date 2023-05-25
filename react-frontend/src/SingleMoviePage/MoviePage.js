@@ -3,7 +3,6 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MoviePage.css";
 import { useParams } from "react-router-dom";
-// import Watchlist from "../WatchList/MyWatchlist";
 
 const MoviePage = () => {
   const { movieId } = useParams();
@@ -74,10 +73,9 @@ const MoviePage = () => {
     setReviewText("");
   };
 
+  // adding to watchlist locally
   const addtoWatchlist = async() => {
-    // setWatchlist((prevWatchlist) => [...prevWatchlist, movie]);
     setWatchlist([...watchlist, movie]);
-
   };
 
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
@@ -100,19 +98,31 @@ const MoviePage = () => {
         <p><strong>Synopsis:</strong> {synopsis}</p>
         <p><strong>Cast: </strong>{cast.join(", ")}</p>
         <p><strong>Available on:</strong> {streamingPlatforms.join(", ")}</p>
-        <p>
-          <strong>
-            <a href="/watchlist" style={{color: "rgb(127, 0, 255)"}}
-              onClick={() => {
-                addtoWatchlist(movie)
-                // isInWatchlist(movie)
-              }}>
-              Add to my Watchlist
-            </a>
-          </strong>
-        </p>
+        {/* For now, just add current movie to 'watchlist' 
+        will route to My Watchlist page later */}
+        <p><strong>
+          <span
+              style={{
+                color: "rgb(127, 0, 255)",
+                textDecoration: "underline",
+                cursor: "pointer"
+              }}
+              onClick={() => addtoWatchlist(movie)}
+            >
+            Add to my Watchlist
+          </span>
+        </strong></p>
       </div>
-      {/* <Watchlist /> */}
+      {/*  Outputs movie title */}
+      <div className="movie-page__watchlist"> 
+        <h2>My Watchlist</h2>
+        <ul>
+          {watchlist.map((movie) => (
+            <p>{movie.title}</p>
+        ))}
+        </ul>
+      </div>
+
       <div className="movie-page__reviews">
         <h2>Reviews</h2>
         <div className="movie-page__review-form">

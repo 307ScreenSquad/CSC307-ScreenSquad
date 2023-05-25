@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 
+// This will be the backend portion later
+// 
 const Watchlist = () => {
   const [watchlist] = useState([]);
 

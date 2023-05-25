@@ -14,6 +14,7 @@ import bcrypt from 'bcryptjs'
 import { ThemeProvider } from "@emotion/react"; 
 
 
+
 // hashing: https://medium.com/boca-code/how-to-encrypt-password-in-your-react-app-before-you-send-it-to-the-api-6e10a06f0a8e
 // SALT should be created ONE TIME upon sign up
 const salt = bcrypt.genSaltSync(10)

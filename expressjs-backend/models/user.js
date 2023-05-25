@@ -27,6 +27,12 @@ const UserSchema = new mongoose.Schema(
           throw new Error("Invalid job, must be at least 8 characters.");
       },
     },
+    isAdmin: {
+      type: Boolean,
+      default: false,
+      required: true,
+      trim: true,
+    },
   },
   { collection: "movie_users_list" }
 );

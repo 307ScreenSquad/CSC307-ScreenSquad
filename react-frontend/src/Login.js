@@ -19,7 +19,7 @@ function Login (props) {
       setShowAccountError(false)
       let response = await props.submitUser(email, password);
       if(response){
-        navigate('/');
+        navigate('/landing');
         setShowLoginError(false)
       }
       else{

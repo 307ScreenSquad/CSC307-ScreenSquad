@@ -28,15 +28,21 @@ async function getUsers(name, job) {
   return result;
 }
 */
-async function getUsers(email) {
-  let result = await findUserByEmail(email);
+async function findUserByEmail(email) {
+  return await userModel.find({email: email });
+}
+
+async function getAllUsers(email) {
+  let result = await userModel.find();
   return result;
 }
 
 
 async function findUserById(id) {
   try {
-    return await userModel.findById(id);
+    let user = await userModel.find({ _id: id });
+    //console.log('found user', user);
+    return user;
   } catch (error) {
     console.log(error);
     return undefined;
@@ -116,8 +122,24 @@ async function findUserByEmail(email) {
   return await userModel.find({ email: email });
 }
 
-exports.getUsers = getUsers;
+async function editUser(id, bodyData){
+  try {
+    const userToUpdate = await userModel.findOneAndUpdate({_id: id}, bodyData);
+    console.log('user', userToUpdate)
+    return userToUpdate;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
+
+
+//exports.getUsers = getUsers;
 exports.findUserById = findUserById;
 exports.addUser = addUser;
 exports.removeUser = removeUser;
 exports.loginUser = loginUser;
+exports.getAllUsers = getAllUsers;
+exports.editUser = editUser;
+exports.findUserByEmail = findUserByEmail;

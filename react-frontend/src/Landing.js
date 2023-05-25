@@ -28,11 +28,15 @@ const Landing = () => {
             className="movie"
             key={movie.id}
           >
-            <img
-              src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-              alt={movie.title}
-            />
-            <h3>{movie.title}</h3>
+            <div className="movie-image">
+              <img
+                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                alt={movie.title}
+              />
+              <div className="movie-overlay">
+                <h3>{movie.title}</h3>
+              </div>
+            </div>
           </a>
         ))}
       </div>

@@ -70,7 +70,6 @@ function Profile() {
                 </tr>
             </tbody>
         );*/
-        console.log('response user', localStorage)
         return (
             <tbody>
                 <tr><td style ={{borderBottom : '0px'}}><h1 style ={{textAlign: 'center'}}>Welcome {localStorage.getItem('name')}</h1></td></tr>
@@ -126,7 +125,10 @@ function Profile() {
         const { name, value } = event.target;
         if(name === 'isAdmin'){
           let booleanForAdmin = false;
-          if(editedUsers[userId]?.isAdmin === undefined || editedUsers[userId]?.isAdmin === false){
+          if(editedUsers[userId]?.isAdmin === undefined && localStorage.getItem('isAdmin') === 'false'){
+            booleanForAdmin = true
+          }
+          if(editedUsers[userId]?.isAdmin === false){
             booleanForAdmin = true;
           }
           setEditedUsers((prevState) => ({

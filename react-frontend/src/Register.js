@@ -73,7 +73,7 @@ function Register (props) {
       // Submit form data if validation passes
       let response = await props.createUser(fullName, email, password);
       if(response.status === 201){
-        navigate('/');
+        navigate('/landing');
       }
       //setShowRegistrationSuccess(true);
       clearAll();

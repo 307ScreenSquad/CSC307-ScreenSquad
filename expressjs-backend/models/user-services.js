@@ -41,7 +41,7 @@ async function getAllUsers(email) {
 async function findUserById(id) {
   try {
     let user = await userModel.find({ _id: id });
-    console.log('found user', user);
+    //console.log('found user', user);
     return user;
   } catch (error) {
     console.log(error);

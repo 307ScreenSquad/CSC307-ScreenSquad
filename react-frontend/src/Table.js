@@ -15,9 +15,7 @@ function TableHeader(props)  {
 }
 
 
-
-
-function TableBody(props) {
+function AdminTableBody (props) {
   const [users, setUsers] = useState([]);
   const [editedUsers, setEditedUsers] = useState({});
   const navigate = useNavigate();
@@ -75,6 +73,22 @@ function TableBody(props) {
     }
   };
 
+  const deleteUser = async (userId) => {
+    try {
+      if(localStorage.getItem('id') == userId){
+        console.error("Can't delete self");
+      }
+      else{
+        const response = await axios.delete(`http://localhost:8000/users/${userId}`);
+        // Handle the response as needed
+        console.log(response.data);
+      }
+      
+    } catch (error) {
+      console.error('Error deleting user:', error);
+    }
+  };
+
   function isChecked(user1, user2){
     let checked = user1;
     if(user1 === undefined){
@@ -124,18 +138,19 @@ function TableBody(props) {
             />
         </td>
         <td><button onClick={() => updateUser(user._id)}>Update</button></td>
-        <td><button onClick={() => updateUser(user._id)}>Delete</button></td>
+        <td><button onClick={() => deleteUser(user._id)}>Delete</button></td>
       </tr>
       ))}
     </tbody>
   );
 }
 
+
 function Table(props) {
     return (
       <table style = {{height: '100%'}}>
         <TableHeader headers={props.tableHeaders}/>
-        <TableBody tableData={props.tableData} removeUser={props.removeFunction} valuesChanged={props.changedFunction}/>
+        {<AdminTableBody tableData={props.tableData} removeUser={props.removeUser} valuesChanged={props.valuesChanged}/>}
       </table>
     );
 } 

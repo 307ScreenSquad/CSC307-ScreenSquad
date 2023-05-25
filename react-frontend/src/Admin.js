@@ -76,8 +76,7 @@ function Admin (props) {
   return (
     <div className="Admin-container" >
         <Sidebar />
-        <Table tableData={users} tableHeaders={['Full Name', 'Email', 'Admin Status']}/>
-
+        <Table bodyType = {'admin'} tableData={users} tableHeaders={['Full Name', 'Email', 'Admin Status']}/>
     </div>
   );
 

@@ -11,6 +11,7 @@ import Base from "./base"
 import Landing from "./Landing"
 import NavBar from "./NavBar"
 import Admin from "./Admin"
+import Profile from "./Profile"
 import bcrypt from 'bcryptjs'
 import { ThemeProvider } from "@emotion/react"; 
 
@@ -163,6 +164,7 @@ function App() {
           <Route path="/landing" element={<Landing />} />
           <Route path="/movie/:movieId" element={<MoviePage />} />
           <Route path="/admin" element={<Admin />} />
+          <Route path="/profile" element={<Profile isLoggedIn={loggedIn}/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

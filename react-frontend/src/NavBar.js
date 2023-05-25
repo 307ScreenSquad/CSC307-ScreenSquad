@@ -4,7 +4,6 @@ import { Link } from "react-router-dom";
 import { Navbar, Container, Nav } from "react-bootstrap";
 import { BiCameraMovie } from "react-icons/bi";
 
-
 export default function NavBar(props) {
   return (
     <Navbar className="Navbar-color">
@@ -17,15 +16,12 @@ export default function NavBar(props) {
             {!props.isLoggedIn && <Nav.Link className="Navbar-form-links" as={Link} to="/login">
               Log In
             </Nav.Link> }
-            {props.isLoggedIn && <Nav.Link className="Navbar-form-links" as={Link} to="/profile">
+            {props.isLoggedIn && <Nav.Link className="Navbar-form-links" as={Link} to="/">
               Welcome {" " + localStorage.name.split(" ")[0]}
             </Nav.Link>}
             {props.isLoggedIn && <Nav.Link className="Navbar-form-links" onClick ={props.logoutUser} as={Link} to="/">
               Logout
             </Nav.Link>}
-            <Nav.Link className="Navbar-form-links" as={Link} to="/">
-              Home
-            </Nav.Link>
           </Nav>
       </Container>
     </Navbar>

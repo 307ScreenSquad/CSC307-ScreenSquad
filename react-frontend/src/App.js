@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import MoviePage from './SingleMoviePage/MoviePage';
+// import MovieSearch from './SingleMoviePage/MovieSearch';
 import './App.css';
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
@@ -10,8 +11,11 @@ import theme from "./theme"
 import Base from "./base"
 import Landing from "./Landing"
 import NavBar from "./NavBar"
+import Admin from "./Admin"
+import Profile from "./Profile"
 import bcrypt from 'bcryptjs'
 import { ThemeProvider } from "@emotion/react"; 
+
 
 
 // hashing: https://medium.com/boca-code/how-to-encrypt-password-in-your-react-app-before-you-send-it-to-the-api-6e10a06f0a8e
@@ -19,7 +23,7 @@ import { ThemeProvider } from "@emotion/react";
 const salt = bcrypt.genSaltSync(10)
 
 function App() {
-  //const [characters, setCharacters] = useState([]);
+  // const [characters, setCharacters] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
   // const [characters, setCharacters] = useState([]);
   //const emailInputRef = useRef()
@@ -50,8 +54,11 @@ function App() {
       if(response){
         const findUserResponse = await axios.get('http://localhost:8000/users/' + email);
         console.log("find user", findUserResponse);
+        
         localStorage.setItem('name', findUserResponse.data.name);
-        localStorage.setItem('email', findUserResponse.data.name);
+        localStorage.setItem('email', findUserResponse.data.email);
+        localStorage.setItem('isAdmin', findUserResponse.data.isAdmin);
+        localStorage.setItem('id', findUserResponse.data._id);
         setLoggedIn(true);
         
       }
@@ -69,6 +76,10 @@ function App() {
       if(response){
         localStorage.setItem('name', '');
         localStorage.setItem('email', '');
+        localStorage.setItem('isAdmin', false);
+        localStorage.setItem('id', 0);
+        
+        
         setLoggedIn(false);
         
       }
@@ -82,14 +93,35 @@ function App() {
   }
 
 
-  useEffect(() => {
-    const existingName = localStorage.getItem('name');
-    if(existingName){
-      console.log("Welcome " + existingName);
-      setLoggedIn(true);
-    }
-  }, [])
-  
+  // useEffect(() => {
+  //   const existingName = localStorage.getItem('name');
+  //   if(existingName){
+  //     console.log("Welcome " + existingName);
+  //     setLoggedIn(true);
+  //   }
+  // })
+
+  // async function makePostCall(person){
+  //   try {
+  //      const response = await axios.post('http://localhost:8000/users', person);
+  //      return response;     
+  //   }
+  //   catch (error){
+  //      //We're not handling errors. Just logging into the console.
+  //      console.log(error); 
+  //      return false;         
+  //   }
+  // }
+
+  /*
+  return (
+    <div className="container">
+      <Table characterData={characters} removeCharacter={removeOneCharacter}/>
+      <Form handleSubmit={updateList}/>
+    </div>
+  );
+  */
+
 
   return(
     <ThemeProvider theme={theme}>
@@ -102,6 +134,8 @@ function App() {
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/landing" element={<Landing />} />
           <Route path="/movie/:movieId" element={<MoviePage />} />
+          <Route path="/admin" element={<Admin />} />
+          <Route path="/profile" element={<Profile isLoggedIn={loggedIn}/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

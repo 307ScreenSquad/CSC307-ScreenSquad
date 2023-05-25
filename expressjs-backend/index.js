@@ -30,10 +30,8 @@ app.get('/', (req, res) => {
 
 
 app.get('/users', async (req, res) => {
-    const name = req.query.name;
-    const job = req.query.job;
     try{
-        const result = await userServices.getUsers(name, job);
+        const result = await userServices.getAllUsers();
         res.send({users_list: result});
     } catch(error){
         console.log(error);
@@ -73,10 +71,34 @@ app.get('/users/:id', async (req, res) => {
 });
 */
 
-app.get('/users/:email', async (req, res) => {
-    const email = req.params['email']; //or req.params.id
+app.get('/users/:item', async (req, res) => {
+    const item = req.params['item']; //or req.params.id
+    let result;
+    if(item.indexOf('@') == -1){
+        result = await userServices.findUserById(item);
+    }
+    else{
+        result = await userServices.findUserByEmail(item);
+    }
     
-    let result = await userServices.getUsers(email);
+    
+    
+    if (result === undefined || result === null || result.length == 0)
+        res.status(204).json({ message: 'Resource not found.'});
+        
+    else {
+        res.status(200).json(result[0]);
+        
+        
+    }
+    return result;
+    
+});
+
+app.put('/users/:_id', async (req, res) => {
+    const id = req.params['_id']; //or req.params.id
+    console.log(req.body);
+    let result = await userServices.editUser(id, req.body);
     
     if (result === undefined || result === null || result.length == 0)
         res.status(204).json({ message: 'Resource not found.'});
@@ -96,7 +118,7 @@ app.post('/login', async (req, res) => {
     const savedUserMessage = await userServices.loginUser(userToAdd.email, userToAdd.password);
     
     if(savedUserMessage == 'Login successful'){
-        let foundUser = await userServices.getUsers(userToAdd.email);
+        let foundUser = await userServices.findUserByEmail(userToAdd.email);
         currentUser = foundUser[0];
         res.status(200).json({ message: savedUserMessage });
     }

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import './styles/Landing.css';
 import axios from 'axios';
 import Slideshow from './Slideshow';
+import { Link } from 'react-router-dom';
 
 const Landing = () => {
   const [movies, setMovies] = useState([]);
@@ -23,21 +24,15 @@ const Landing = () => {
       <h1>Suggested for You</h1>
       <div className="movie-grid">
         {movies.map((movie) => (
-          <a
-            href={`https://www.example.com/movies/${movie.id}`} // Replace with the actual movie details link
-            className="movie"
-            key={movie.id}
-          >
-            <div className="movie-image">
+          <Link to={`/movie/${movie.id}`} key={movie.id}>
+            <div className="movie">
               <img
                 src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
                 alt={movie.title}
               />
-              <div className="movie-overlay">
-                <h3>{movie.title}</h3>
-              </div>
+              <h3>{movie.title}</h3>
             </div>
-          </a>
+          </Link>
         ))}
       </div>
     </div>

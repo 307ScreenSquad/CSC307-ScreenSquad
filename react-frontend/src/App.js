@@ -94,15 +94,15 @@ function App() {
         return false;         
     }
   }
+  
+  useEffect(() => {
+    const existingName = localStorage.getItem('name');
+    if(existingName){
+      console.log("Welcome " + existingName);
+      setLoggedIn(true);
+    }
+  })
 
-
-   useEffect(() => {
-     const existingName = localStorage.getItem('name');
-     if(existingName){
-       console.log("Welcome " + existingName);
-       setLoggedIn(true);
-     }
-   })
 
   // async function makePostCall(person){
   //   try {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MoviePage from './SingleMoviePage/MoviePage';
 // import MovieSearch from './SingleMoviePage/MovieSearch';
 import './App.css';
@@ -96,13 +96,13 @@ function App() {
   }
 
 
-  // useEffect(() => {
-  //   const existingName = localStorage.getItem('name');
-  //   if(existingName){
-  //     console.log("Welcome " + existingName);
-  //     setLoggedIn(true);
-  //   }
-  // })
+   useEffect(() => {
+     const existingName = localStorage.getItem('name');
+     if(existingName){
+       console.log("Welcome " + existingName);
+       setLoggedIn(true);
+     }
+   })
 
   // async function makePostCall(person){
   //   try {

@@ -24,14 +24,20 @@ function AdminTableBody (props) {
   })
 
   
-  const handleInputChange = (event, userId) => {
+  const handleInputChange = async (event, userId) => {
     const { name, value } = event.target;
     console.log('name', name);
     console.log('value', value);
     console.log('isAdmin value', editedUsers[userId]?.isAdmin);
     if(name === 'isAdmin'){
       let booleanForAdmin = false;
-      if(editedUsers[userId]?.isAdmin === undefined || editedUsers[userId]?.isAdmin === false){
+      if(editedUsers[userId]?.isAdmin === undefined){
+        const responseUser = await axios.get(`http://localhost:8000/users/${userId}`);
+        if(!responseUser){
+          booleanForAdmin = true;
+        }
+      }
+      if(editedUsers[userId]?.isAdmin === false){
         booleanForAdmin = true;
       }
       setEditedUsers((prevState) => ({

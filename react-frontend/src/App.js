@@ -13,6 +13,7 @@ import Landing from "./Landing"
 import NavBar from "./NavBar"
 import Admin from "./Admin"
 import Profile from "./Profile"
+import MyWatchlist from "./WatchList/MyWatchlist"
 import bcrypt from 'bcryptjs'
 import { ThemeProvider } from "@emotion/react"; 
 
@@ -137,6 +138,7 @@ function App() {
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/landing" element={<Landing />} />
           <Route path="/movie/:movieId" element={<MoviePage />} />
+          <Route path="/watchlist" element={<MyWatchlist />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/profile" element={<Profile isLoggedIn={loggedIn}/>} />
         </Routes>

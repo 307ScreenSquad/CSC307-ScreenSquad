@@ -70,21 +70,21 @@ function Profile() {
                 </tr>
             </tbody>
         );*/
-        console.log('response user', localStorage)
         return (
             <tbody>
-                <tr><td style ={{borderBottom : '0px'}}><h1 style ={{textAlign: 'center'}}>Welcome {localStorage.getItem('name')}</h1></td></tr>
+                <tr><td style ={{borderBottom : '0px', textAlign: 'center', fontSize: 34, fontWeight: 'bold'}}>Welcome {localStorage.getItem('name')}</td></tr>
                 <tr className = "btn-group-vertical" role="group" aria-label="Vertical button group" style ={{display: 'flex', textAlign: 'center', alignItems: 'center', justifyContent: 'center', margin: 'auto'}}>
-                    <Nav className="btn-group-vertical">
                         <td>
                             <button className ="btn btn-secondary"  onClick={() => {props.changeAdmin()}} type = "button" style={{border:'0px solid #ccc', backgroundColor: 'gray', width: 400,}}>Edit Profile</button>
                         </td>
                         {(localStorage.getItem('isAdmin') === "true") && <td>
-                            <Nav.Link className ="btn btn-secondary" style={{fontWeight: 'bold', border:'0px solid #ccc', backgroundColor: 'gray', width: 400, color: 'white'}} as={Link} to="/admin">
-                                Admin
-                            </Nav.Link>
+                            <Nav className="btn-group-vertical">
+                                <Nav.Link className ="btn btn-secondary" style={{fontWeight: 'bold', border:'0px solid #ccc', backgroundColor: 'gray', width: 400, color: 'white'}} as={Link} to="/admin">
+                                    Admin
+                                </Nav.Link>
+                            </Nav>
                         </td>}
-                    </Nav>
+                    
                 </tr>
                 
               
@@ -126,7 +126,10 @@ function Profile() {
         const { name, value } = event.target;
         if(name === 'isAdmin'){
           let booleanForAdmin = false;
-          if(editedUsers[userId]?.isAdmin === undefined || editedUsers[userId]?.isAdmin === false){
+          if(editedUsers[userId]?.isAdmin === undefined && localStorage.getItem('isAdmin') === 'false'){
+            booleanForAdmin = true
+          }
+          if(editedUsers[userId]?.isAdmin === false){
             booleanForAdmin = true;
           }
           setEditedUsers((prevState) => ({

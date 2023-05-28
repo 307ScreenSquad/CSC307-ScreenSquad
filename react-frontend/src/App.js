@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import MoviePage from './SingleMoviePage/MoviePage';
 // import MovieSearch from './SingleMoviePage/MovieSearch';
 import './App.css';
@@ -35,8 +35,11 @@ function App() {
     try {
       const response = await axios.post('http://localhost:8000/register', {name: name, email: email, password: hashedPassword});
       if(response.status === 201){
-        localStorage.setItem('name', name);
-        localStorage.setItem('email', email);
+        const responseUser = await axios.get(`http://localhost:8000/users/${email}`);
+        localStorage.setItem('name', responseUser.data.name);
+        localStorage.setItem('email', responseUser.data.email);
+        localStorage.setItem('isAdmin', responseUser.data.isAdmin);
+        localStorage.setItem('id', responseUser.data._id);
         setLoggedIn(true);
       }
       return response;     
@@ -92,15 +95,15 @@ function App() {
         return false;         
     }
   }
+  
+  useEffect(() => {
+    const existingName = localStorage.getItem('name');
+    if(existingName){
+      console.log("Welcome " + existingName);
+      setLoggedIn(true);
+    }
+  })
 
-
-  // useEffect(() => {
-  //   const existingName = localStorage.getItem('name');
-  //   if(existingName){
-  //     console.log("Welcome " + existingName);
-  //     setLoggedIn(true);
-  //   }
-  // })
 
   // async function makePostCall(person){
   //   try {

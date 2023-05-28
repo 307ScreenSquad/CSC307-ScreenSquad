@@ -16,6 +16,7 @@ export default function NavBar(props) {
           {!props.isLoggedIn && (
             <Nav.Link className="Navbar-form-links" as={Link} to="/login">
               Log In
+
             </Nav.Link>
           )}
           {props.isLoggedIn && (

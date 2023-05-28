@@ -1,75 +1,71 @@
-//TESTING CI
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import "./MoviePage.css";
-import { useParams } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import './MoviePage.css';
+import { useParams } from 'react-router-dom';
 
 const MoviePage = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
-  // const [reviews, setReviews] = useState([]);
-  // const [reviewText, setReviewText] = useState('');
-  // Use dummy data for reviews
-  const [reviews, setReviews] = useState([
-    "Great movie!",
-    "I loved it.",
-    "Not bad, but could be better.",
-  ]);
-  const [reviewText, setReviewText] = useState("");
+  const [reviews, setReviews] = useState([]);
+  const [reviewText, setReviewText] = useState('');
 
   useEffect(() => {
     async function fetchMovieDetails() {
       try {
-        const movieResponse = axios.get(
+        const movieResponse = await axios.get(
           `https://api.themoviedb.org/3/movie/${movieId}?api_key=a43aea022f03ee960884520d48d1c5f8`
         );
-        const castResponse = axios.get(
+        const castResponse = await axios.get(
           `https://api.themoviedb.org/3/movie/${movieId}/credits?api_key=a43aea022f03ee960884520d48d1c5f8`
         );
-        const streamingPlatformsResponse = axios.get(
+        const streamingPlatformsResponse = await axios.get(
           `https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=a43aea022f03ee960884520d48d1c5f8`
         );
-        //const reviewsResponse = axios.get(`http://localhost:8000/reviews/${movieId}`); // Replace with actual endpoint once made
+        const reviewsResponse = await axios.get(`http://localhost:8000/reviews/${movieId}`);
 
-        //const responses = await Promise.all([movieResponse, castResponse, streamingPlatformsResponse, reviewsResponse]);
-        const responses = await Promise.all([
-          movieResponse,
-          castResponse,
-          streamingPlatformsResponse,
-        ]);
-
-        setMovie(responses[0].data);
-        setCast(responses[1].data.cast.map((castMember) => castMember.name));
+        setMovie(movieResponse.data);
+        setCast(castResponse.data.cast.map((castMember) => castMember.name));
         setStreamingPlatforms(
-          Object.values(responses[2].data.results.US.flatrate || {}).map(
+          Object.values(streamingPlatformsResponse.data.results.US.flatrate || {}).map(
             (provider) => provider.provider_name
           )
         );
-        //setReviews(responses[3].data);
+        setReviews(reviewsResponse.data.reviews);
       } catch (error) {
-        console.error("Error fetching movie details:", error);
+        console.error('Error fetching movie details:', error);
       }
     }
 
     fetchMovieDetails();
   }, [movieId]);
 
-  const submitReview = async () => {
-    // try {
-    //   const response = await axios.post(`http://localhost:8000/reviews/${movieId}`, { text: reviewText }); // Replace with actual endpoint once made
-    //   if (response.status === 200) {
-    //     setReviews([...reviews, response.data]);
-    //     setReviewText('');
-    //   }
-    // } catch (error) {
-    //   console.error('Error submitting review:', error);
-    // }
+  useEffect(() => {
+    async function fetchReviews() {
+      try {
+        const reviewsResponse = await axios.get(`http://localhost:8000/reviews/${movieId}`);
+        setReviews(reviewsResponse.data.reviews);
+      } catch (error) {
+        console.error('Error fetching reviews:', error);
+      }
+    }
 
-    // Instead of sending the review to the server, just add it to the local state
-    setReviews([...reviews, reviewText]);
-    setReviewText("");
+    fetchReviews();
+  }, [movieId]);
+
+  const submitReview = async () => {
+    try {
+      const response = await axios.post(`http://localhost:8000/reviews`, { movieId, reviewText });
+  
+      if (response.status === 200) {
+        const newReview = { reviewText }; // Create a new review object
+        setReviews([newReview, ...reviews]); // Prepend the new review to the existing reviews array
+        setReviewText('');
+      }
+    } catch (error) {
+      console.error('Error submitting review:', error);
+    }
   };
 
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
@@ -79,7 +75,7 @@ const MoviePage = () => {
   const rating = vote_average;
   const synopsis = overview;
   const poster = `https://image.tmdb.org/t/p/w500${poster_path}`;
-  const genresList = genres.map((genre) => genre.name).join(", ");
+  const genresList = genres.map((genre) => genre.name).join(', ');
 
   return (
     <div className="movie-page">
@@ -90,8 +86,8 @@ const MoviePage = () => {
         <p>Genres: {genresList}</p>
         <p>Runtime: {runtime} minutes</p>
         <p>Synopsis: {synopsis}</p>
-        <p>Cast: {cast.join(", ")}</p>
-        <p>Available on: {streamingPlatforms.join(", ")}</p>
+        <p>Cast: {cast.join(', ')}</p>
+        <p>Available on: {streamingPlatforms.join(', ')}</p>
       </div>
       <div className="movie-page__reviews">
         <h2>Reviews</h2>
@@ -103,13 +99,23 @@ const MoviePage = () => {
           />
           <button onClick={submitReview}>Submit</button>
         </div>
-        <ul>
-          {reviews.map((review, i) => (
-            <li key={i} className="movie-page__review">
-              <p>{review}</p>
+        <div className="movie-page">
+
+        <div className="movie-page__reviews">
+          <h2>Reviews</h2>
+          {/* ... */}
+          <ul>
+        {reviews
+          // .sort((a, b) => new Date(a.postTime) - new Date(b.postTime)) // Sort reviews by post time
+          .map((review) => (
+            <li key={review._id} className="movie-page__review">
+              <p>{review.reviewText}</p>
+              {/* <p className="review-post-time">Posted at: {review.postTime}</p> */}
             </li>
           ))}
-        </ul>
+      </ul>
+        </div>
+        </div>
       </div>
     </div>
   );

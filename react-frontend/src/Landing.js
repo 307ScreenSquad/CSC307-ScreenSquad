@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import "./styles/Landing.css";
-import axios from "axios";
-import Slideshow from "./Slideshow";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import './styles/Landing.css';
+import axios from 'axios';
+import Slideshow from './Slideshow';
+import { Link } from 'react-router-dom';
 
 const Landing = () => {
   const [movies, setMovies] = useState([]);

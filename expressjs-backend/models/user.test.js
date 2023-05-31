@@ -14,3 +14,43 @@ test('Movie_User model works as expected', () => {
     expect(movie_user.isAdmin).toBe(false);
 });
 
+test('user model catches password too short', () => {
+    const movie_user = new Movie_User({
+      name: 'Test User',
+      email: 'john@john.com',
+      password: 'pass',
+      isAdmin: false,
+    });
+    
+    const validationError = movie_user.validateSync();
+  
+    expect(validationError.errors.password).toBeTruthy();
+  });
+  
+test('user model catches invalid email (no @)', () => {
+    const movie_user = new Movie_User({
+      name: 'Test User',
+      email: 'johnjohn.com',
+      password: 'password',
+      isAdmin: false,
+    });
+    
+    const validationError = movie_user.validateSync();
+  
+    expect(validationError.errors.email).toBeTruthy();
+  }
+);
+
+test('user model catches invalid email (no .com)', () => {
+    const movie_user = new Movie_User({
+      name: 'Test User',
+      email: 'john@john',
+      password: 'password',
+      isAdmin: false,
+    });
+    
+    const validationError = movie_user.validateSync();
+  
+    expect(validationError.errors.email).toBeTruthy();
+  }
+);

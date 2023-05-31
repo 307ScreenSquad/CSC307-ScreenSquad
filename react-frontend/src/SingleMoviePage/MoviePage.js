@@ -8,9 +8,16 @@ const MoviePage = () => {
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
-  const [reviews, setReviews] = useState([]);
-  const [reviewText, setReviewText] = useState('');
-
+  // const [reviews, setReviews] = useState([]);
+  // const [reviewText, setReviewText] = useState('');
+  // Use dummy data for reviews
+  const [watchlist, setWatchlist] = useState([]);
+  const [reviews, setReviews] = useState([
+    "Great movie!",
+    "I loved it.",
+    "Not bad, but could be better.",
+  ]);
+  const [reviewText, setReviewText] = useState("");
   useEffect(() => {
     async function fetchMovieDetails() {
       try {
@@ -68,6 +75,11 @@ const MoviePage = () => {
     }
   };
 
+  // adding to watchlist locally
+  const addtoWatchlist = async() => {
+    setWatchlist([...watchlist, movie]);
+  };
+
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
 
   const { title, vote_average, genres, runtime, overview, poster_path } = movie;
@@ -82,13 +94,37 @@ const MoviePage = () => {
       <img src={poster} alt={title} className="movie-page__poster" />
       <div className="movie-page__details">
         <h1>{title}</h1>
-        <p>Rating: {rating}</p>
-        <p>Genres: {genresList}</p>
-        <p>Runtime: {runtime} minutes</p>
-        <p>Synopsis: {synopsis}</p>
-        <p>Cast: {cast.join(', ')}</p>
-        <p>Available on: {streamingPlatforms.join(', ')}</p>
+        <p><strong>Rating:</strong> {rating}</p>
+        <p><strong>Genres:</strong> {genresList}</p>
+        <p><strong>Runtime:</strong> {runtime} minutes</p>
+        <p><strong>Synopsis:</strong> {synopsis}</p>
+        <p><strong>Cast: </strong>{cast.join(", ")}</p>
+        <p><strong>Available on:</strong> {streamingPlatforms.join(", ")}</p>
+        {/* For now, just add current movie to 'watchlist' 
+        will route to My Watchlist page later */}
+        <p><strong>
+          <span
+              style={{
+                color: "rgb(127, 0, 255)",
+                textDecoration: "underline",
+                cursor: "pointer"
+              }}
+              onClick={() => addtoWatchlist(movie)}
+            >
+            Add to my Watchlist
+          </span>
+        </strong></p>
       </div>
+      {/*  Outputs movie title */}
+      <div className="movie-page__watchlist"> 
+        <h2>My Watchlist</h2>
+        <ul>
+          {watchlist.map((movie) => (
+            <p>{movie.title}</p>
+        ))}
+        </ul>
+      </div>
+
       <div className="movie-page__reviews">
         <h2>Reviews</h2>
         <div className="movie-page__review-form">

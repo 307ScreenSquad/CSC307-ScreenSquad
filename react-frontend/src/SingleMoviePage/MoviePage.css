@@ -2,6 +2,11 @@
   margin-top: 2rem;
 }
 
+/* delete later */
+.movie-page__watchlist {
+  margin-top: 2rem;
+}
+
 .movie-page__review-form {
   display: flex;
   flex-direction: column;

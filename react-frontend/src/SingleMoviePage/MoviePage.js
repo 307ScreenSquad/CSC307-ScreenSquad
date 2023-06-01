@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MoviePage.css";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -12,7 +12,6 @@ import {
   Row,
   Col,
   FormControl,
-  Alert,
 } from "react-bootstrap";
 
 const MoviePage = () => {
@@ -20,9 +19,6 @@ const MoviePage = () => {
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
-  // const [reviews, setReviews] = useState([]);
-  // const [reviewText, setReviewText] = useState('');
-  // Use dummy data for reviews
   const [watchlist, setWatchlist] = useState([]);
   const [reviews, setReviews] = useState([
     "Great movie!",
@@ -45,6 +41,9 @@ const MoviePage = () => {
         const reviewsResponse = await axios.get(
           `http://localhost:8000/reviews/${movieId}`
         );
+        const watchlistResponse = await axios.get(
+          `http://localhost:8000/watchlist`
+        );
 
         setMovie(movieResponse.data);
         setCast(castResponse.data.cast.map((castMember) => castMember.name));
@@ -54,6 +53,8 @@ const MoviePage = () => {
           ).map((provider) => provider.provider_name)
         );
         setReviews(reviewsResponse.data.reviews);
+        setWatchlist(watchlistResponse.data.watchlist);
+
       } catch (error) {
         console.error("Error fetching movie details:", error);
       }
@@ -94,9 +95,17 @@ const MoviePage = () => {
     }
   };
 
-  // adding to watchlist locally
   const addtoWatchlist = async () => {
-    setWatchlist([...watchlist, movie]);
+    try {
+      const response = await axios.post(`http://localhost:8000/watchlist`, { movieId, title, poster_path });
+
+      if (response.status === 200) {
+        const newMovie = { movieId, title, poster_path };
+        setWatchlist([newMovie, ...watchlist]); 
+      }
+    } catch (error) {
+      console.error('Error adding movie:', error);
+    }
   };
 
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
@@ -129,18 +138,11 @@ const MoviePage = () => {
                 <strong>Available on:</strong> {streamingPlatforms.join(", ")}{" "}
                 <br />
               </Card.Text>
-              <Button variant="primary" onClick={() => addtoWatchlist(movie)}>
+              <Button variant="primary" as={Link} to="/watchlist" 
+                onClick={() => addtoWatchlist(movie)}>
                 Add to my Watchlist
               </Button>
             </Card.Body>
-          </Card>
-          <Card className="movie-page__watchlist">
-            <Card.Header as="h5">My Watchlist</Card.Header>
-            <ListGroup variant="flush">
-              {watchlist.map((movie) => (
-                <ListGroupItem>{movie.title}</ListGroupItem>
-              ))}
-            </ListGroup>
           </Card>
         </Col>
       </Row>

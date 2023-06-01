@@ -137,7 +137,7 @@ function App() {
           <Route path="/register" element={<Register createUser={handleCreateUser}/>} />
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/landing" element={<Landing />} />
-          <Route path="/movie/:movieId" element={<MoviePage />} />
+          <Route path="/movie/:movieId" element={<MoviePage isLoggedIn={loggedIn}/>} />
           <Route path="/watchlist" element={<MyWatchlist />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/profile" element={<Profile isLoggedIn={loggedIn}/>} />

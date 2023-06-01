@@ -3,21 +3,15 @@ import axios from 'axios';
 import './MoviePage.css';
 import { useParams } from 'react-router-dom';
 
-const MoviePage = () => {
+const MoviePage = ({ isLoggedIn }) => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
-  // const [reviews, setReviews] = useState([]);
-  // const [reviewText, setReviewText] = useState('');
-  // Use dummy data for reviews
   const [watchlist, setWatchlist] = useState([]);
-  const [reviews, setReviews] = useState([
-    "Great movie!",
-    "I loved it.",
-    "Not bad, but could be better.",
-  ]);
-  const [reviewText, setReviewText] = useState("");
+  const [reviews, setReviews] = useState([]);
+  const [reviewText, setReviewText] = useState('');
+
   useEffect(() => {
     async function fetchMovieDetails() {
       try {
@@ -48,26 +42,13 @@ const MoviePage = () => {
     fetchMovieDetails();
   }, [movieId]);
 
-  useEffect(() => {
-    async function fetchReviews() {
-      try {
-        const reviewsResponse = await axios.get(`http://localhost:8000/reviews/${movieId}`);
-        setReviews(reviewsResponse.data.reviews);
-      } catch (error) {
-        console.error('Error fetching reviews:', error);
-      }
-    }
-
-    fetchReviews();
-  }, [movieId]);
-
   const submitReview = async () => {
     try {
       const response = await axios.post(`http://localhost:8000/reviews`, { movieId, reviewText });
-  
+
       if (response.status === 200) {
-        const newReview = { reviewText }; // Create a new review object
-        setReviews([newReview, ...reviews]); // Prepend the new review to the existing reviews array
+        const newReview = { reviewText };
+        setReviews([newReview, ...reviews]);
         setReviewText('');
       }
     } catch (error) {
@@ -75,8 +56,7 @@ const MoviePage = () => {
     }
   };
 
-  // adding to watchlist locally
-  const addtoWatchlist = async() => {
+  const addtoWatchlist = async () => {
     setWatchlist([...watchlist, movie]);
   };
 
@@ -94,63 +74,74 @@ const MoviePage = () => {
       <img src={poster} alt={title} className="movie-page__poster" />
       <div className="movie-page__details">
         <h1>{title}</h1>
-        <p><strong>Rating:</strong> {rating}</p>
-        <p><strong>Genres:</strong> {genresList}</p>
-        <p><strong>Runtime:</strong> {runtime} minutes</p>
-        <p><strong>Synopsis:</strong> {synopsis}</p>
-        <p><strong>Cast: </strong>{cast.join(", ")}</p>
-        <p><strong>Available on:</strong> {streamingPlatforms.join(", ")}</p>
-        {/* For now, just add current movie to 'watchlist' 
-        will route to My Watchlist page later */}
-        <p><strong>
-          <span
-              style={{
-                color: "rgb(127, 0, 255)",
-                textDecoration: "underline",
-                cursor: "pointer"
-              }}
-              onClick={() => addtoWatchlist(movie)}
-            >
-            Add to my Watchlist
-          </span>
-        </strong></p>
+        <p>
+          <strong>Rating:</strong> {rating}
+        </p>
+        <p>
+          <strong>Genres:</strong> {genresList}
+        </p>
+        <p>
+          <strong>Runtime:</strong> {runtime} minutes
+        </p>
+        <p>
+          <strong>Synopsis:</strong> {synopsis}
+        </p>
+        <p>
+          <strong>Cast: </strong>
+          {cast.join(', ')}
+        </p>
+        <p>
+          <strong>Available on:</strong> {streamingPlatforms.join(', ')}
+        </p>
+        {isLoggedIn && (
+          <p>
+            <strong>
+              <span
+                style={{
+                  color: 'rgb(127, 0, 255)',
+                  textDecoration: 'underline',
+                  cursor: 'pointer',
+                }}
+                onClick={() => addtoWatchlist(movie)}
+              >
+                Add to my Watchlist
+              </span>
+            </strong>
+          </p>
+        )}
       </div>
-      {/*  Outputs movie title */}
-      <div className="movie-page__watchlist"> 
+
+      <div className="movie-page__watchlist">
         <h2>My Watchlist</h2>
         <ul>
           {watchlist.map((movie) => (
             <p>{movie.title}</p>
-        ))}
+          ))}
         </ul>
       </div>
 
       <div className="movie-page__reviews">
         <h2>Reviews</h2>
-        <div className="movie-page__review-form">
-          <textarea
-            value={reviewText}
-            onChange={(e) => setReviewText(e.target.value)}
-            placeholder="Write a review..."
-          />
-          <button onClick={submitReview}>Submit</button>
-        </div>
+        {isLoggedIn && (
+          <div className="movie-page__review-form">
+            <textarea
+              value={reviewText}
+              onChange={(e) => setReviewText(e.target.value)}
+              placeholder="Write a review..."
+            />
+            <button onClick={submitReview}>Submit</button>
+          </div>
+        )}
         <div className="movie-page">
-
-        <div className="movie-page__reviews">
-          <h2>Reviews</h2>
-          {/* ... */}
-          <ul>
-        {reviews
-          // .sort((a, b) => new Date(a.postTime) - new Date(b.postTime)) // Sort reviews by post time
-          .map((review) => (
-            <li key={review._id} className="movie-page__review">
-              <p>{review.reviewText}</p>
-              {/* <p className="review-post-time">Posted at: {review.postTime}</p> */}
-            </li>
-          ))}
-      </ul>
-        </div>
+          <div className="movie-page__reviews">
+            <ul>
+              {reviews.map((review, index) => (
+                <li key={index} className="movie-page__review">
+                  <p>{review.reviewText}</p>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </div>
     </div>

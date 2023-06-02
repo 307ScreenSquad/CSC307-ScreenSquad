@@ -13,6 +13,8 @@ import Landing from "./Landing"
 import NavBar from "./NavBar"
 import Admin from "./Admin"
 import Profile from "./Profile"
+import EditProfile from "./EditProfile"
+import ProfileReviews from "./ProfileReviews"
 import MyWatchlist from "./WatchList/MyWatchlist"
 import bcrypt from 'bcryptjs'
 import { ThemeProvider } from "@emotion/react"; 
@@ -63,6 +65,7 @@ function App() {
         localStorage.setItem('email', findUserResponse.data.email);
         localStorage.setItem('isAdmin', findUserResponse.data.isAdmin);
         localStorage.setItem('id', findUserResponse.data._id);
+        localStorage.setItem('page', 'landing');
         setLoggedIn(true);
         
       }
@@ -82,6 +85,7 @@ function App() {
         localStorage.setItem('email', '');
         localStorage.setItem('isAdmin', false);
         localStorage.setItem('id', 0);
+        localStorage.setItem('page', 'home');
         
         
         setLoggedIn(false);
@@ -125,7 +129,7 @@ function App() {
     </div>
   );
   */
-
+  
 
   return(
     <ThemeProvider theme={theme}>
@@ -137,10 +141,12 @@ function App() {
           <Route path="/register" element={<Register createUser={handleCreateUser}/>} />
           <Route path="/forgot" element={<Forgot />} />
           <Route path="/landing" element={<Landing />} />
-          <Route path="/movie/:movieId" element={<MoviePage />} />
+          <Route path="/movie/:movieId" element={<MoviePage isLoggedIn={loggedIn}/>} />
           <Route path="/watchlist" element={<MyWatchlist />} />
           <Route path="/admin" element={<Admin />} />
           <Route path="/profile" element={<Profile isLoggedIn={loggedIn}/>} />
+          <Route path="/profile/edit" element={<EditProfile />} />
+          <Route path="/profile/reviews" element={<ProfileReviews bcryptSalt={salt}/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

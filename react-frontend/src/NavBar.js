@@ -21,7 +21,7 @@ export default function NavBar(props) {
           )}
           {props.isLoggedIn && (
             <>
-              <Nav.Link className="Navbar-form-links" as={Link} to="/">
+              <Nav.Link className="Navbar-form-links" as={Link} to="/profile">
                 Welcome {' ' + localStorage.name.split(' ')[0]}
               </Nav.Link>
               <Nav.Link

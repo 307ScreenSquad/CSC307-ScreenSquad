@@ -112,15 +112,37 @@ app.get('/reviews/:movieId', async (req, res) => {
   }
 });
 
+app.get('/reviews', async (req, res) => {
+    const {userId} = req.query
+    
+    try {
+      const reviews = await movieReviewServices.findReviewsByUserId(userId);
+      res.json({ reviews });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'An error occurred on the server.' });
+    }
+  });
+
 app.post('/reviews', async (req, res) => {
   const review = req.body;
-
   try {
     const result = await movieReviewServices.addReview(review);
     res.json({ message: result });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Server error' });
+  }
+});
+
+app.put('/reviews/:_id', async (req, res) => {
+  const id = req.params['_id'];
+  let result = await movieReviewServices.editReview(id, req.body);
+  
+  if (result === undefined || result === null || result.length === 0) {
+    res.status(204).json({ message: 'Resource not found.' });
+  } else {
+    res.status(200).json(result[0]);
   }
 });
 

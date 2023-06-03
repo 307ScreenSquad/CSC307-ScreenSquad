@@ -50,9 +50,16 @@ function Profile() {
                             </Nav>
                         </td>}
                         <td>
-                        <Nav className="btn-group-vertical">
+                            <Nav className="btn-group-vertical">
                                 <Nav.Link className ="btn btn-secondary" style={{fontWeight: 'bold', border:'0px solid #ccc', backgroundColor: 'gray', width: 400, color: 'white'}} as={Link} to="/profile/reviews">
                                     View Movie Reviews
+                                </Nav.Link>
+                            </Nav>
+                        </td>
+                        <td>
+                            <Nav className="btn-group-vertical">
+                                <Nav.Link className ="btn btn-secondary" style={{fontWeight: 'bold', border:'0px solid #ccc', backgroundColor: 'gray', width: 400, color: 'white'}} as={Link} to="/watchlist">
+                                    View My Watchlist
                                 </Nav.Link>
                             </Nav>
                         </td>

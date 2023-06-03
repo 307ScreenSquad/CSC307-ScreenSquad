@@ -99,6 +99,8 @@ function App() {
         return false;         
     }
   }
+
+  
   
   useEffect(() => {
     const existingName = localStorage.getItem('name');
@@ -106,7 +108,7 @@ function App() {
       console.log("Welcome " + existingName);
       setLoggedIn(true);
     }
-  })
+  }, [])
 
 
   // async function makePostCall(person){
@@ -147,6 +149,7 @@ function App() {
           <Route path="/profile" element={<Profile isLoggedIn={loggedIn}/>} />
           <Route path="/profile/edit" element={<EditProfile />} />
           <Route path="/profile/reviews" element={<ProfileReviews bcryptSalt={salt}/>} />
+          <Route path="/forgot" element={<Forgot bcryptSalt={salt}/>} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

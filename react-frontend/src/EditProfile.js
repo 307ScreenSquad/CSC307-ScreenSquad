@@ -10,7 +10,6 @@ function EditProfile (props) {
     const [user, setUser] = useState({});
     const [editedUsers, setEditedUsers] = useState({});
     const [passwordMatchingError, setPasswordMatchingError] = useState(false);
-    const [passwordMatchingSuccess, setPasswordMatchingSuccess] = useState(false);
     const navigate = useNavigate();
 
     async function fetchCurrentUser(){
@@ -32,7 +31,7 @@ function EditProfile (props) {
           setUser(result);
         }
       })
-    })
+    }, [])
   
     
     const handleInputChange = (event, userId) => {
@@ -73,7 +72,6 @@ function EditProfile (props) {
       if(editedUsers[userId].password.length !== null && editedUsers[userId].password.length > 0){
         if(editedUsers[userId].password !== editedUsers[userId].confirmNewPassword){
           setPasswordMatchingError(true);
-          setPasswordMatchingSuccess(false);
           return;
         }
         editedUsers[userId].password = bcrypt.hashSync(editedUsers[userId].password, props.bcryptSalt)
@@ -98,16 +96,6 @@ function EditProfile (props) {
         console.error('Error updating user:', error);
       }
     };
-    function isChecked(user1, user2){
-      let checked = user1;
-      if(user1 === undefined){
-        checked = user2
-      }
-      if(checked === true){
-        return true
-      }
-      return false
-    }
   
     function checkAttribute(firstAttribute, secondAttribute){
       if(firstAttribute === undefined){

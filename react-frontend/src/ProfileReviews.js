@@ -64,7 +64,7 @@ function ProfileReview (props) {
       })
     }
     
-    if(reviews.length == 0){
+    if(reviews.length === 0){
       fetchReviews().then((result) => {
         if(result){
           setReviews(result);

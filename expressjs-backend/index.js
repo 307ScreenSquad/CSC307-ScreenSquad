@@ -1,11 +1,13 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
+const nodemailer = require("nodemailer");
 const app = express();
 const port = 8000;
 const cors = require('cors');
 const userServices = require('./models/user-services');
 const movieReviewServices = require('./models/movie-review-services');
+
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
@@ -143,6 +145,25 @@ app.put('/reviews/:_id', async (req, res) => {
     res.status(204).json({ message: 'Resource not found.' });
   } else {
     res.status(200).json(result[0]);
+  }
+});
+
+
+
+app.get('/forgot', async (req, res) => {
+  const { email, password, hashedPassword } = req.query;
+  try {
+    const response = await userServices.forgotPassword(email, password, hashedPassword);
+    if (response === 200) {
+      res.status(200).json({ message: 'Password reset email sent' });
+    } else if (response === 404) {
+      res.status(404).json({ message: 'User not found' });
+    } else {
+      res.status(500).json({ message: 'An error occurred on the server.' });
+    }
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'An error occurred on the server.' });
   }
 });
 

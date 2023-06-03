@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const userModel = require("./user");
 const dotenv = require("dotenv")
 const bcrypt = require('bcrypt');
+const nodemailer = require("nodemailer");
 //mongoose.set("debug", true);
 dotenv.config();
 
@@ -147,6 +148,44 @@ async function editUser(id, bodyData){
 
 
 
+
+async function forgotPassword(email, newPassword, hashedPassword){
+  try{
+    // find user by email
+    const user = await userModel.findOne({ email: email });
+    if (!user) {
+      return 404
+    }
+
+    user.password = hashedPassword;
+
+    // save the updated user document to the database
+    await user.save();
+
+    var transporter = nodemailer.createTransport({
+      service: 'outlook',
+      auth: {
+        user: 'KCCTECH.WEBAPP@outlook.com',
+        pass: 'Welcome@1!1!'
+      }
+    });
+    // send an email to the user with the new password
+    await transporter.sendMail({
+      from: 'KCCTECH.WEBAPP@outlook.com',
+      to: user.email,
+      subject: 'Password reset',
+      text: `Your new password is ${newPassword}. Please login and change it.`,
+    });
+    return 200
+  } catch (error) {
+    console.log(error);
+    return 500;
+  }
+  
+}
+
+
+
 //exports.getUsers = getUsers;
 exports.findUserById = findUserById;
 exports.addUser = addUser;
@@ -155,3 +194,4 @@ exports.loginUser = loginUser;
 exports.getAllUsers = getAllUsers;
 exports.editUser = editUser;
 exports.findUserByEmail = findUserByEmail;
+exports.forgotPassword = forgotPassword;

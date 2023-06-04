@@ -96,11 +96,12 @@ const MoviePage = () => {
   };
 
   const addtoWatchlist = async () => {
+    let userId = localStorage.getItem('id');
     try {
-      const response = await axios.post(`http://localhost:8000/watchlist`, { movieId, title, poster_path });
+      const response = await axios.post(`http://localhost:8000/watchlist`, { movieId, title, poster_path, userId });
 
       if (response.status === 200) {
-        const newMovie = { movieId, title, poster_path };
+        const newMovie = { movieId, title, poster_path, userId };
         setWatchlist([newMovie, ...watchlist]); 
       }
     } catch (error) {

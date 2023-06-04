@@ -137,9 +137,22 @@ app.post('/reviews', async (req, res) => {
 //   }
 // });
 
+// app.get('/reviews', async (req, res) => {
+//   const {userId} = req.query
+
+//   try {
+//     const reviews = await movieReviewServices.findReviewsByUserId(userId);
+//     res.json({ reviews });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: 'An error occurred on the server.' });
+//   }
+// });
+
 app.get('/watchlist', async (req, res) => {
+  const { userId } = req.query
   try {
-    const watchlist = await watchlistServices.getWatchlist();
+    const watchlist = await watchlistServices.findMoviesByUserId(userId);
     res.json({ watchlist });
   } catch (error) {
     console.log(error);

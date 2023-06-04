@@ -16,7 +16,7 @@ mongoose
   .catch((error) => console.log(error));
 
 async function getWatchlist() {
-    return await findMoviesByMovieId();
+    return await findMoviesByUserId();
 }
 
 async function findMovieById() {
@@ -39,13 +39,13 @@ async function addMovie(movie) {
   }
 }
 
-async function findMoviesByMovieId(movieId) {
-  return await MyWatchlist.find();
-}
+async function findMoviesByUserId(userId) {
+    return await MyWatchlist.find({ userId: userId});
+  }
 
 module.exports = {
   getWatchlist,
   findMovieById,
   addMovie,
-  findMoviesByMovieId
+  findMoviesByUserId
 };

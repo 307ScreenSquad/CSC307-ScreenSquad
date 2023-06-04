@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, Container, Row, Col, Image } from "react-bootstrap";
+import { Card, Container, Row, Col, Image, Button } from "react-bootstrap";
 import "./UpcomingReleases.css";
 
 const UpcomingReleases = () => {
@@ -12,7 +12,14 @@ const UpcomingReleases = () => {
         const response = await axios.get(
           `https://api.themoviedb.org/3/movie/upcoming?api_key=a43aea022f03ee960884520d48d1c5f8`
         );
-        setUpcomingMovies(response.data.results);
+
+        const futureMovies = response.data.results.filter((movie) => {
+          const movieDate = new Date(movie.release_date);
+          const currentDate = new Date();
+          return movieDate >= currentDate;
+        });
+
+        setUpcomingMovies(futureMovies);
       } catch (error) {
         console.error("Error fetching upcoming movies:", error);
       }
@@ -40,6 +47,7 @@ const UpcomingReleases = () => {
                   <strong>Release Date:</strong> {movie.release_date} <br />
                   <strong>Description:</strong> {movie.overview}
                 </Card.Text>
+                <Button variant="primary">Add to Watchlist</Button>
               </Card.Body>
             </Card>
           </Col>

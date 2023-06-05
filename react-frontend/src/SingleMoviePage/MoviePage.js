@@ -12,26 +12,18 @@ import {
   Row,
   Col,
   FormControl,
-  Alert,
 } from "react-bootstrap";
 
-const MoviePage = (props) => {
+const MoviePage = ({ isLoggedIn }) => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
-  // const [reviews, setReviews] = useState([]);
-  // const [reviewText, setReviewText] = useState('');
-  // Use dummy data for reviews
   const [watchlist, setWatchlist] = useState([]);
-  const [reviews, setReviews] = useState([
-    "Great movie!",
-    "I loved it.",
-    "Not bad, but could be better.",
-  ]);
-  const [reviewText, setReviewText] = useState("");
 
-  const navigate = useNavigate()
+  const [reviews, setReviews] = useState([]);
+  const [reviewText, setReviewText] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchMovieDetails() {

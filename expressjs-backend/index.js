@@ -136,7 +136,6 @@ app.post('/reviews', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
 app.put('/reviews/:_id', async (req, res) => {
   const id = req.params['_id'];
   let result = await movieReviewServices.editReview(id, req.body);
@@ -167,6 +166,6 @@ app.get('/forgot', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+app.listen(process.env.PORT || port, () => {
+  console.log("REST API is listening.");
 });

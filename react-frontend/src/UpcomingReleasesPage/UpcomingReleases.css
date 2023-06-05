@@ -1,0 +1,23 @@
+.upcoming-releases {
+    padding: 1rem;
+  }
+  
+  .upcoming-releases .card {
+    height: 100%;
+  }
+  
+  .upcoming-releases .card img {
+    object-fit: cover;
+    height: 60%;
+    width: 100%;
+  }
+  
+  .upcoming-releases .card .card-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+  
+  .upcoming-releases .card .card-text {
+    font-size: 0.9rem;
+  }
+  

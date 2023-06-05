@@ -53,4 +53,4 @@ jobs:
           app-name: 'ScreenSquad'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EFD6ECEF17F444C1956E5DAA6125F858 }}
-          package: .
+          package: expressjs-backend

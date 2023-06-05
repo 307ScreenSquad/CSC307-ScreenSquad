@@ -76,7 +76,7 @@ function Login (props) {
           </div>
           <div className="text-center">
             Forgot{" "}
-            <a className="link-primary"href="/Forgot" style={{color: 'rgb(127, 0, 255)'}}>password?</a>
+            <a className="link-primary"href="/forgot" style={{color: 'rgb(127, 0, 255)'}}>password?</a>
           </div>
         </div>
       </form>

@@ -5,7 +5,7 @@ import MyApp from './App'
 // import MoviePage from './SingleMoviePage/MoviePage'
 // import MovieSearch from './SingleMoviePage/MovieSearch'
 // import NavBar from './NavBar'
-
+import './styles/index.css'
 
 const container = document.getElementById('root');
 

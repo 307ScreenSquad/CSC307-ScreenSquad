@@ -7,6 +7,7 @@ const port = 8000;
 const cors = require('cors');
 const userServices = require('./models/user-services');
 const movieReviewServices = require('./models/movie-review-services');
+const watchlistServices = require('./models/watchlist-services');
 
 
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -163,6 +164,28 @@ app.get('/forgot', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'An error occurred on the server.' });
+  }
+});
+
+app.get('/watchlist', async (req, res) => {
+  const { userId } = req.query
+  try {
+    const watchlist = await watchlistServices.findMoviesByUserId(userId);
+    res.json({ watchlist });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'An error occurred on the server.' });
+  }
+});
+
+app.post('/watchlist', async (req, res) => {
+  const watchlist = req.body;
+  try {
+    const result = await watchlistServices.addMovie(watchlist);
+    res.json({ message: result });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'Server error' });
   }
 });
 

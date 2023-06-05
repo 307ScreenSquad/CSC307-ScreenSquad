@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MoviePage.css";
-import { useParams, useNavigate} from "react-router-dom";
+import { useParams, useNavigate, Link} from "react-router-dom";
 import {
   Button,
   Card,
@@ -40,6 +40,9 @@ const MoviePage = ({ isLoggedIn }) => {
         const reviewsResponse = await axios.get(
           `http://localhost:8000/reviews/${movieId}`
         );
+        const watchlistResponse = await axios.get(
+          `http://localhost:8000/watchlist`
+        );
 
         setMovie(movieResponse.data);
         setCast(castResponse.data.cast.map((castMember) => castMember.name));
@@ -49,6 +52,8 @@ const MoviePage = ({ isLoggedIn }) => {
           ).map((provider) => provider.provider_name)
         );
         setReviews(reviewsResponse.data.reviews);
+        setWatchlist(watchlistResponse.data.watchlist);
+
       } catch (error) {
         console.error("Error fetching movie details:", error);
       }
@@ -90,9 +95,18 @@ const MoviePage = ({ isLoggedIn }) => {
     }
   };
 
-  // adding to watchlist locally
   const addtoWatchlist = async () => {
-    setWatchlist([...watchlist, movie]);
+    let userId = localStorage.getItem('id');
+    try {
+      const response = await axios.post(`http://localhost:8000/watchlist`, { movieId, title, poster_path, userId });
+
+      if (response.status === 200) {
+        const newMovie = { movieId, title, poster_path, userId };
+        setWatchlist([newMovie, ...watchlist]); 
+      }
+    } catch (error) {
+      console.error('Error adding movie:', error);
+    }
   };
 
   function handleNavigate(input){
@@ -114,83 +128,58 @@ const MoviePage = ({ isLoggedIn }) => {
   const genresList = genres.map((genre) => genre.name).join(", ");
 
   return (
-    <div className="movie-page">
-      <img src={poster} alt={title} className="movie-page__poster" />
-      <div className="movie-page__details">
-        <h1>{title}</h1>
-        <p><strong>Rating:</strong> {rating}</p>
-        <p><strong>Genres:</strong> {genresList}</p>
-        <p><strong>Runtime:</strong> {runtime} minutes</p>
-        <p><strong>Synopsis:</strong> {synopsis}</p>
-        <p><strong>Cast: </strong>{cast.join(", ")}</p>
-        <p><strong>Available on:</strong> {streamingPlatforms.join(", ")}</p>
-        {/* For now, just add current movie to 'watchlist' 
-        will route to My Watchlist page later */}
-        <p><strong>
-          <span
-              style={{
-                color: "rgb(127, 0, 255)",
-                textDecoration: "underline",
-                cursor: "pointer"
-              }}
-              onClick={() => addtoWatchlist(movie)}
-            >
-            Add to my Watchlist
-          </span>
-        </strong></p>
-      </div>
-      {/*  Outputs movie title */}
-      <div className="movie-page__watchlist"> 
-        <h2>My Watchlist</h2>
-        <ul>
-          {watchlist.map((movie) => (
-            <p>{movie.title}</p>
-        ))}
-        </ul>
-      </div>
-
-      <div className="movie-page__reviews">
-        <h2>Reviews</h2>
-        {props.isLoggedIn && 
-          <div className="movie-page__review-form">
-            <textarea
-              value={reviewText}
-              onChange={(e) => setReviewText(e.target.value)}
-              placeholder="Write a review..."
-            />
-            <button onClick={submitReview}>Submit</button>
-          </div>
-        }
-
-        {!props.isLoggedIn && 
-          <div className="movie-page__noLogin">
-            <h4>To make a review, please Sign Up or Login</h4>
-            <div className="movie-page__noLogin_button_container">
-              <button onClick={() => {handleNavigate(0)}}>Sign Up</button>
-              <button onClick={() => {handleNavigate(1)}}>Login</button>
-            </div>
-          </div>
-        }
-        
-        <div className="movie-page">
-
-        <div className="movie-page__reviews">
-          <h2>Reviews</h2>
-          {/* ... */}
-          <ul>
-        {reviews
-          // .sort((a, b) => new Date(a.postTime) - new Date(b.postTime)) // Sort reviews by post time
-          .map((review) => (
-            <li key={review._id} className="movie-page__review">
-              <p>{review.reviewText}</p>
-              {/* <p className="review-post-time">Posted at: {review.postTime}</p> */}
-            </li>
-          ))}
-      </ul>
-        </div>
-        </div>
-      </div>
-    </div>
+    <Container fluid className="movie-page">
+      <Row>
+        <Col md={4}>
+          <Image src={poster} alt={title} fluid rounded />
+        </Col>
+        <Col md={8}>
+          <Card>
+            <Card.Body>
+              <Card.Title>
+                <h1>{title}</h1>
+              </Card.Title>
+              <Card.Text>
+                <strong>Rating:</strong> {rating} <br />
+                <strong>Genres:</strong> {genresList} <br />
+                <strong>Runtime:</strong> {runtime} minutes <br />
+                <strong>Synopsis:</strong> {synopsis} <br />
+                <strong>Cast:</strong> {cast.join(", ")} <br />
+                <strong>Available on:</strong> {streamingPlatforms.join(", ")}{" "}
+                <br />
+              </Card.Text>
+              <Button variant="primary" as={Link} to="/watchlist" 
+                onClick={() => addtoWatchlist(movie)}>
+                Add to my Watchlist
+              </Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <Card className="movie-page__reviews">
+            <Card.Header as="h5">Reviews</Card.Header>
+            <Card.Body>
+              <FormControl
+                as="textarea"
+                value={reviewText}
+                onChange={(e) => setReviewText(e.target.value)}
+                placeholder="Write a review..."
+              />
+              <Button className="mt-3" variant="primary" onClick={submitReview}>
+                Submit
+              </Button>
+              <ListGroup className="mt-3">
+                {reviews.map((review, index) => (
+                  <ListGroupItem key={index}>{review.reviewText}</ListGroupItem>
+                ))}
+              </ListGroup>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

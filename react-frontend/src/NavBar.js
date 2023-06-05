@@ -27,12 +27,7 @@ export default function NavBar(props) {
               <Nav.Link className="Navbar-form-links" as={Link} to="/">
                 Welcome {" " + localStorage.name.split(" ")[0]}
               </Nav.Link>
-              <Nav.Link
-                className="Navbar-form-links"
-                onClick={props.logoutUser}
-                as={Link}
-                to="/"
-              >
+              <Nav.Link className="Navbar-form-links" onClick={props.logoutUser} as={Link} to="/" >
                 Logout
               </Nav.Link>
             </>

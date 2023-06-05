@@ -2,10 +2,9 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const session = require('express-session');
 const app = express();
-const port = 8000;
 const cors = require('cors');
-const userServices = require('./models/user-services');
-const movieReviewServices = require('./models/movie-review-services');
+const userServices = require('./controllers/user-services');
+const movieReviewServices = require('./controllers/movie-review-services');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
@@ -124,6 +123,6 @@ app.post('/reviews', async (req, res) => {
   }
 });
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`);
+app.listen(process.env.PORT || port, () => {
+  console.log("REST API is listening.");
 });

@@ -18,22 +18,26 @@ const Landing = () => {
   }, []);
 
   return (
-    <div className="movie-grid-header">
-      <h1>Popular Movies</h1>
-      <Slideshow />
-      <h1>Suggested for You</h1>
-      <div className="movie-grid">
-        {movies.map((movie) => (
-          <Link to={`/movie/${movie.id}`} key={movie.id}>
-            <div className="movie">
-              <img
-                src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
-                alt={movie.title}
-              />
-              <h3>{movie.title}</h3>
-            </div>
-          </Link>
-        ))}
+    <div className="landing-container">
+      <div className="slideshow-wrapper">
+        <h1 className="slideshow-title">Discover Exciting Movies</h1>
+        <Slideshow />
+      </div>
+      <div className="movie-grid-header">
+        <h2>Popular Movies</h2>
+        <div className="movie-grid">
+          {movies.map((movie) => (
+            <Link to={`/movie/${movie.id}`} key={movie.id}>
+              <div className="movie">
+                <img
+                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                  alt={movie.title}
+                />
+                <h3>{movie.title}</h3>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   );

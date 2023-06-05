@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MoviePage.css";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate, Link} from "react-router-dom";
 import {
   Button,
   Card,
@@ -14,18 +14,17 @@ import {
   FormControl,
 } from "react-bootstrap";
 
-const MoviePage = () => {
+const MoviePage = ({ isLoggedIn }) => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
-  const [reviews, setReviews] = useState([
-    "Great movie!",
-    "I loved it.",
-    "Not bad, but could be better.",
-  ]);
-  const [reviewText, setReviewText] = useState("");
+
+  const [reviews, setReviews] = useState([]);
+  const [reviewText, setReviewText] = useState('');
+  const navigate = useNavigate();
+
   useEffect(() => {
     async function fetchMovieDetails() {
       try {
@@ -79,6 +78,7 @@ const MoviePage = () => {
   }, [movieId]);
 
   const submitReview = async () => {
+    let userId = localStorage.getItem('id');
     try {
       const response = await axios.post(`http://localhost:8000/reviews`, {
         movieId,
@@ -108,6 +108,15 @@ const MoviePage = () => {
       console.error('Error adding movie:', error);
     }
   };
+
+  function handleNavigate(input){
+    if(input){
+      navigate("/login")
+      return;
+    }
+    navigate("/register");
+    return;
+  }
 
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
 

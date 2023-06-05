@@ -39,6 +39,16 @@ async function addReview(review) {
   }
 }
 
+async function editReview(id, bodyData){
+  try {
+    const reviewToUpdate = await MovieReview.findOneAndUpdate({_id: id}, bodyData);
+    return reviewToUpdate;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+}
+
 // Uncomment this function if you need to remove a review
 // async function removeReview(reviewId) {
 //   try {
@@ -54,11 +64,17 @@ async function findReviewsByMovieId(movieId) {
   return await MovieReview.find({ movieId: movieId });
 }
 
+async function findReviewsByUserId(userId) {
+  return await MovieReview.find({ userId: userId });
+}
+
 
 module.exports = {
   getReviews,
   findReviewById,
   addReview,
   // removeReview, // Uncomment this line if you need to remove a review
-  findReviewsByMovieId
+  findReviewsByMovieId,
+  findReviewsByUserId,
+  editReview
 };

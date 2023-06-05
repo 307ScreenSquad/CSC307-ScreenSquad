@@ -13,6 +13,11 @@ const MovieReviewSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
+    userId: {
+      type: String,
+      required: true,
+      trim: true,
+    },
     // postTime: {
     //     type: Date,
     //     required: true,

@@ -98,7 +98,6 @@ function App() {
       return false;
     }
   }
-
   useEffect(() => {
     const existingName = localStorage.getItem("name");
     if (existingName) {
@@ -127,7 +126,6 @@ function App() {
     </div>
   );
   */
-
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
@@ -142,13 +140,15 @@ function App() {
             path="/register"
             element={<Register createUser={handleCreateUser} />}
           />
-          <Route path="/forgot" element={<Forgot />} />
           <Route path="/landing" element={<Landing />} />
-          <Route path="/upcoming" element={<UpcomingPage />} />
           <Route path="/movie/:movieId" element={<MoviePage isLoggedIn={loggedIn}/>} />
           <Route path="/watchlist" element={<MyWatchlist />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="/profile" element={<Profile isLoggedIn={loggedIn} />} />
+          <Route path="/profile" element={<Profile isLoggedIn={loggedIn}/>} />
+          <Route path="/profile/edit" element={<EditProfile />} />
+          <Route path="/profile/reviews" element={<ProfileReviews bcryptSalt={salt}/>} />
+          <Route path="/forgot" element={<Forgot bcryptSalt={salt}/>} />
+          <Route path="/upcoming" element={<UpcomingPage />} />
         </Routes>
       </BrowserRouter>
     </ThemeProvider>

@@ -12,7 +12,6 @@ import {
   Row,
   Col,
   FormControl,
-  Alert,
 } from "react-bootstrap";
 
 const MoviePage = ({ isLoggedIn }) => {

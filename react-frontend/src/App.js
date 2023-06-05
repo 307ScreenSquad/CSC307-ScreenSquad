@@ -4,15 +4,15 @@ import MoviePage from './SingleMoviePage/MoviePage';
 import './App.css';
 import axios from 'axios'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Login from "./Login"
-import Register from "./Register"
-import Forgot from "./Forgot"
+import Login from "./Login/Login"
+import Register from "./Login/Register"
+import Forgot from "./Login/Forgot"
 import theme from "./theme"
-import Base from "./base"
-import Landing from "./Landing"
-import NavBar from "./NavBar"
-import Admin from "./Admin"
-import Profile from "./Profile"
+import Base from "./Base/Base"
+import Landing from "./Landing/Landing"
+import NavBar from "./NavBar/NavBar"
+import Admin from "./Admin/Admin"
+import Profile from "./Profile/Profile"
 import MyWatchlist from "./WatchList/MyWatchlist"
 import bcrypt from 'bcryptjs'
 import { ThemeProvider } from "@emotion/react"; 

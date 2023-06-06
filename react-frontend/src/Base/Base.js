@@ -1,5 +1,5 @@
 import React from 'react'
-import './styles/base.css';
+import './base.css';
 
 export default function Base(props){
     return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import './styles/Landing.css';
+import './landing.css';
 import axios from 'axios';
 import Slideshow from './Slideshow';
 import { Link } from 'react-router-dom';

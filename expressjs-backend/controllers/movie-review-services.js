@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const MovieReview = require("./movie-review"); // Assuming you have a "movie-review" model for movie reviews
+const MovieReview = require("../models/movie-review"); // Assuming you have a "movie-review" model for movie reviews
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 

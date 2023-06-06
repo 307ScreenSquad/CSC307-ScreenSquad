@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MoviePage.css";
+
 import { useParams, useNavigate, Link } from "react-router-dom";
+
 import {
   Button,
   Card,
@@ -12,6 +14,7 @@ import {
   Row,
   Col,
   FormControl,
+  Alert,
 } from "react-bootstrap";
 
 const MoviePage = ({ isLoggedIn }) => {
@@ -20,10 +23,10 @@ const MoviePage = ({ isLoggedIn }) => {
   const [cast, setCast] = useState([]);
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
-
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
   const navigate = useNavigate();
+
 
   useEffect(() => {
     async function fetchMovieDetails() {
@@ -40,19 +43,15 @@ const MoviePage = ({ isLoggedIn }) => {
         const reviewsResponse = await axios.get(
           `http://localhost:8000/reviews/${movieId}`
         );
-        const watchlistResponse = await axios.get(
-          `http://localhost:8000/watchlist`
-        );
 
         setMovie(movieResponse.data);
         setCast(castResponse.data.cast.map((castMember) => castMember.name));
         setStreamingPlatforms(
-          Object.values(
-            streamingPlatformsResponse.data.results.US.flatrate || {}
-          ).map((provider) => provider.provider_name)
+          streamingPlatformsResponse.data.results.US.flatrate || []
         );
         setReviews(reviewsResponse.data.reviews);
         setWatchlist(watchlistResponse.data.watchlist);
+
       } catch (error) {
         console.error("Error fetching movie details:", error);
       }
@@ -78,6 +77,7 @@ const MoviePage = ({ isLoggedIn }) => {
 
   const submitReview = async () => {
     let userId = localStorage.getItem("id");
+
     try {
       const response = await axios.post(`http://localhost:8000/reviews`, {
         movieId,
@@ -94,6 +94,7 @@ const MoviePage = ({ isLoggedIn }) => {
     }
   };
 
+  // adding to watchlist locally
   const addtoWatchlist = async () => {
     let userId = localStorage.getItem("id");
     try {
@@ -122,6 +123,7 @@ const MoviePage = ({ isLoggedIn }) => {
     return;
   }
 
+
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
 
   const { title, vote_average, genres, runtime, overview, poster_path } = movie;
@@ -130,6 +132,9 @@ const MoviePage = ({ isLoggedIn }) => {
   const synopsis = overview;
   const poster = `https://image.tmdb.org/t/p/w500${poster_path}`;
   const genresList = genres.map((genre) => genre.name).join(", ");
+
+  const getStreamingPlatformLogo = (logoPath) =>
+    `https://image.tmdb.org/t/p/original${logoPath}`;
 
   return (
     <Container fluid className="movie-page">
@@ -149,8 +154,21 @@ const MoviePage = ({ isLoggedIn }) => {
                 <strong>Runtime:</strong> {runtime} minutes <br />
                 <strong>Synopsis:</strong> {synopsis} <br />
                 <strong>Cast:</strong> {cast.join(", ")} <br />
-                <strong>Available on:</strong> {streamingPlatforms.join(", ")}{" "}
-                <br />
+                <strong>Available on:</strong>{" "}
+                {streamingPlatforms.length > 0 ? (
+                  <div>
+                    {streamingPlatforms.map((platform) => (
+                      <img
+                        src={getStreamingPlatformLogo(platform.logo_path)}
+                        alt={platform.provider_name}
+                        key={platform.provider_id}
+                        className="streaming-platform-logo"
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  "No streaming available"
+                )}
               </Card.Text>
               <Button
                 variant="primary"
@@ -161,6 +179,14 @@ const MoviePage = ({ isLoggedIn }) => {
                 Add to my Watchlist
               </Button>
             </Card.Body>
+          </Card>
+          <Card className="movie-page__watchlist">
+            <Card.Header as="h5">My Watchlist</Card.Header>
+            <ListGroup variant="flush">
+              {watchlist.map((movie) => (
+                <ListGroupItem key={movie.id}>{movie.title}</ListGroupItem>
+              ))}
+            </ListGroup>
           </Card>
         </Col>
       </Row>

@@ -1,23 +1,25 @@
 import React, { useState, useEffect } from "react";
 import MoviePage from "./SingleMoviePage/MoviePage";
+// import MovieSearch from './SingleMoviePage/MovieSearch';
 import "./App.css";
-import axios from "axios";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Login from "./Login";
-import Register from "./Register";
-import Forgot from "./Forgot";
-import theme from "./theme";
-import Base from "./base";
-import Landing from "./Landing";
-import NavBar from "./NavBar";
-import Admin from "./Admin";
-import Profile from "./Profile";
-import MyWatchlist from "./WatchList/MyWatchlist";
-import UpcomingPage from "./UpcomingReleasesPage/UpcomingReleases";
-import bcrypt from "bcryptjs";
-import EditProfile from "./EditProfile";
-import ProfileReviews from "./ProfileReviews";
-import { ThemeProvider } from "@emotion/react";
+import axios from "axios"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import Login from "./Login/Login"
+import Register from "./Login/Register"
+import Forgot from "./Login/Forgot"
+import theme from "./theme"
+import Base from "./Base/Base"
+import Landing from "./Landing/Landing"
+import NavBar from "./NavBar/NavBar"
+import Admin from "./Admin/Admin"
+import Profile from "./Profile/Profile"
+import EditProfile from "./Profile/EditProfile"
+import ProfileReviews from "./Profile/ProfileReviews"
+import UpcomingPage from "./UpcomingReleasesPage/UpcomingReleases"
+import MyWatchlist from "./WatchList/MyWatchlist"
+import bcrypt from 'bcryptjs'
+import { ThemeProvider } from "@emotion/react"; 
+
 
 // hashing: https://medium.com/boca-code/how-to-encrypt-password-in-your-react-app-before-you-send-it-to-the-api-6e10a06f0a8e
 // SALT should be created ONE TIME upon sign up

@@ -1,5 +1,5 @@
-import './styles/login.css';
-import './styles/admin.css';
+import '../Login/login.css';
+import './admin.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState, useEffect } from "react"
 import {useNavigate} from 'react-router-dom'

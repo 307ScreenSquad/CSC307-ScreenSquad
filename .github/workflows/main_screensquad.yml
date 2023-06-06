@@ -12,10 +12,13 @@ on:
 defaults:
   run:
     working-directory: expressjs-backend
+    
+env:
+  AZURE_WEBAPP_PACKAGE_PATH: expressjs-backend # set this to the path to your web app project, defaults to the repository root
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v2
@@ -57,4 +60,4 @@ jobs:
           app-name: 'ScreenSquad'
           slot-name: 'Production'
           publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EFD6ECEF17F444C1956E5DAA6125F858 }}
-          package: expressjs-backend
+          package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}

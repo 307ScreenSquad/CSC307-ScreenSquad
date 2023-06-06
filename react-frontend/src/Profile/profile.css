@@ -7,3 +7,50 @@
 td {
     border-bottom: 1px solid #FFFFFF;
 }
+
+  
+.movie {
+position: relative;
+width: 200px;
+height: 300px;
+overflow: hidden;
+border-radius: 5px;
+cursor: pointer;
+transition: transform 0.3s;
+}
+
+.movie:hover {
+transform: scale(1.05);
+}
+
+.movie img {
+width: 75%;
+height: 75%;
+object-fit: cover;
+align-items: center;
+}
+
+/* Landing.css */
+.movie h3 {
+position: absolute;
+bottom: 0 px;
+left: 0;
+width: 100%;
+padding: 10px;
+margin: 0;
+color: #fff;
+font-size: 16px;
+text-align: center;
+}
+
+.movie:hover h3 {
+    bottom: 0;
+    opacity: 1;
+}
+
+
+.movieDetails p {
+    margin: 0 0 0.5rem 0;
+}
+
+

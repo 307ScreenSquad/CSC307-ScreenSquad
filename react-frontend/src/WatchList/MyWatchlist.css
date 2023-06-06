@@ -20,4 +20,16 @@
 
 .movie-page__watchlist {
     margin-top: 2rem;
-  }
+}
+
+.movie-grid-header {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.movie-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 20px;
+    justify-items: center;
+}

@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 
-
 const MovieReviewSchema = new mongoose.Schema(
   {
     movieId: {
@@ -18,11 +17,15 @@ const MovieReviewSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    // postTime: {
-    //     type: Date,
-    //     required: true,
-    //     trim: true,
-    //   },
+    // postedAt: {
+    //   type: Date,
+    //   required: true,
+    //   trim: true,
+    // },
+    // posterName: {
+    //   type: String,
+    //   trim: true,
+    // },
   },
   { collection: "movie_reviews" }
 );

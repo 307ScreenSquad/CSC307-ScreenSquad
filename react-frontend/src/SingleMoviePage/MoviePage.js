@@ -22,7 +22,7 @@ const MoviePage = ({ isLoggedIn }) => {
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [reviewText, setReviewText] = useState("");
+  const [reviewText, setReviewText] = useState('');
 
   useEffect(() => {
     async function fetchMovieDetails() {
@@ -43,7 +43,9 @@ const MoviePage = ({ isLoggedIn }) => {
         setMovie(movieResponse.data);
         setCast(castResponse.data.cast.map((castMember) => castMember.name));
         setStreamingPlatforms(
-          streamingPlatformsResponse.data.results.US.flatrate || []
+          Object.values(
+            streamingPlatformsResponse.data.results.US.flatrate || {}
+          ).map((provider) => provider.provider_name)
         );
         setReviews(reviewsResponse.data.reviews);
       } catch (error) {
@@ -68,17 +70,18 @@ const MoviePage = ({ isLoggedIn }) => {
 
     fetchReviews();
   }, [movieId]);
-
   const submitReview = async () => {
+    const userId = localStorage.getItem('id');
     try {
       const response = await axios.post(`http://localhost:8000/reviews`, {
         movieId,
         reviewText,
+        userId: userId
       });
-
+  
       if (response.status === 200) {
-        const newReview = { reviewText }; // Create a new review object
-        setReviews([newReview, ...reviews]); // Prepend the new review to the existing reviews array
+        const newReview = { reviewText };
+        setReviews([newReview, ...reviews]);
         setReviewText("");
       }
     } catch (error) {
@@ -88,8 +91,29 @@ const MoviePage = ({ isLoggedIn }) => {
 
   // adding to watchlist locally
   const addtoWatchlist = async () => {
-    setWatchlist([...watchlist, movie]);
+    const userId = localStorage.getItem('id');
+    try {
+      const response = await axios.post(`http://localhost:8000/watchlist`, {
+        movieId,
+        title: movie.title,
+        poster_path: movie.poster_path,
+        userId: userId
+      });
+  
+      if (response.status === 200) {
+        const newMovie = {
+          movieId,
+          title: movie.title,
+          poster_path: movie.poster_path,
+          userId
+        };
+        setWatchlist([newMovie, ...watchlist]);
+      }
+    } catch (error) {
+      console.error('Error adding movie:', error);
+    }
   };
+  
 
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
 
@@ -99,9 +123,6 @@ const MoviePage = ({ isLoggedIn }) => {
   const synopsis = overview;
   const poster = `https://image.tmdb.org/t/p/w500${poster_path}`;
   const genresList = genres.map((genre) => genre.name).join(", ");
-
-  const getStreamingPlatformLogo = (logoPath) =>
-    `https://image.tmdb.org/t/p/original${logoPath}`;
 
   return (
     <Container fluid className="movie-page">
@@ -121,21 +142,8 @@ const MoviePage = ({ isLoggedIn }) => {
                 <strong>Runtime:</strong> {runtime} minutes <br />
                 <strong>Synopsis:</strong> {synopsis} <br />
                 <strong>Cast:</strong> {cast.join(", ")} <br />
-                <strong>Available on:</strong>{" "}
-                {streamingPlatforms.length > 0 ? (
-                  <div>
-                    {streamingPlatforms.map((platform) => (
-                      <img
-                        src={getStreamingPlatformLogo(platform.logo_path)}
-                        alt={platform.provider_name}
-                        key={platform.provider_id}
-                        className="streaming-platform-logo"
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  "No streaming available"
-                )}
+                <strong>Available on:</strong> {streamingPlatforms.join(", ")}{" "}
+                <br />
               </Card.Text>
               <Button variant="primary" onClick={() => addtoWatchlist(movie)}>
                 Add to my Watchlist
@@ -146,7 +154,7 @@ const MoviePage = ({ isLoggedIn }) => {
             <Card.Header as="h5">My Watchlist</Card.Header>
             <ListGroup variant="flush">
               {watchlist.map((movie) => (
-                <ListGroupItem key={movie.id}>{movie.title}</ListGroupItem>
+                <ListGroupItem>{movie.title}</ListGroupItem>
               ))}
             </ListGroup>
           </Card>

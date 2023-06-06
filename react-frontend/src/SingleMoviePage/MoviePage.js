@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MoviePage.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import {
   Button,
   Card,
@@ -14,7 +14,7 @@ import {
   FormControl,
   Alert,
 } from "react-bootstrap";
-
+  
 const MoviePage = ({ isLoggedIn }) => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
@@ -22,7 +22,10 @@ const MoviePage = ({ isLoggedIn }) => {
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
   const [watchlist, setWatchlist] = useState([]);
   const [reviews, setReviews] = useState([]);
-  const [reviewText, setReviewText] = useState('');
+  const [reviewText, setReviewText] = useState("");
+
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     async function fetchMovieDetails() {
@@ -103,6 +106,15 @@ const MoviePage = ({ isLoggedIn }) => {
   const poster = `https://image.tmdb.org/t/p/w500${poster_path}`;
   const genresList = genres.map((genre) => genre.name).join(", ");
 
+    function handleNavigate(input){
+      if(input){
+        navigate("/login")
+        return;
+      }
+      navigate("/register");
+      return;
+    }
+
   return (
     <Container fluid className="movie-page">
       <Row>
@@ -143,6 +155,7 @@ const MoviePage = ({ isLoggedIn }) => {
         <Col>
           <Card className="movie-page__reviews">
             <Card.Header as="h5">Reviews</Card.Header>
+            {isLoggedIn &&
             <Card.Body>
               <FormControl
                 as="textarea"
@@ -159,6 +172,16 @@ const MoviePage = ({ isLoggedIn }) => {
                 ))}
               </ListGroup>
             </Card.Body>
+            }
+            {!isLoggedIn && 
+              <Card.Body className="movie-page__noLogin">
+                <Card.Header as= "h4">To make a review, please Sign Up or Login</Card.Header>
+                <div className="movie-page__noLogin_button_container">
+                  <Button onClick={() => {handleNavigate(0)}}>Sign Up</Button>
+                  <Button onClick={() => {handleNavigate(1)}}>Login</Button>
+                </div>
+              </Card.Body>
+            }
           </Card>
         </Col>
       </Row>

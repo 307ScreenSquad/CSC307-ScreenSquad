@@ -13,6 +13,9 @@ import Landing from "./Landing/Landing"
 import NavBar from "./NavBar/NavBar"
 import Admin from "./Admin/Admin"
 import Profile from "./Profile/Profile"
+import EditProfile from "./Profile/EditProfile"
+import ProfileReviews from "./Profile/ProfileReviews"
+import UpcomingPage from "./UpcomingReleasesPage/UpcomingReleases"
 import MyWatchlist from "./WatchList/MyWatchlist"
 import bcrypt from 'bcryptjs'
 import { ThemeProvider } from "@emotion/react"; 

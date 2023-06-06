@@ -2,7 +2,7 @@ import axios from 'axios'
 import React, {useState, useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import bcrypt from 'bcryptjs'
-import './styles/profile.css';
+import './profile.css';
 
 
 function EditProfile (props) {

@@ -117,7 +117,6 @@ app.get('/reviews/:movieId', async (req, res) => {
 
 app.get('/reviews', async (req, res) => {
     const {userId} = req.query
-    
     try {
       const reviews = await movieReviewServices.findReviewsByUserId(userId);
       res.json({ reviews });
@@ -137,6 +136,7 @@ app.post('/reviews', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 app.put('/reviews/:_id', async (req, res) => {
   const id = req.params['_id'];
   let result = await movieReviewServices.editReview(id, req.body);
@@ -147,8 +147,6 @@ app.put('/reviews/:_id', async (req, res) => {
     res.status(200).json(result[0]);
   }
 });
-
-
 
 app.get('/forgot', async (req, res) => {
   const { email, password, hashedPassword } = req.query;
@@ -170,13 +168,25 @@ app.get('/forgot', async (req, res) => {
 app.get('/watchlist', async (req, res) => {
   const { userId } = req.query
   try {
-    const watchlist = await watchlistServices.findMoviesByUserId(userId);
+    const watchlist = await watchlistServices.getWatchlist(userId);
     res.json({ watchlist });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'An error occurred on the server.' });
   }
 });
+
+// app.get('/watchlist/:userId', async (req, res) => {
+//   const userId = req.params['userId'];
+
+//   try {
+//     const reviews = await movieReviewServices.getWatchlist(userId);
+//     res.json({ reviews });
+//   } catch (error) {
+//     console.log(error);
+//     res.status(500).json({ message: 'An error occurred on the server.' });
+//   }
+// });
 
 app.post('/watchlist', async (req, res) => {
   const watchlist = req.body;
@@ -190,5 +200,5 @@ app.post('/watchlist', async (req, res) => {
 });
 
 app.listen(process.env.PORT || port, () => {
-  console.log("REST API is listening.");
+  console.log("REST API is listening.", port);
 });

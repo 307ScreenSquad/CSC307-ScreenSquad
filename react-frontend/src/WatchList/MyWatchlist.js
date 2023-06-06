@@ -7,9 +7,9 @@ const Watchlist = () => {
 
   useEffect(() => {
     async function fetchMoviestoWatchlist() {
-      let userId = localStorage.getItem('id');
+      // let userId = localStorage.getItem('id');
       try {
-        const watchlistResponse = await axios.get(`http://localhost:8000/watchlist?userId=${userId}`);
+        const watchlistResponse = await axios.get(`https://screen-squad.azurewebsites.net/watchlist`);
         setWatchlist(watchlistResponse.data.watchlist);
       } catch (error) {
         console.error('Error fetching movies:', error);

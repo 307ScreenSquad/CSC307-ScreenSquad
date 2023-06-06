@@ -15,13 +15,13 @@ mongoose
   )
   .catch((error) => console.log(error));
 
-async function getWatchlist() {
-    return await findMoviesByUserId();
+async function getWatchlist(userId) {
+    return await findMoviesByUserId(userId);
 }
 
-async function findMovieById() {
+async function findMovieById(movieId) {
     try {
-      return await MyWatchlist;
+      return await MyWatchlist.findById(movieId);
     } catch (error) {
       console.log(error);
       return undefined;
@@ -41,11 +41,22 @@ async function addMovie(movie) {
 
 async function findMoviesByUserId(userId) {
     return await MyWatchlist.find({ userId: userId});
+}
+
+async function removeMovies(movieId) {
+  try {
+    const deleteMovie = await MyWatchlist.findByIdAndDelete(movieId);
+    return deleteMovie;
+  } catch (error) {
+    console.log(error);
+    return false;
   }
+}
 
 module.exports = {
   getWatchlist,
   findMovieById,
   addMovie,
-  findMoviesByUserId
+  findMoviesByUserId,
+  removeMovies
 };

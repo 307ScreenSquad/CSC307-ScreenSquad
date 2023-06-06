@@ -12,6 +12,8 @@ import Landing from "./Landing";
 import NavBar from "./NavBar";
 import Admin from "./Admin";
 import Profile from "./Profile";
+import EditProfile from "./EditProfile";
+// import ProfileReviews from "./ProfileReviews"
 import MyWatchlist from "./WatchList/MyWatchlist";
 import UpcomingPage from "./UpcomingReleasesPage/UpcomingReleases";
 import bcrypt from "bcryptjs";
@@ -146,7 +148,7 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/profile" element={<Profile isLoggedIn={loggedIn}/>} />
           <Route path="/profile/edit" element={<EditProfile />} />
-          <Route path="/profile/reviews" element={<ProfileReviews bcryptSalt={salt}/>} />
+          {/* <Route path="/profile/reviews" element={<ProfileReviews bcryptSalt={salt}/>} /> */}
           <Route path="/forgot" element={<Forgot bcryptSalt={salt}/>} />
           <Route path="/upcoming" element={<UpcomingPage />} />
         </Routes>

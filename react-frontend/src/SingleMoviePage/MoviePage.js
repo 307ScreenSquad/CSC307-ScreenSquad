@@ -15,7 +15,7 @@ import {
 } from "react-bootstrap";
 
 const MoviePage = ({ isLoggedIn }) => {
-  const { movieId } = useParams();
+  const { movieId, userId } = useParams();
   const [movie, setMovie] = useState(null);
   const [cast, setCast] = useState([]);
   const [streamingPlatforms, setStreamingPlatforms] = useState([]);
@@ -38,12 +38,11 @@ const MoviePage = ({ isLoggedIn }) => {
           `https://api.themoviedb.org/3/movie/${movieId}/watch/providers?api_key=a43aea022f03ee960884520d48d1c5f8`
         );
         const reviewsResponse = await axios.get(
-          `http://localhost:8000/reviews/${movieId}`
+          `https://screen-squad.azurewebsites.net/reviews/${movieId}`
         );
-        const watchlistResponse = await axios.get(
-          `http://localhost:8000/watchlist`
-        );
-
+        // const watchlistResponse = await axios.get(
+        //   `https://screen-squad.azurewebsites.net/watchlist`
+        // );
         setMovie(movieResponse.data);
         setCast(castResponse.data.cast.map((castMember) => castMember.name));
         setStreamingPlatforms(
@@ -52,7 +51,7 @@ const MoviePage = ({ isLoggedIn }) => {
           ).map((provider) => provider.provider_name)
         );
         setReviews(reviewsResponse.data.reviews);
-        setWatchlist(watchlistResponse.data.watchlist);
+        // setWatchlist(watchlistResponse.data.watchlist);
 
       } catch (error) {
         console.error("Error fetching movie details:", error);
@@ -66,7 +65,8 @@ const MoviePage = ({ isLoggedIn }) => {
     async function fetchReviews() {
       try {
         const reviewsResponse = await axios.get(
-          `http://localhost:8000/reviews/${movieId}`
+          `https://screen-squad.azurewebsites.net/reviews/${movieId}`
+          // `https://screen-squad.azurewebsites.net/?userId=${localStorage.getItem('id')}`
         );
         setReviews(reviewsResponse.data.reviews);
       } catch (error) {
@@ -109,6 +109,24 @@ const MoviePage = ({ isLoggedIn }) => {
     }
   };
 
+  const removeFromWatchlist = async() => {
+    let userId = localStorage.getItem('id');
+    try {
+      const response = await axios.delete(`http://localhost:8000/watchlist`, { movieId, title, poster_path, userId });
+
+      if (response.status === 200) {
+        const removedMovie = watchlist.filter((movie) => movie.movieId !== movieId);
+        setWatchlist([removedMovie]);
+      }
+    } catch (error) {
+      console.error('Error removing movie:', error);
+    }
+  }
+
+  const isMovieInWatchlist = async() => watchlist.some(
+    (movie) => movie.movieId === movieId
+  );
+
   function handleNavigate(input){
     if(input){
       navigate("/login")
@@ -148,10 +166,16 @@ const MoviePage = ({ isLoggedIn }) => {
                 <strong>Available on:</strong> {streamingPlatforms.join(", ")}{" "}
                 <br />
               </Card.Text>
-              <Button variant="primary" as={Link} to="/watchlist" 
-                onClick={() => addtoWatchlist(movie)}>
-                Add to my Watchlist
+              {isMovieInWatchlist ? (
+                <Button variant="primary" as={Link} to="/watchlist" 
+                  onClick={() => addtoWatchlist(movie)}>
+                  Add to my Watchlist
+                </Button> ) : (
+                <Button variant="danger" 
+                  onClick={() => removeFromWatchlist(movie)}>
+                  Remove from my Watchlist
               </Button>
+              )}
             </Card.Body>
           </Card>
         </Col>

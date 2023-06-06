@@ -15,6 +15,8 @@ import Profile from "./Profile";
 import MyWatchlist from "./WatchList/MyWatchlist";
 import UpcomingPage from "./UpcomingReleasesPage/UpcomingReleases";
 import bcrypt from "bcryptjs";
+import EditProfile from "./EditProfile";
+import ProfileReviews from "./ProfileReviews";
 import { ThemeProvider } from "@emotion/react";
 
 // hashing: https://medium.com/boca-code/how-to-encrypt-password-in-your-react-app-before-you-send-it-to-the-api-6e10a06f0a8e
@@ -141,13 +143,19 @@ function App() {
             element={<Register createUser={handleCreateUser} />}
           />
           <Route path="/landing" element={<Landing />} />
-          <Route path="/movie/:movieId" element={<MoviePage isLoggedIn={loggedIn}/>} />
+          <Route
+            path="/movie/:movieId"
+            element={<MoviePage isLoggedIn={loggedIn} />}
+          />
           <Route path="/watchlist" element={<MyWatchlist />} />
           <Route path="/admin" element={<Admin />} />
-          <Route path="/profile" element={<Profile isLoggedIn={loggedIn}/>} />
+          <Route path="/profile" element={<Profile isLoggedIn={loggedIn} />} />
           <Route path="/profile/edit" element={<EditProfile />} />
-          <Route path="/profile/reviews" element={<ProfileReviews bcryptSalt={salt}/>} />
-          <Route path="/forgot" element={<Forgot bcryptSalt={salt}/>} />
+          <Route
+            path="/profile/reviews"
+            element={<ProfileReviews bcryptSalt={salt} />}
+          />
+          <Route path="/forgot" element={<Forgot bcryptSalt={salt} />} />
           <Route path="/upcoming" element={<UpcomingPage />} />
         </Routes>
       </BrowserRouter>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MoviePage.css";
-import { useParams, useNavigate, Link} from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -22,7 +22,7 @@ const MoviePage = ({ isLoggedIn }) => {
   const [watchlist, setWatchlist] = useState([]);
 
   const [reviews, setReviews] = useState([]);
-  const [reviewText, setReviewText] = useState('');
+  const [reviewText, setReviewText] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -53,7 +53,6 @@ const MoviePage = ({ isLoggedIn }) => {
         );
         setReviews(reviewsResponse.data.reviews);
         setWatchlist(watchlistResponse.data.watchlist);
-
       } catch (error) {
         console.error("Error fetching movie details:", error);
       }
@@ -78,7 +77,7 @@ const MoviePage = ({ isLoggedIn }) => {
   }, [movieId]);
 
   const submitReview = async () => {
-    let userId = localStorage.getItem('id');
+    let userId = localStorage.getItem("id");
     try {
       const response = await axios.post(`http://localhost:8000/reviews`, {
         movieId,
@@ -96,22 +95,27 @@ const MoviePage = ({ isLoggedIn }) => {
   };
 
   const addtoWatchlist = async () => {
-    let userId = localStorage.getItem('id');
+    let userId = localStorage.getItem("id");
     try {
-      const response = await axios.post(`http://localhost:8000/watchlist`, { movieId, title, poster_path, userId });
+      const response = await axios.post(`http://localhost:8000/watchlist`, {
+        movieId,
+        title,
+        poster_path,
+        userId,
+      });
 
       if (response.status === 200) {
         const newMovie = { movieId, title, poster_path, userId };
-        setWatchlist([newMovie, ...watchlist]); 
+        setWatchlist([newMovie, ...watchlist]);
       }
     } catch (error) {
-      console.error('Error adding movie:', error);
+      console.error("Error adding movie:", error);
     }
   };
 
-  function handleNavigate(input){
-    if(input){
-      navigate("/login")
+  function handleNavigate(input) {
+    if (input) {
+      navigate("/login");
       return;
     }
     navigate("/register");
@@ -148,8 +152,12 @@ const MoviePage = ({ isLoggedIn }) => {
                 <strong>Available on:</strong> {streamingPlatforms.join(", ")}{" "}
                 <br />
               </Card.Text>
-              <Button variant="primary" as={Link} to="/watchlist" 
-                onClick={() => addtoWatchlist(movie)}>
+              <Button
+                variant="primary"
+                as={Link}
+                to="/watchlist"
+                onClick={() => addtoWatchlist(movie)}
+              >
                 Add to my Watchlist
               </Button>
             </Card.Body>

@@ -72,3 +72,23 @@
   margin: 0 5px; /* Adjust as needed */
   
 }
+
+.review-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+}
+
+.poster-name {
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.posted-at {
+  font-size: 12px;
+  color: #888;
+}
+
+.review-text {
+  margin-top: 5px;
+}

@@ -25,9 +25,6 @@ const MoviePage = ({ isLoggedIn }) => {
   const [reviewText, setReviewText] = useState("");
   const navigate = useNavigate();
 
-
-  const navigate = useNavigate();
-
   useEffect(() => {
     async function fetchMovieDetails() {
       try {
@@ -50,8 +47,7 @@ const MoviePage = ({ isLoggedIn }) => {
           streamingPlatformsResponse.data.results.US.flatrate || []
         );
         setReviews(reviewsResponse.data.reviews);
-        setWatchlist(watchlistResponse.data.watchlist);
-
+        //setWatchlist(watchlistResponse.data.watchlist);
       } catch (error) {
         console.error("Error fetching movie details:", error);
       }
@@ -123,7 +119,6 @@ const MoviePage = ({ isLoggedIn }) => {
     return;
   }
 
-
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
 
   const { title, vote_average, genres, runtime, overview, poster_path } = movie;
@@ -136,14 +131,14 @@ const MoviePage = ({ isLoggedIn }) => {
   const getStreamingPlatformLogo = (logoPath) =>
     `https://image.tmdb.org/t/p/original${logoPath}`;
 
-    function handleNavigate(input){
-      if(input){
-        navigate("/login")
-        return;
-      }
-      navigate("/register");
+  function handleNavigate(input) {
+    if (input) {
+      navigate("/login");
       return;
     }
+    navigate("/register");
+    return;
+  }
 
   return (
     <Container fluid className="movie-page">
@@ -203,33 +198,53 @@ const MoviePage = ({ isLoggedIn }) => {
         <Col>
           <Card className="movie-page__reviews">
             <Card.Header as="h5">Reviews</Card.Header>
-            {isLoggedIn &&
-            <Card.Body>
-              <FormControl
-                as="textarea"
-                value={reviewText}
-                onChange={(e) => setReviewText(e.target.value)}
-                placeholder="Write a review..."
-              />
-              <Button className="mt-3" variant="primary" onClick={submitReview}>
-                Submit
-              </Button>
-              <ListGroup className="mt-3">
-                {reviews.map((review, index) => (
-                  <ListGroupItem key={index}>{review.reviewText}</ListGroupItem>
-                ))}
-              </ListGroup>
-            </Card.Body>
-            }
-            {!isLoggedIn && 
+            {isLoggedIn && (
+              <Card.Body>
+                <FormControl
+                  as="textarea"
+                  value={reviewText}
+                  onChange={(e) => setReviewText(e.target.value)}
+                  placeholder="Write a review..."
+                />
+                <Button
+                  className="mt-3"
+                  variant="primary"
+                  onClick={submitReview}
+                >
+                  Submit
+                </Button>
+                <ListGroup className="mt-3">
+                  {reviews.map((review, index) => (
+                    <ListGroupItem key={index}>
+                      {review.reviewText}
+                    </ListGroupItem>
+                  ))}
+                </ListGroup>
+              </Card.Body>
+            )}
+            {!isLoggedIn && (
               <Card.Body className="movie-page__noLogin">
-                <Card.Header as= "h4">To make a review, please Sign Up or Login</Card.Header>
+                <Card.Header as="h4">
+                  To make a review, please Sign Up or Login
+                </Card.Header>
                 <div className="movie-page__noLogin_button_container">
-                  <Button onClick={() => {handleNavigate(0)}}>Sign Up</Button>
-                  <Button onClick={() => {handleNavigate(1)}}>Login</Button>
+                  <Button
+                    onClick={() => {
+                      handleNavigate(0);
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      handleNavigate(1);
+                    }}
+                  >
+                    Login
+                  </Button>
                 </div>
               </Card.Body>
-            }
+            )}
           </Card>
         </Col>
       </Row>

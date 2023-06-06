@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MoviePage.css";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -23,8 +23,10 @@ const MoviePage = ({ isLoggedIn }) => {
   const [watchlist, setWatchlist] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
-
   const navigate = useNavigate();
+
+
+  // const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -42,7 +44,10 @@ const MoviePage = ({ isLoggedIn }) => {
         const reviewsResponse = await axios.get(
           `http://localhost:8000/reviews/${movieId}`
         );
-
+        const watchlistResponse = await axios.get(
+          `http://localhost:8000/watchlist`
+        );
+        
         setMovie(movieResponse.data);
         setCast(castResponse.data.cast.map((castMember) => castMember.name));
         setStreamingPlatforms(
@@ -51,6 +56,8 @@ const MoviePage = ({ isLoggedIn }) => {
           ).map((provider) => provider.provider_name)
         );
         setReviews(reviewsResponse.data.reviews);
+        setWatchlist(watchlistResponse.data.watchlist);
+
       } catch (error) {
         console.error("Error fetching movie details:", error);
       }
@@ -74,7 +81,8 @@ const MoviePage = ({ isLoggedIn }) => {
     fetchReviews();
   }, [movieId]);
   const submitReview = async () => {
-    const userId = localStorage.getItem('id');
+    let userId = localStorage.getItem("id");
+
     try {
       const response = await axios.post(`http://localhost:8000/reviews`, {
         movieId,
@@ -94,8 +102,33 @@ const MoviePage = ({ isLoggedIn }) => {
 
   // adding to watchlist locally
   const addtoWatchlist = async () => {
-    setWatchlist([...watchlist, movie]);
+    let userId = localStorage.getItem("id");
+    try {
+      const response = await axios.post(`http://localhost:8000/watchlist`, {
+        movieId,
+        title,
+        poster_path,
+        userId,
+      });
+
+      if (response.status === 200) {
+        const newMovie = { movieId, title, poster_path, userId };
+        setWatchlist([newMovie, ...watchlist]);
+      }
+    } catch (error) {
+      console.error("Error adding movie:", error);
+    }
   };
+
+  function handleNavigate(input) {
+    if (input) {
+      navigate("/login");
+      return;
+    }
+    navigate("/register");
+    return;
+  }
+
 
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
 
@@ -136,7 +169,12 @@ const MoviePage = ({ isLoggedIn }) => {
                 <strong>Available on:</strong> {streamingPlatforms.join(", ")}{" "}
                 <br />
               </Card.Text>
-              <Button variant="primary" onClick={() => addtoWatchlist(movie)}>
+              <Button
+                variant="primary"
+                as={Link}
+                to="/watchlist"
+                onClick={() => addtoWatchlist(movie)}
+              >
                 Add to my Watchlist
               </Button>
             </Card.Body>

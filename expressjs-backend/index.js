@@ -3,12 +3,9 @@ const bodyParser = require('body-parser');
 const session = require('express-session');
 const nodemailer = require("nodemailer");
 const app = express();
-const port = 8000;
 const cors = require('cors');
-const userServices = require('./models/user-services');
-const movieReviewServices = require('./models/movie-review-services');
-const watchlistServices = require('./models/watchlist-services');
-
+const userServices = require('./controllers/user-services');
+const movieReviewServices = require('./controllers/movie-review-services');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({

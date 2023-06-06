@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import './styles/profile.css';
+import './profile.css';
 import axios from 'axios'
 import {useNavigate, Link} from 'react-router-dom'
 import { Navbar, Container, Nav } from "react-bootstrap";

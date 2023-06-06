@@ -185,7 +185,6 @@ app.post('/watchlist', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
-
 app.listen(process.env.PORT || port, () => {
   console.log("REST API is listening.");
 });

@@ -21,8 +21,14 @@ export default function NavBar(props) {
           )}
           {props.isLoggedIn && (
             <>
-              <Nav.Link className="Navbar-form-links" as={Link} to="/">
-                Welcome {' ' + localStorage.name.split(' ')[0]}
+              <Nav.Link className="Navbar-form-links" as={Link} to="/upcoming">
+                Upcoming Releases
+              </Nav.Link>
+              <Nav.Link className="Navbar-form-links" as={Link} to="/watchlist">
+                My Watchlist
+              </Nav.Link>
+              <Nav.Link className="Navbar-form-links" as={Link} to="/profile">
+                Welcome {" " + localStorage.name.split(" ")[0]}
               </Nav.Link>
               <Nav.Link className="Navbar-form-links" onClick={props.logoutUser} as={Link} to="/" >
                 Logout

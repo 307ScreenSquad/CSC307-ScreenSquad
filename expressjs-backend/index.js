@@ -5,8 +5,10 @@ const nodemailer = require("nodemailer");
 const app = express();
 const port = 8000;
 const cors = require("cors");
-const userServices = require("./controllers/user-services");
-const movieReviewServices = require("./controllers/movie-review-services");
+// const userServices = require("./models/user-services");
+const userServices = require('./controllers/user-services');
+const movieReviewServices = require('./controllers/movie-review-services');
+const watchlistServices = require('./controllers/watchlist-services');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(

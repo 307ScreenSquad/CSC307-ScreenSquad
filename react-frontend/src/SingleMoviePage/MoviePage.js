@@ -14,7 +14,7 @@ import {
   FormControl,
   Alert,
 } from "react-bootstrap";
-
+  
 const MoviePage = ({ isLoggedIn }) => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
@@ -40,11 +40,16 @@ const MoviePage = ({ isLoggedIn }) => {
         const reviewsResponse = await axios.get(
           `http://localhost:8000/reviews/${movieId}`
         );
-
+        const watchlistResponse = await axios.get(
+          `http://localhost:8000/watchlist`
+        );
+        
         setMovie(movieResponse.data);
         setCast(castResponse.data.cast.map((castMember) => castMember.name));
         setStreamingPlatforms(
-          streamingPlatformsResponse.data.results.US.flatrate || []
+          Object.values(
+            streamingPlatformsResponse.data.results.US.flatrate || {}
+          ).map((provider) => provider.provider_name)
         );
         setReviews(reviewsResponse.data.reviews);
         //setWatchlist(watchlistResponse.data.watchlist);
@@ -70,7 +75,6 @@ const MoviePage = ({ isLoggedIn }) => {
 
     fetchReviews();
   }, [movieId]);
-
   const submitReview = async () => {
     let userId = localStorage.getItem("id");
 
@@ -78,11 +82,12 @@ const MoviePage = ({ isLoggedIn }) => {
       const response = await axios.post(`http://localhost:8000/reviews`, {
         movieId,
         reviewText,
+        userId: userId
       });
-
+  
       if (response.status === 200) {
-        const newReview = { reviewText }; // Create a new review object
-        setReviews([newReview, ...reviews]); // Prepend the new review to the existing reviews array
+        const newReview = { reviewText };
+        setReviews([newReview, ...reviews]);
         setReviewText("");
       }
     } catch (error) {
@@ -158,21 +163,8 @@ const MoviePage = ({ isLoggedIn }) => {
                 <strong>Runtime:</strong> {runtime} minutes <br />
                 <strong>Synopsis:</strong> {synopsis} <br />
                 <strong>Cast:</strong> {cast.join(", ")} <br />
-                <strong>Available on:</strong>{" "}
-                {streamingPlatforms.length > 0 ? (
-                  <div>
-                    {streamingPlatforms.map((platform) => (
-                      <img
-                        src={getStreamingPlatformLogo(platform.logo_path)}
-                        alt={platform.provider_name}
-                        key={platform.provider_id}
-                        className="streaming-platform-logo"
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  "No streaming available"
-                )}
+                <strong>Available on:</strong> {streamingPlatforms.join(", ")}{" "}
+                <br />
               </Card.Text>
               <Button
                 variant="primary"
@@ -188,7 +180,7 @@ const MoviePage = ({ isLoggedIn }) => {
             <Card.Header as="h5">My Watchlist</Card.Header>
             <ListGroup variant="flush">
               {watchlist.map((movie) => (
-                <ListGroupItem key={movie.id}>{movie.title}</ListGroupItem>
+                <ListGroupItem>{movie.title}</ListGroupItem>
               ))}
             </ListGroup>
           </Card>

@@ -91,29 +91,8 @@ const MoviePage = ({ isLoggedIn }) => {
 
   // adding to watchlist locally
   const addtoWatchlist = async () => {
-    const userId = localStorage.getItem('id');
-    try {
-      const response = await axios.post(`http://localhost:8000/watchlist`, {
-        movieId,
-        title: movie.title,
-        poster_path: movie.poster_path,
-        userId: userId
-      });
-  
-      if (response.status === 200) {
-        const newMovie = {
-          movieId,
-          title: movie.title,
-          poster_path: movie.poster_path,
-          userId
-        };
-        setWatchlist([newMovie, ...watchlist]);
-      }
-    } catch (error) {
-      console.error('Error adding movie:', error);
-    }
+    setWatchlist([...watchlist, movie]);
   };
-  
 
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
 

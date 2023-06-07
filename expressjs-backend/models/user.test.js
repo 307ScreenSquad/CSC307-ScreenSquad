@@ -1,5 +1,5 @@
 const Movie_User = require('./user.js');
-const user_services = require('./user-services.js');
+const user_services = require('./controllers/user-services.js');
 const mongoose = require('mongoose');
 
 test('Movie_User model works as expected', () => {

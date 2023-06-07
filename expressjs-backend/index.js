@@ -5,7 +5,7 @@ const nodemailer = require("nodemailer");
 const app = express();
 const port = 8000;
 const cors = require("cors");
-// const userServices = require("./models/user-services");
+const userServices = require("./models/user-services");
 const userServices = require('./controllers/user-services');
 const movieReviewServices = require('./controllers/movie-review-services');
 const watchlistServices = require('./controllers/watchlist-services');
@@ -194,7 +194,18 @@ app.get("/watchlist", async (req, res) => {
   }
 });
 
-app.post("/watchlist", async (req, res) => {
+app.get('/watchlist/:userId', async (req, res) => {
+  const { userId } = req.query
+  try {
+    const watchlist = await watchlistServices.findMoviesByUserId(userId);
+    res.json({ watchlist });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'An error occurred on the server.' });
+  }
+});
+
+app.post('/watchlist', async (req, res) => {
   const watchlist = req.body;
   try {
     const result = await watchlistServices.addMovie(watchlist);
@@ -204,6 +215,13 @@ app.post("/watchlist", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
+app.delete("/watchlist/:userId/:movieId", async (req, res) => {
+  const {userId, movieId} = req.params;
+  if (watchlistServices.removeMovie(userId, movieId)) res.status(204).end();
+  else res.status(404).send("Resource not found.");
+});
+
 app.listen(process.env.PORT || port, () => {
   console.log("REST API is listening.");
 });

@@ -11,12 +11,10 @@ export default function NavBar(props) {
           <BiCameraMovie className="Navbar-logo" />
           Screen Squad
         </Navbar.Brand>
-        
         <Nav className="ml-auto">
           {!props.isLoggedIn && (
             <Nav.Link className="Navbar-form-links" as={Link} to="/login">
               Log In
-
             </Nav.Link>
           )}
           {props.isLoggedIn && (
@@ -28,7 +26,7 @@ export default function NavBar(props) {
                 My Watchlist
               </Nav.Link>
               <Nav.Link className="Navbar-form-links" as={Link} to="/profile">
-                Welcome {" " + localStorage.name.split(" ")[0]}
+                Welcome {" " + localStorage.name.split(" ")[0] + "!"}
               </Nav.Link>
               <Nav.Link className="Navbar-form-links" onClick={props.logoutUser} as={Link} to="/" >
                 Logout

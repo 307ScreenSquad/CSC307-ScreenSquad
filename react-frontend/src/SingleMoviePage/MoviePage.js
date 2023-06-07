@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./MoviePage.css";
 import { useParams, useNavigate, Link } from "react-router-dom";
@@ -12,7 +12,6 @@ import {
   Row,
   Col,
   FormControl,
-  Alert,
 } from "react-bootstrap";
   
 const MoviePage = ({ isLoggedIn }) => {
@@ -23,6 +22,8 @@ const MoviePage = ({ isLoggedIn }) => {
   const [watchlist, setWatchlist] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
+  const isMovieInWatchlist= useRef(false);
+  const [wl, setwl] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -52,13 +53,14 @@ const MoviePage = ({ isLoggedIn }) => {
           ).map((provider) => provider.provider_name)
         );
         setReviews(reviewsResponse.data.reviews);
-        //setWatchlist(watchlistResponse.data.watchlist);
+        setWatchlist(watchlistResponse.data.watchlist);
       } catch (error) {
         console.error("Error fetching movie details:", error);
       }
     }
 
     fetchMovieDetails();
+    
   }, [movieId]);
 
   useEffect(() => {
@@ -75,6 +77,27 @@ const MoviePage = ({ isLoggedIn }) => {
 
     fetchReviews();
   }, [movieId]);
+
+  useEffect(() => {
+    async function setWL() {
+      let userId = localStorage.getItem('id');
+      try {
+        const watchlistResponse = await axios.get(`http://localhost:8000/watchlist?userId=${userId}`);
+        isMovieInWatchlist.current = false;
+        for (let i = 0; i < watchlistResponse.data.watchlist.length; i++){
+          if(watchlistResponse.data.watchlist[i].movieId == movie.id){
+            isMovieInWatchlist.current = true;
+            break;
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+      }
+      setwl(isMovieInWatchlist.current)
+    }
+    setWL();
+  });
+
   const submitReview = async () => {
     let userId = localStorage.getItem("id");
     let posterName = localStorage.getItem("name");
@@ -101,26 +124,34 @@ const MoviePage = ({ isLoggedIn }) => {
     }
   };
   
-
-  // adding to watchlist locally
   const addtoWatchlist = async () => {
-    let userId = localStorage.getItem("id");
+    let userId = localStorage.getItem('id');
     try {
-      const response = await axios.post(`http://localhost:8000/watchlist`, {
-        movieId,
-        title,
-        poster_path,
-        userId,
-      });
+      const response = await axios.post(`http://localhost:8000/watchlist`, { movieId, title, poster_path, userId });
 
       if (response.status === 200) {
         const newMovie = { movieId, title, poster_path, userId };
-        setWatchlist([newMovie, ...watchlist]);
+        setWatchlist([newMovie, ...watchlist]); 
       }
     } catch (error) {
-      console.error("Error adding movie:", error);
+      console.error('Error adding movie:', error);
     }
   };
+
+  const removeFromWatchlist = async(movieId) => {
+    let userId = localStorage.getItem('id');
+    try {
+      const response = await axios.delete(`http://localhost:8000/watchlist/${userId}/${movieId}`);  
+
+      if (response.status === 200) {
+        const removedMovie = watchlist.filter((movie) => movie.movieId !== movieId && movie.userId === userId);
+        setWatchlist(removedMovie);
+      }
+    } catch (error) {
+      console.error('Error removing movie:', error);
+    }
+  };
+
 
   function handleNavigate(input) {
     if (input) {
@@ -143,14 +174,6 @@ const MoviePage = ({ isLoggedIn }) => {
   const getStreamingPlatformLogo = (logoPath) =>
     `https://image.tmdb.org/t/p/original${logoPath}`;
 
-  function handleNavigate(input) {
-    if (input) {
-      navigate("/login");
-      return;
-    }
-    navigate("/register");
-    return;
-  }
 
   return (
     <Container fluid className="movie-page">
@@ -173,23 +196,17 @@ const MoviePage = ({ isLoggedIn }) => {
                 <strong>Available on:</strong> {streamingPlatforms.join(", ")}{" "}
                 <br />
               </Card.Text>
-              <Button
-                variant="primary"
-                as={Link}
-                to="/watchlist"
-                onClick={() => addtoWatchlist(movie)}
-              >
-                Add to my Watchlist
+              {wl ? (
+                <Button variant="danger" as={Link} to="/watchlist" 
+                  onClick={() => removeFromWatchlist(movie.id)}>
+                  Remove from my Watchlist
               </Button>
+              ) :(
+                <Button variant="primary" as={Link} to="/watchlist" 
+                  onClick={() => addtoWatchlist(movie)}>
+                  Add to my Watchlist
+                </Button> )}
             </Card.Body>
-          </Card>
-          <Card className="movie-page__watchlist">
-            <Card.Header as="h5">My Watchlist</Card.Header>
-            <ListGroup variant="flush">
-              {watchlist.map((movie) => (
-                <ListGroupItem>{movie.title}</ListGroupItem>
-              ))}
-            </ListGroup>
           </Card>
         </Col>
       </Row>
@@ -213,23 +230,23 @@ const MoviePage = ({ isLoggedIn }) => {
                   Submit
                 </Button>
                 <ListGroup className="mt-3">
-  {reviews.map((review, index) => (
-    <ListGroupItem key={index}>
-      <div className="review-header">
-        <span className="poster-name">{review.posterName}</span>
-        <span className="posted-at">{new Date(review.postedAt).toLocaleString("en-US", {
-            year: "numeric",
-            month: "short",
-            day: "numeric",
-            hour: "numeric",
-            minute: "numeric",
-            hour12: true,
-          })}</span>
-      </div>
-      <div className="review-text">{review.reviewText}</div>
-    </ListGroupItem>
-  ))}
-</ListGroup>
+                  {reviews.map((review, index) => (
+                    <ListGroupItem key={index}>
+                      <div className="review-header">
+                        <span className="poster-name">{review.posterName}</span>
+                        <span className="posted-at">{new Date(review.postedAt).toLocaleString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            hour12: true,
+                          })}</span>
+                      </div>
+                      <div className="review-text">{review.reviewText}</div>
+                    </ListGroupItem>
+                  ))}
+                </ListGroup>
               </Card.Body>
             )}
             {!isLoggedIn && (
@@ -260,6 +277,6 @@ const MoviePage = ({ isLoggedIn }) => {
       </Row>
     </Container>
   );
-};
+ };
 
 export default MoviePage;

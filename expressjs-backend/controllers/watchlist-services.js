@@ -39,6 +39,23 @@ async function addMovie(movie) {
   }
 }
 
+async function removeMovie(userId, movieId) {
+  try {
+    const movieList = await MyWatchlist.find({
+      $and: [{userId},{movieId}]});
+    const removedMovie = await MyWatchlist.findOneAndDelete(
+      {_id: movieList[0]._id});
+    if (removedMovie) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.error('Error removing movie:', error);
+    return false;
+  }
+}
+
 async function findMoviesByUserId(userId) {
     return await MyWatchlist.find({ userId: userId});
   }
@@ -47,5 +64,6 @@ module.exports = {
   getWatchlist,
   findMovieById,
   addMovie,
-  findMoviesByUserId
+  findMoviesByUserId,
+  removeMovie,
 };

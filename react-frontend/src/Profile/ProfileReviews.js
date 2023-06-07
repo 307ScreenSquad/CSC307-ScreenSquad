@@ -67,7 +67,13 @@ function ProfileReview (props) {
     if(reviews.length === 0){
       fetchReviews().then((result) => {
         if(result){
-          setReviews(result);
+          let hold = [];
+          for(let i = 0; i < result.length; i++){
+            if(findMovie(result[i].movieId)){
+              hold.push(result[i]);
+            }
+          }
+          setReviews(hold);
         }
       })
 
@@ -105,7 +111,7 @@ function ProfileReview (props) {
   }
 
   function findMovie(movieId){
-    let foundMovie = movies.find(movie => movie.id === parseInt(movieId))
+    let foundMovie = movies.find(movie => movie.id === parseInt(movieId));
     return foundMovie
   }
   

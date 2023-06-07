@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./MoviePage.css";
-import { useParams, Link } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -13,7 +13,7 @@ import {
   Col,
   FormControl,
 } from "react-bootstrap";
-
+  
 const MoviePage = ({ isLoggedIn }) => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
@@ -24,6 +24,7 @@ const MoviePage = ({ isLoggedIn }) => {
   const [reviewText, setReviewText] = useState("");
   const isMovieInWatchlist= useRef(false);
   const [wl, setwl] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     async function fetchMovieDetails() {
@@ -43,11 +44,13 @@ const MoviePage = ({ isLoggedIn }) => {
         const watchlistResponse = await axios.get(
           `http://localhost:8000/watchlist`
         );
-
+        
         setMovie(movieResponse.data);
         setCast(castResponse.data.cast.map((castMember) => castMember.name));
         setStreamingPlatforms(
-          streamingPlatformsResponse.data.results.US.flatrate || []
+          Object.values(
+            streamingPlatformsResponse.data.results.US.flatrate || {}
+          ).map((provider) => provider.provider_name)
         );
         setReviews(reviewsResponse.data.reviews);
         setWatchlist(watchlistResponse.data.watchlist);
@@ -96,22 +99,31 @@ const MoviePage = ({ isLoggedIn }) => {
   });
 
   const submitReview = async () => {
+    let userId = localStorage.getItem("id");
+    let posterName = localStorage.getItem("name");
     try {
       const response = await axios.post(`http://localhost:8000/reviews`, {
         movieId,
         reviewText,
+        userId: userId,
+        posterName: posterName,
+        postedAt: new Date().toLocaleString(),
       });
-
+  
       if (response.status === 200) {
-        const newReview = { reviewText }; // Create a new review object
-        setReviews([newReview, ...reviews]); // Prepend the new review to the existing reviews array
+        const newReview = {
+          posterName,
+          postedAt: new Date().toLocaleString(),
+          reviewText,
+        };
+        setReviews([newReview, ...reviews]);
         setReviewText("");
       }
     } catch (error) {
       console.error("Error submitting review:", error);
     }
   };
-
+  
   const addtoWatchlist = async () => {
     let userId = localStorage.getItem('id');
     try {
@@ -138,6 +150,16 @@ const MoviePage = ({ isLoggedIn }) => {
     } catch (error) {
       console.error('Error removing movie:', error);
     }
+  };
+
+
+  function handleNavigate(input) {
+    if (input) {
+      navigate("/login");
+      return;
+    }
+    navigate("/register");
+    return;
   }
 
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
@@ -151,6 +173,7 @@ const MoviePage = ({ isLoggedIn }) => {
 
   const getStreamingPlatformLogo = (logoPath) =>
     `https://image.tmdb.org/t/p/original${logoPath}`;
+
 
   return (
     <Container fluid className="movie-page">
@@ -170,23 +193,9 @@ const MoviePage = ({ isLoggedIn }) => {
                 <strong>Runtime:</strong> {runtime} minutes <br />
                 <strong>Synopsis:</strong> {synopsis} <br />
                 <strong>Cast:</strong> {cast.join(", ")} <br />
-                <strong>Available on:</strong>{" "}
-                {streamingPlatforms.length > 0 ? (
-                  <div>
-                    {streamingPlatforms.map((platform) => (
-                      <img
-                        src={getStreamingPlatformLogo(platform.logo_path)}
-                        alt={platform.provider_name}
-                        key={platform.provider_id}
-                        className="streaming-platform-logo"
-                      />
-                    ))}
-                  </div>
-                ) : (
-                  "No streaming available"
-                )}
+                <strong>Available on:</strong> {streamingPlatforms.join(", ")}{" "}
+                <br />
               </Card.Text>
-
               {wl ? (
                 <Button variant="danger" as={Link} to="/watchlist" 
                   onClick={() => removeFromWatchlist(movie.id)}>
@@ -197,7 +206,6 @@ const MoviePage = ({ isLoggedIn }) => {
                   onClick={() => addtoWatchlist(movie)}>
                   Add to my Watchlist
                 </Button> )}
-
             </Card.Body>
           </Card>
         </Col>
@@ -206,27 +214,69 @@ const MoviePage = ({ isLoggedIn }) => {
         <Col>
           <Card className="movie-page__reviews">
             <Card.Header as="h5">Reviews</Card.Header>
-            <Card.Body>
-              <FormControl
-                as="textarea"
-                value={reviewText}
-                onChange={(e) => setReviewText(e.target.value)}
-                placeholder="Write a review..."
-              />
-              <Button className="mt-3" variant="primary" onClick={submitReview}>
-                Submit
-              </Button>
-              <ListGroup className="mt-3">
-                {reviews.map((review, index) => (
-                  <ListGroupItem key={index}>{review.reviewText}</ListGroupItem>
-                ))}
-              </ListGroup>
-            </Card.Body>
+            {isLoggedIn && (
+              <Card.Body>
+                <FormControl
+                  as="textarea"
+                  value={reviewText}
+                  onChange={(e) => setReviewText(e.target.value)}
+                  placeholder="Write a review..."
+                />
+                <Button
+                  className="mt-3"
+                  variant="primary"
+                  onClick={submitReview}
+                >
+                  Submit
+                </Button>
+                <ListGroup className="mt-3">
+                  {reviews.map((review, index) => (
+                    <ListGroupItem key={index}>
+                      <div className="review-header">
+                        <span className="poster-name">{review.posterName}</span>
+                        <span className="posted-at">{new Date(review.postedAt).toLocaleString("en-US", {
+                            year: "numeric",
+                            month: "short",
+                            day: "numeric",
+                            hour: "numeric",
+                            minute: "numeric",
+                            hour12: true,
+                          })}</span>
+                      </div>
+                      <div className="review-text">{review.reviewText}</div>
+                    </ListGroupItem>
+                  ))}
+                </ListGroup>
+              </Card.Body>
+            )}
+            {!isLoggedIn && (
+              <Card.Body className="movie-page__noLogin">
+                <Card.Header as="h4">
+                  To make a review, please Sign Up or Login
+                </Card.Header>
+                <div className="movie-page__noLogin_button_container">
+                  <Button
+                    onClick={() => {
+                      handleNavigate(0);
+                    }}
+                  >
+                    Sign Up
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      handleNavigate(1);
+                    }}
+                  >
+                    Login
+                  </Button>
+                </div>
+              </Card.Body>
+            )}
           </Card>
         </Col>
       </Row>
     </Container>
   );
-};
+ };
 
 export default MoviePage;

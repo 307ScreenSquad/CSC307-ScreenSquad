@@ -49,14 +49,14 @@ async function editReview(id, bodyData){
   }
 }
 
-// Uncomment this function if you need to remove a review
+// // Uncomment this function if you need to remove a review
 // async function removeReview(reviewId) {
 //   try {
-//     const reviewToDelete = await MovieReview.findByIdAndDelete(reviewId);
-//     return reviewToDelete;
+//     const deletedReview = await MovieReview.findByIdAndDelete(reviewId);
+//     return deletedReview;
 //   } catch (error) {
 //     console.log(error);
-//     return false;
+//     return null;
 //   }
 // }
 

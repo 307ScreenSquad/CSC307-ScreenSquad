@@ -40,11 +40,9 @@ async function getUsers(name, job) {
   return result;
 }
 */
-async function findUserByEmail(email) {
-  return await userModel.find({email: email });
-}
 
-async function getAllUsers(email) {
+
+async function getAllUsers() {
   let result = await userModel.find();
   return result;
 }
@@ -118,25 +116,17 @@ async function removeUser(user_id) {
   }
 }
 
-async function findUserByName(name) {
-  return await userModel.find({ name: name });
-}
-
-async function findUserByJob(job) {
-  return await userModel.find({ job: job });
-}
-
-async function findUserByNameAndJob(name, job) {
-  return await userModel.find({ name: name, job: job });
-}
 
 async function findUserByEmail(email) {
   return await userModel.find({ email: email });
 }
 
+
 async function editUser(id, bodyData){
   try {
-    const userToUpdate = await userModel.findOneAndUpdate({_id: id}, bodyData);
+    const userToUpdate = await userModel.findOneAndUpdate({_id: id}, bodyData, {
+      new: true
+    });
     console.log('user', userToUpdate)
     return userToUpdate;
   } catch (error) {

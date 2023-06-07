@@ -175,6 +175,17 @@ app.get('/watchlist', async (req, res) => {
   }
 });
 
+app.get('/watchlist/:userId', async (req, res) => {
+  const { userId } = req.query
+  try {
+    const watchlist = await watchlistServices.findMoviesByUserId(userId);
+    res.json({ watchlist });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: 'An error occurred on the server.' });
+  }
+});
+
 app.post('/watchlist', async (req, res) => {
   const watchlist = req.body;
   try {

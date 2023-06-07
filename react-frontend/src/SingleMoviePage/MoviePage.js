@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./MoviePage.css";
 import { useParams, Link } from "react-router-dom";
@@ -22,6 +22,8 @@ const MoviePage = ({ isLoggedIn }) => {
   const [watchlist, setWatchlist] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [reviewText, setReviewText] = useState("");
+  const isMovieInWatchlist= useRef(false);
+  const [wl, setwl] = useState(false);
 
   useEffect(() => {
     async function fetchMovieDetails() {
@@ -55,6 +57,7 @@ const MoviePage = ({ isLoggedIn }) => {
     }
 
     fetchMovieDetails();
+    
   }, [movieId]);
 
   useEffect(() => {
@@ -71,6 +74,26 @@ const MoviePage = ({ isLoggedIn }) => {
 
     fetchReviews();
   }, [movieId]);
+
+  useEffect(() => {
+    async function setWL() {
+      let userId = localStorage.getItem('id');
+      try {
+        const watchlistResponse = await axios.get(`http://localhost:8000/watchlist?userId=${userId}`);
+        isMovieInWatchlist.current = false;
+        for (let i = 0; i < watchlistResponse.data.watchlist.length; i++){
+          if(watchlistResponse.data.watchlist[i].movieId == movie.id){
+            isMovieInWatchlist.current = true;
+            break;
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching movies:', error);
+      }
+      setwl(isMovieInWatchlist.current)
+    }
+    setWL();
+  });
 
   const submitReview = async () => {
     try {
@@ -109,34 +132,13 @@ const MoviePage = ({ isLoggedIn }) => {
       const response = await axios.delete(`http://localhost:8000/watchlist/${userId}/${movieId}`);  
 
       if (response.status === 200) {
-        const removedMovie = watchlist.filter((movie) => movie.movieId !== movieId || movie.userId !== userId);
+        const removedMovie = watchlist.filter((movie) => movie.movieId !== movieId && movie.userId === userId);
         setWatchlist(removedMovie);
       }
     } catch (error) {
       console.error('Error removing movie:', error);
     }
   }
-
-  const checkMovieInWatchlist = (movie) => {
-    let userId = localStorage.getItem('id');
-    const isMovieInWatchlist = watchlist.some(
-      (watchlistMovie) => watchlistMovie.movieId === movie.movieId && watchlistMovie.userId === userId
-    );
-  
-    if (!isMovieInWatchlist) {
-      return (
-        <Button variant="primary" as={Link} to="/watchlist" onClick={() => addtoWatchlist(movie)}>
-          Add to my Watchlist
-        </Button>
-      );
-    } else {
-      return (
-        <Button variant="danger" as={Link} to="/watchlist" onClick={() => removeFromWatchlist(movie.movieId)}>
-          Remove from my Watchlist
-        </Button>
-      );
-    }
-  };
 
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
 
@@ -185,14 +187,16 @@ const MoviePage = ({ isLoggedIn }) => {
                 )}
               </Card.Text>
 
-              {/* {checkMovieInWatchlist(movie)} */}
-              <Button variant="primary" as={Link} to="/watchlist" onClick={() => addtoWatchlist(movie)}>
-                Add to my Watchlist
+              {wl ? (
+                <Button variant="danger" as={Link} to="/watchlist" 
+                  onClick={() => removeFromWatchlist(movie.id)}>
+                  Remove from my Watchlist
               </Button>
-
-              <Button variant="danger" as={Link} to="/watchlist" onClick={() => removeFromWatchlist(movie.movieId)}>
-                Remove from my Watchlist
-              </Button>
+              ) :(
+                <Button variant="primary" as={Link} to="/watchlist" 
+                  onClick={() => addtoWatchlist(movie)}>
+                  Add to my Watchlist
+                </Button> )}
 
             </Card.Body>
           </Card>

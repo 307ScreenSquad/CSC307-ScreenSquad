@@ -6,6 +6,7 @@ const app = express();
 const cors = require('cors');
 const userServices = require('./controllers/user-services');
 const movieReviewServices = require('./controllers/movie-review-services');
+const watchlistServices = require('./controllers/watchlist-services');
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(session({
@@ -134,6 +135,7 @@ app.post('/reviews', async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
 });
+
 app.put('/reviews/:_id', async (req, res) => {
   const id = req.params['_id'];
   let result = await movieReviewServices.editReview(id, req.body);
@@ -144,8 +146,6 @@ app.put('/reviews/:_id', async (req, res) => {
     res.status(200).json(result[0]);
   }
 });
-
-
 
 app.get('/forgot', async (req, res) => {
   const { email, password, hashedPassword } = req.query;
@@ -184,6 +184,12 @@ app.post('/watchlist', async (req, res) => {
     console.log(error);
     res.status(500).json({ message: 'Server error' });
   }
+});
+
+app.delete("/watchlist/:userId/:movieId", async (req, res) => {
+  const {userId, movieId} = req.params;
+  if (watchlistServices.removeMovie(userId, movieId)) res.status(204).end();
+  else res.status(404).send("Resource not found.");
 });
 
 app.listen(process.env.PORT || port, () => {

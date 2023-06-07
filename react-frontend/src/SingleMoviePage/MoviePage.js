@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./MoviePage.css";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   Button,
   Card,
@@ -12,7 +12,6 @@ import {
   Row,
   Col,
   FormControl,
-  Alert,
 } from "react-bootstrap";
 
 const MoviePage = ({ isLoggedIn }) => {
@@ -39,6 +38,9 @@ const MoviePage = ({ isLoggedIn }) => {
         const reviewsResponse = await axios.get(
           `http://localhost:8000/reviews/${movieId}`
         );
+        const watchlistResponse = await axios.get(
+          `http://localhost:8000/watchlist`
+        );
 
         setMovie(movieResponse.data);
         setCast(castResponse.data.cast.map((castMember) => castMember.name));
@@ -46,6 +48,7 @@ const MoviePage = ({ isLoggedIn }) => {
           streamingPlatformsResponse.data.results.US.flatrate || []
         );
         setReviews(reviewsResponse.data.reviews);
+        setWatchlist(watchlistResponse.data.watchlist);
       } catch (error) {
         console.error("Error fetching movie details:", error);
       }
@@ -86,9 +89,53 @@ const MoviePage = ({ isLoggedIn }) => {
     }
   };
 
-  // adding to watchlist locally
   const addtoWatchlist = async () => {
-    setWatchlist([...watchlist, movie]);
+    let userId = localStorage.getItem('id');
+    try {
+      const response = await axios.post(`http://localhost:8000/watchlist`, { movieId, title, poster_path, userId });
+
+      if (response.status === 200) {
+        const newMovie = { movieId, title, poster_path, userId };
+        setWatchlist([newMovie, ...watchlist]); 
+      }
+    } catch (error) {
+      console.error('Error adding movie:', error);
+    }
+  };
+
+  const removeFromWatchlist = async(movieId) => {
+    let userId = localStorage.getItem('id');
+    try {
+      const response = await axios.delete(`http://localhost:8000/watchlist/${userId}/${movieId}`);  
+
+      if (response.status === 200) {
+        const removedMovie = watchlist.filter((movie) => movie.movieId !== movieId || movie.userId !== userId);
+        setWatchlist(removedMovie);
+      }
+    } catch (error) {
+      console.error('Error removing movie:', error);
+    }
+  }
+
+  const checkMovieInWatchlist = (movie) => {
+    let userId = localStorage.getItem('id');
+    const isMovieInWatchlist = watchlist.some(
+      (watchlistMovie) => watchlistMovie.movieId === movie.movieId && watchlistMovie.userId === userId
+    );
+  
+    if (!isMovieInWatchlist) {
+      return (
+        <Button variant="primary" as={Link} to="/watchlist" onClick={() => addtoWatchlist(movie)}>
+          Add to my Watchlist
+        </Button>
+      );
+    } else {
+      return (
+        <Button variant="danger" as={Link} to="/watchlist" onClick={() => removeFromWatchlist(movie.movieId)}>
+          Remove from my Watchlist
+        </Button>
+      );
+    }
   };
 
   if (!movie || !cast || !streamingPlatforms) return <div>Loading...</div>;
@@ -137,18 +184,17 @@ const MoviePage = ({ isLoggedIn }) => {
                   "No streaming available"
                 )}
               </Card.Text>
-              <Button variant="primary" onClick={() => addtoWatchlist(movie)}>
+
+              {/* {checkMovieInWatchlist(movie)} */}
+              <Button variant="primary" as={Link} to="/watchlist" onClick={() => addtoWatchlist(movie)}>
                 Add to my Watchlist
               </Button>
+
+              <Button variant="danger" as={Link} to="/watchlist" onClick={() => removeFromWatchlist(movie.movieId)}>
+                Remove from my Watchlist
+              </Button>
+
             </Card.Body>
-          </Card>
-          <Card className="movie-page__watchlist">
-            <Card.Header as="h5">My Watchlist</Card.Header>
-            <ListGroup variant="flush">
-              {watchlist.map((movie) => (
-                <ListGroupItem key={movie.id}>{movie.title}</ListGroupItem>
-              ))}
-            </ListGroup>
           </Card>
         </Col>
       </Row>

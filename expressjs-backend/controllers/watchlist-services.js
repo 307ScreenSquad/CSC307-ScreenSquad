@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const MyWatchlist = require("./watchlist");
+const MyWatchlist = require("../models/watchlist");
 const dotenv = require("dotenv");
 const bcrypt = require("bcrypt");
 
@@ -39,6 +39,35 @@ async function addMovie(movie) {
   }
 }
 
+async function removeMovie(userId, movieId) {
+  try {
+    const updatedWatchlist = await MyWatchlist.findOneAndDelete(
+      { userId },
+      { $pull: { movies: { _id: movieId } } },
+      { new: true }
+    );
+    if (updatedWatchlist) {
+      return true;
+    } else {
+      return false;
+    }
+
+  } catch (error) {
+    console.error('Error removing movie:', error);
+    return false;
+  }
+}
+
+  // try {
+  //   const updatedWatchlist = await MyWatchlist.findOneAndUpdate(
+  //     { userId },
+  //     { $pull: { movies: { _id: movieId } } },
+  //     { new: true }
+  //   );
+
+
+
+
 async function findMoviesByUserId(userId) {
     return await MyWatchlist.find({ userId: userId});
   }
@@ -47,5 +76,6 @@ module.exports = {
   getWatchlist,
   findMovieById,
   addMovie,
-  findMoviesByUserId
+  findMoviesByUserId,
+  removeMovie,
 };

@@ -77,16 +77,22 @@ const MoviePage = ({ isLoggedIn }) => {
   }, [movieId]);
   const submitReview = async () => {
     let userId = localStorage.getItem("id");
-
+    let posterName = localStorage.getItem("name");
     try {
       const response = await axios.post(`http://localhost:8000/reviews`, {
         movieId,
         reviewText,
-        userId: userId
+        userId: userId,
+        posterName: posterName,
+        postedAt: new Date().toLocaleString(),
       });
   
       if (response.status === 200) {
-        const newReview = { reviewText };
+        const newReview = {
+          posterName,
+          postedAt: new Date().toLocaleString(),
+          reviewText,
+        };
         setReviews([newReview, ...reviews]);
         setReviewText("");
       }
@@ -94,6 +100,7 @@ const MoviePage = ({ isLoggedIn }) => {
       console.error("Error submitting review:", error);
     }
   };
+  
 
   // adding to watchlist locally
   const addtoWatchlist = async () => {
@@ -206,12 +213,23 @@ const MoviePage = ({ isLoggedIn }) => {
                   Submit
                 </Button>
                 <ListGroup className="mt-3">
-                  {reviews.map((review, index) => (
-                    <ListGroupItem key={index}>
-                      {review.reviewText}
-                    </ListGroupItem>
-                  ))}
-                </ListGroup>
+  {reviews.map((review, index) => (
+    <ListGroupItem key={index}>
+      <div className="review-header">
+        <span className="poster-name">{review.posterName}</span>
+        <span className="posted-at">{new Date(review.postedAt).toLocaleString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "numeric",
+            hour12: true,
+          })}</span>
+      </div>
+      <div className="review-text">{review.reviewText}</div>
+    </ListGroupItem>
+  ))}
+</ListGroup>
               </Card.Body>
             )}
             {!isLoggedIn && (

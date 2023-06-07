@@ -133,7 +133,15 @@ app.get("/reviews", async (req, res) => {
 });
 
 app.post("/reviews", async (req, res) => {
-  const review = req.body;
+  const { movieId, reviewText, userId, posterName, postedAt } = req.body; // Destructure the necessary fields from the request body
+  const review = {
+    movieId,
+    reviewText,
+    userId,
+    posterName,
+    postedAt,
+  };
+
   try {
     const result = await movieReviewServices.addReview(review);
     res.json({ message: result });
@@ -142,6 +150,7 @@ app.post("/reviews", async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 });
+
 app.put("/reviews/:_id", async (req, res) => {
   const id = req.params["_id"];
   let result = await movieReviewServices.editReview(id, req.body);

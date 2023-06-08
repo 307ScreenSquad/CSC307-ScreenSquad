@@ -1,10 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1686169361114" clover="3.2.0">
-  <project timestamp="1686169361114" name="All files">
-    <metrics statements="75" coveredstatements="55" conditionals="17" coveredconditionals="11" methods="10" coveredmethods="8" elements="102" coveredelements="74" complexity="0" loc="75" ncloc="75" packages="2" files="4" classes="4"/>
+<coverage generated="1686192249167" clover="3.2.0">
+  <project timestamp="1686192249167" name="All files">
+    <metrics statements="101" coveredstatements="75" conditionals="17" coveredconditionals="11" methods="17" coveredmethods="13" elements="135" coveredelements="99" complexity="0" loc="101" ncloc="101" packages="2" files="5" classes="5"/>
     <package name="controllers">
-      <metrics statements="57" coveredstatements="37" conditionals="8" coveredconditionals="2" methods="8" coveredmethods="6"/>
-      <file name="user-services.js" path="/Users/hopeyim/CSC307-ScreenSquad/expressjs-backend/controllers/user-services.js">
+      <metrics statements="83" coveredstatements="57" conditionals="8" coveredconditionals="2" methods="15" coveredmethods="11"/>
+      <file name="movie-review-services.js" path="C:\Users\Hailey Terry\Documents\CLASS\CSC307\CSC307-ScreenSquad\expressjs-backend\controllers\movie-review-services.js">
+        <metrics statements="26" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="5"/>
+        <line num="1" count="1" type="stmt"/>
+        <line num="2" count="1" type="stmt"/>
+        <line num="3" count="1" type="stmt"/>
+        <line num="4" count="1" type="stmt"/>
+        <line num="6" count="1" type="stmt"/>
+        <line num="8" count="1" type="stmt"/>
+        <line num="16" count="0" type="stmt"/>
+        <line num="19" count="1" type="stmt"/>
+        <line num="23" count="4" type="stmt"/>
+        <line num="24" count="4" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+        <line num="27" count="0" type="stmt"/>
+        <line num="32" count="3" type="stmt"/>
+        <line num="33" count="3" type="stmt"/>
+        <line num="34" count="3" type="stmt"/>
+        <line num="35" count="1" type="stmt"/>
+        <line num="37" count="2" type="stmt"/>
+        <line num="38" count="2" type="stmt"/>
+        <line num="43" count="1" type="stmt"/>
+        <line num="44" count="1" type="stmt"/>
+        <line num="45" count="1" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="48" count="0" type="stmt"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="68" count="0" type="stmt"/>
+        <line num="71" count="1" type="stmt"/>
+      </file>
+      <file name="user-services.js" path="C:\Users\Hailey Terry\Documents\CLASS\CSC307\CSC307-ScreenSquad\expressjs-backend\controllers\user-services.js">
         <metrics statements="57" coveredstatements="37" conditionals="8" coveredconditionals="2" methods="8" coveredmethods="6"/>
         <line num="1" count="1" type="stmt"/>
         <line num="2" count="1" type="stmt"/>
@@ -13,8 +42,8 @@
         <line num="6" count="1" type="stmt"/>
         <line num="8" count="1" type="stmt"/>
         <line num="25" count="0" type="stmt"/>
-        <line num="46" count="1" type="stmt"/>
-        <line num="47" count="1" type="stmt"/>
+        <line num="46" count="2" type="stmt"/>
+        <line num="47" count="2" type="stmt"/>
         <line num="52" count="2" type="stmt"/>
         <line num="53" count="2" type="stmt"/>
         <line num="55" count="1" type="stmt"/>
@@ -67,14 +96,14 @@
     </package>
     <package name="models">
       <metrics statements="18" coveredstatements="18" conditionals="9" coveredconditionals="9" methods="2" coveredmethods="2"/>
-      <file name="movie-review.js" path="/Users/hopeyim/CSC307-ScreenSquad/expressjs-backend/models/movie-review.js">
+      <file name="movie-review.js" path="C:\Users\Hailey Terry\Documents\CLASS\CSC307\CSC307-ScreenSquad\expressjs-backend\models\movie-review.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
         <line num="33" count="1" type="stmt"/>
         <line num="35" count="1" type="stmt"/>
       </file>
-      <file name="user.js" path="/Users/hopeyim/CSC307-ScreenSquad/expressjs-backend/models/user.js">
+      <file name="user.js" path="C:\Users\Hailey Terry\Documents\CLASS\CSC307\CSC307-ScreenSquad\expressjs-backend\models\user.js">
         <metrics statements="10" coveredstatements="10" conditionals="9" coveredconditionals="9" methods="2" coveredmethods="2"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>
@@ -87,7 +116,7 @@
         <line num="40" count="1" type="stmt"/>
         <line num="42" count="1" type="stmt"/>
       </file>
-      <file name="watchlist.js" path="/Users/hopeyim/CSC307-ScreenSquad/expressjs-backend/models/watchlist.js">
+      <file name="watchlist.js" path="C:\Users\Hailey Terry\Documents\CLASS\CSC307\CSC307-ScreenSquad\expressjs-backend\models\watchlist.js">
         <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
         <line num="1" count="1" type="stmt"/>
         <line num="3" count="1" type="stmt"/>

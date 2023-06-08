@@ -15,3 +15,14 @@ test("MovieReview model works as expected", () => {
   expect(watchlist.userId).toBe("123456789");
 }
 );
+
+test("MovieReview model catches missing movieId", () => {
+  const watchlist = new MyWatchlist({
+    title: "The Matrix",
+    poster_path: "/1234.jpg",
+    userId: "123456789"
+  });
+  const validationError = watchlist.validateSync();
+  expect(validationError.errors.movieId).toBeTruthy();
+}
+);

@@ -68,7 +68,6 @@ async function findReviewsByUserId(userId) {
   return await MovieReview.find({ userId: userId });
 }
 
-
 module.exports = {
   getReviews,
   findReviewById,

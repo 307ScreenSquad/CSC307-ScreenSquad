@@ -192,3 +192,12 @@ test('user services get all users', async () => {
 
 }
 );
+
+
+test('user services get all users', async () => {
+  
+    const validationError = await user_services.getAllUsers();
+    expect(validationError.length).toBeGreaterThan(1);
+  
+  }
+  );

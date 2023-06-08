@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 const MovieReview = require("./movie-review.js"); // Assuming the code is in a file named "MovieReview.js"
 const MovieServices = require("../controllers/movie-review-services.js");
+const dotenv = require("dotenv");
+
 
 test("MovieReview model works as expected", () => {
   const movieReview = new MovieReview({
@@ -76,25 +78,34 @@ test("MovieServices editReview edits a review", async () => {
 }
 );
 
-// test("MovieServices editReview returns false for invalid id", async () => {
-//   const movieReview = await MovieServices.editReview("647fc360baa6aeb62f0bb7b8", {
-//     reviewText: "This is an edited review from the test suite",
-//   });
-//   expect(movieReview).toBe(false);
-// }
-// );
+test("Movieservices findReviewsByUserId returns an array", async () => {
+  const movieReviews = await MovieServices.findReviewsByUserId("647fc360baa6aeb62f0bb7b9");
+  expect(movieReviews).toBeInstanceOf(Array);
+});
 
-// test("MovieServices removeReview removes a review", async () => {
-//   const movieReview = await MovieServices.removeReview("647fc360baa6aeb62f0bb7b9");
-//   expect(movieReview).toBeInstanceOf(Object);
-// }
-// );
+test("Movieservices findReviewsByUserId returns an empty array for invalid id", async () => {
+  const movieReviews = await MovieServices.findReviewsByUserId("647fc360baa6aeb62f0bb7b8");
+  expect(movieReviews).toBeInstanceOf(Array);
+  expect(movieReviews.length).toBe(0);
+});
+
+test("MovieServices findreviewsbyMovieId returns an array", async () => {
+  const movieReviews = await MovieServices.findReviewsByMovieId("123456");
+  expect(movieReviews).toBeInstanceOf(Array);
+});
+
+test("MovieServices findreviewsbyMovieId returns an empty array for invalid id", async () => {
+  const movieReviews = await MovieServices.findReviewsByMovieId("1234567");
+  expect(movieReviews).toBeInstanceOf(Array);
+  expect(movieReviews.length).toBe(0);
+});
+
 
 
 const consoleErrorSpy = jest.spyOn(console, "error");
 
 describe("Console Error Logging: addReview", () => {
-  test("should log the error when an error occurs", async () => {
+  test("should log the error when an error occurs (addreview)", async () => {
     // Mock the console.error method
     consoleErrorSpy.mockImplementation();
 
@@ -107,26 +118,45 @@ describe("Console Error Logging: addReview", () => {
     // Check if console.error was called with the expected error message
     expect(consoleErrorSpy).toHaveBeenCalledWith(expect.any(Error));
   });
-});
 
-describe("Console Error Logging - findreviewbyId", () => {
-  test("should log the error when an error occurs", async () => {
+  test("should log the error when an error occurs (find by id)", async () => {
+    // Mock the console.error method
     consoleErrorSpy.mockImplementation();
 
+    // Mock the MovieReview.findById method to throw an error
+    jest.spyOn(MovieReview, "findById").mockRejectedValue(new Error("Test error"));
+
+    // Call the function that may log an error
     await MovieServices.findReviewById("647fc360baa6aeb62f0bb7b8");
 
+    // Check if console.error was called with the expected error message
     expect(consoleErrorSpy).toHaveBeenCalledWith(expect.any(Error));
-  });
-});
 
-describe("Console Error Logging - findreviewbyId", () => {
+    // Restore the original methods
+    consoleErrorSpy.mockRestore();
+    MovieReview.findById.mockRestore();
+  });
   test("should log the error when an error occurs", async () => {
+    // Mock the console.error method
     consoleErrorSpy.mockImplementation();
 
-    await MovieServices.findReviewById("647fc360baa6aeb62f0bb7b8");
+    // Mock the MovieReview.findOneAndUpdate method to throw an error
+    jest.spyOn(MovieReview, "findOneAndUpdate").mockRejectedValue(new Error("Test error"));
 
-    expect(consoleErrorSpy).toHaveBeenCalledWith(expect.any(Error));
+    // Call the function that may log an error
+    const result = await MovieServices.editReview("647fc360baa6aeb62f0bb7b9", {
+      reviewText: "This is an edited review from the test suite",
+    });
+
+
+    // Check if the result is false
+    expect(result).toBe(false);
+
+    // Restore the original methods
+    consoleErrorSpy.mockRestore();
+    MovieReview.findOneAndUpdate.mockRestore();
   });
+  
 });
 
 

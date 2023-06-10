@@ -1,6 +1,7 @@
 const Movie_User = require('./user.js');
 const user_services = require('../controllers/user-services.js');
 const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 test('Movie_User model works as expected', () => {
     const movie_user = new Movie_User({
@@ -192,3 +193,87 @@ test('user services get all users', async () => {
 
 }
 );
+
+
+// test('user services get all users', async () => {
+  
+//     const validationError = await user_services.getAllUsers();
+//     expect(validationError.length).toBeGreaterThan(1);
+//   });
+
+  
+//   describe("loginUser", () => {
+//     it("should return 'Invalid email or password' if user is not found", async () => {
+//       // Arrange
+//       const email = "test@example.com";
+//       const password = "password123";
+//       const findUserByEmailMock = jest.spyOn(user_services, "findUserByEmail");
+//       findUserByEmailMock.mockResolvedValue(null);
+  
+//       // Act
+//       const result = await user_services.loginUser(email, password);
+  
+//       // Assert
+//       expect(result).toBe("Invalid email or password");
+//       expect(findUserByEmailMock).toHaveBeenCalledWith(email);
+//     });
+  
+//     it("should return 'Login successful' if email and password match", async () => {
+//       // Arrange
+//       const email = "test@example.com";
+//       const password = "password123";
+//       const user = {
+//         email: "test@example.com",
+//         password: await bcrypt.hash("password123", 10),
+//       };
+//       const findUserByEmailMock = jest.spyOn(user_services, "findUserByEmail");
+//       findUserByEmailMock.mockResolvedValue(user);
+//       const bcryptCompareMock = jest.spyOn(bcrypt, "compare");
+//       bcryptCompareMock.mockResolvedValue(true);
+  
+//       // Act
+//       const result = await loginUser(email, password);
+  
+//       // Assert
+//       expect(result).toBe("Login successful");
+//       expect(findUserByEmailMock).toHaveBeenCalledWith(email);
+//       expect(bcryptCompareMock).toHaveBeenCalledWith(password, user.password);
+//     });
+  
+//     it("should return 'Invalid email or password' if email and password do not match", async () => {
+//       // Arrange
+//       const email = "test@example.com";
+//       const password = "password123";
+//       const user = {
+//         email: "test@example.com",
+//         password: await bcrypt.hash("wrongpassword", 10),
+//       };
+//       const findUserByEmailMock = jest.spyOn(user_services, "findUserByEmail");
+//       findUserByEmailMock.mockResolvedValue(user);
+//       const bcryptCompareMock = jest.spyOn(bcrypt, "compare");
+//       bcryptCompareMock.mockResolvedValue(false);
+  
+//       // Act
+//       const result = await user_services.loginUser(email, password);
+  
+//       // Assert
+//       expect(result).toBe("Invalid email or password");
+//       expect(findUserByEmailMock).toHaveBeenCalledWith(email);
+//       expect(bcryptCompareMock).toHaveBeenCalledWith(password, user.password);
+//     });
+  
+//     it("should return Invalid email or password", async () => {
+//       // Arrange
+//       const email = "test@example.com";
+//       const password = "password123";
+//       // Act
+//       const result = await user_services.loginUser(email, password);
+
+//       // Assert
+//       expect(result).toBe("Invalid email or password");
+//     });
+//   });
+
+
+
+

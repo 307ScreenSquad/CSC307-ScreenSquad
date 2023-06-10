@@ -14,6 +14,7 @@ mongoose
     }
   )
   .catch((error) => console.log(error));
+  
 
 async function getReviews(movieId) {
   return await findReviewsByMovieId(movieId);
@@ -49,16 +50,6 @@ async function editReview(id, bodyData){
   }
 }
 
-// // Uncomment this function if you need to remove a review
-// async function removeReview(reviewId) {
-//   try {
-//     const deletedReview = await MovieReview.findByIdAndDelete(reviewId);
-//     return deletedReview;
-//   } catch (error) {
-//     console.log(error);
-//     return null;
-//   }
-// }
 
 async function findReviewsByMovieId(movieId) {
   return await MovieReview.find({ movieId: movieId });
@@ -67,7 +58,6 @@ async function findReviewsByMovieId(movieId) {
 async function findReviewsByUserId(userId) {
   return await MovieReview.find({ userId: userId });
 }
-
 
 module.exports = {
   getReviews,
@@ -78,3 +68,4 @@ module.exports = {
   findReviewsByUserId,
   editReview
 };
+

@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const MovieReview = require("./movie-review.js");
+const MovieReview = require("./movie-review.js"); // Assuming the code is in a file named "MovieReview.js"
 const MovieServices = require("../controllers/movie-review-services.js");
 const dotenv = require("dotenv");
 

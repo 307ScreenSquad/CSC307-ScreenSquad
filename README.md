@@ -1,4 +1,9 @@
 # CSC307-ScreenSquad
+
+## Instructions to run:
+- Frontend -> navigate into react-frontend folder. Run the command npm start.
+- Backend -> navigate into the expressjs-backend folder. Run the command npm run dev.
+
 Figma: https://www.figma.com/file/YQA3k3PgyCOS2Mnljyuh5f/Screen-Squad-Website?type=design&node-id=0-1&t=TxlZTGoQHmAZec7c-0
 
 Code Styling Tools we use:

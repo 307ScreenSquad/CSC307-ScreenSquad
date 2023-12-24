@@ -13,21 +13,6 @@ function Profile() {
     const [reviewsTable, setReviewsTable] = useState(false);
     const navigate = useNavigate();
     
-    
-    /*
-    useEffect(() => {
-        isAdmin();
-    })
-    async function isAdmin(){
-        if(localStorage.getItem('name').length === 0){
-            setCheckAdmin(false);
-            navigate('/')
-        }
-        else{
-            setCheckAdmin(true);
-        }
-    }
-    */
     function Initial(props){
         const navigate = useNavigate();
         const [checkPage, setCheckPage] = useState(false);

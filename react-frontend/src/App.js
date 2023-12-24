@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import MoviePage from "./SingleMoviePage/MoviePage";
-// import MovieSearch from './SingleMoviePage/MovieSearch';
 import "./App.css";
 import axios from "axios"
 import { BrowserRouter, Routes, Route } from "react-router-dom"
@@ -26,11 +25,8 @@ import { ThemeProvider } from "@emotion/react";
 const salt = bcrypt.genSaltSync(10);
 
 function App() {
-  // const [characters, setCharacters] = useState([]);
   const [loggedIn, setLoggedIn] = useState(false);
-  // const [characters, setCharacters] = useState([]);
-  //const emailInputRef = useRef()
-  //const passwordInputRef = useRef()
+
 
   async function handleCreateUser(name, email, password) {
     const hashedPassword = bcrypt.hashSync(password, salt); // hash created previously created upon sign up

@@ -24,23 +24,6 @@ function ProfileReview (props) {
         }
     }
 
-    /*
-      adult: false
-      backdrop_path: "/h8gHn0OzBoaefsYseUByqsmEDMY.jpg"
-      genre_ids: Array(3) [ 28, 53, 80 ]
-      id: 603692
-      original_language: "en"
-      original_title: "John Wick: Chapter 4"
-      overview: "With the price on his head ever increasing, John Wick uncovers a path to defeating The High Table. But before he can earn his freedom, Wick must face off against a new enemy with powerful alliances across the globe and forces that turn old friends into foes."
-      popularity: 8361.829
-      poster_path: "/vZloFAK7NmvMGKE7VkF5UHaz0I.jpg"
-      release_date: "2023-03-22"
-      title: "John Wick: Chapter 4"
-      video: false
-      vote_average: 8
-      vote_count: 2263
-​​
-    */
     async function fetchMovies(){
       try {
         const response = await axios.get(`https://api.themoviedb.org/3/movie/popular?api_key=a43aea022f03ee960884520d48d1c5f8`);

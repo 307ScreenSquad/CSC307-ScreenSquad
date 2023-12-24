@@ -110,26 +110,7 @@ function App() {
     }
   }, []);
 
-  // async function makePostCall(person){
-  //   try {
-  //      const response = await axios.post('http://localhost:8000/users', person);
-  //      return response;
-  //   }
-  //   catch (error){
-  //      //We're not handling errors. Just logging into the console.
-  //      console.log(error);
-  //      return false;
-  //   }
-  // }
 
-  /*
-  return (
-    <div className="container">
-      <Table characterData={characters} removeCharacter={removeOneCharacter}/>
-      <Form handleSubmit={updateList}/>
-    </div>
-  );
-  */
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
